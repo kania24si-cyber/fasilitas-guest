@@ -4,82 +4,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Volt Dashboard</title>
+  <title>Guest Dashboard</title>
 
-  <!-- CSS Volt -->
-  <link rel="stylesheet" href="{{ asset('assets-guest/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets-guest/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets-guest/css/volt.css') }}">
+  <!-- Plugins: CSS -->
+  <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/js/select.dataTables.min.css') }}">
+
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
+  <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
 </head>
 
 <body>
-
-  <!-- Sidebar -->
-  <nav id="sidebarMenu" class="sidebar d-lg-block bg-dark text-white position-fixed h-100">
-    <div class="sidebar-inner px-4 pt-3">
-      <ul class="nav flex-column pt-3 pt-md-0">
-        <li class="nav-item mb-3">
-          <a href="#" class="nav-link d-flex align-items-center">
-            <span class="sidebar-icon">
-              <img src="{{ asset('assets-guest/img/brand/light.svg') }}" height="20" width="20" alt="Volt Logo">
-            </span>
-            <span class="mt-1 ms-1 sidebar-text">Volt Dashboard</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
-            <span class="sidebar-text">Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-table"></i></span>
-            <span class="sidebar-text">Tables</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
-            <span class="sidebar-text">Settings</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Main content -->
-  <main class="content">
-    <nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
-      <div class="container-fluid px-0">
-        <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
-          <div class="d-flex align-items-center">
-            <h1 class="h4 mb-0 text-white">Dashboard Overview</h1>
-          </div>
-          <div class="navbar-user d-flex align-items-center">
-            <a href="#" class="btn btn-secondary btn-sm d-inline-flex align-items-center">
-              <i class="fas fa-sign-out-alt me-1"></i>
-              Logout
+  <div class="container-scroller">
+    <!-- Navbar -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo me-5" href="#">
+          <img src="{{ asset('assets/images/logo.svg') }}" class="me-2" alt="logo" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="#">
+          <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="icon-menu"></span>
+        </button>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+              <i class="icon-bell mx-0"></i>
+              <span class="count"></span>
             </a>
-          </div>
-        </div>
+          </li>
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
+              <img src="{{ asset('assets/images/faces/face28.jpg') }}" alt="profile" />
+            </a>
+          </li>
+        </ul>
       </div>
     </nav>
+    <!-- End Navbar -->
 
-    <div class="py-4">
-      <div class="card shadow border-0 mb-4">
-        <div class="card-body">
-          <h2 class="h5 mb-3">Welcome to Volt Dashboard</h2>
-          <p>This is the full Volt Admin Template loaded inside one Blade file.</p>
+    <div class="container-fluid page-body-wrapper">
+      <!-- Sidebar -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-category">Main</li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="#">
+              <span class="menu-icon"><i class="icon-speedometer"></i></span>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="#">
+              <span class="menu-icon"><i class="icon-grid"></i></span>
+              <span class="menu-title">UI Elements</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="#">
+              <span class="menu-icon"><i class="icon-layout"></i></span>
+              <span class="menu-title">Forms</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="#">
+              <span class="menu-icon"><i class="icon-bar-chart"></i></span>
+              <span class="menu-title">Charts</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Panel -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h4 class="font-weight-bold mb-0">Welcome John</h4>
+                  <p class="text-muted">All systems are running smoothly! You have 3 unread alerts!</p>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-primary btn-icon-text">
+                    <i class="ti-calendar btn-icon-prepend"></i>Today (10 Jan 2021)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Weather Card -->
+            <div class="col-xl-6 col-sm-6 grid-margin stretch-card">
+              <div class="card tale-bg">
+                <div class="card-people mt-auto">
+                  <img src="{{ asset('assets/images/dashboard/people.svg') }}" alt="people" />
+                  <div class="weather-info">
+                    <div class="d-flex">
+                      <div>
+                        <h2 class="mb-0 font-weight-normal">
+                          <i class="icon-sun me-2"></i>31<sup>C</sup>
+                        </h2>
+                      </div>
+                      <div class="ms-2">
+                        <h4 class="location font-weight-normal">Chicago</h4>
+                        <h6 class="font-weight-normal">Illinois</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="col-sm-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Today’s Bookings</h4>
+                  <h2 class="mb-2">4006</h2>
+                  <p>10.00% (30 days)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Total Bookings</h4>
+                  <h2 class="mb-2">61344</h2>
+                  <p>22.00% (30 days)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Number of Meetings</h4>
+                  <h2 class="mb-2">34040</h2>
+                  <p>2.00% (30 days)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Number of Clients</h4>
+                  <h2 class="mb-2">47033</h2>
+                  <p>0.22% (30 days)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+              © 2025 Guest Dashboard (Assets Template)
+            </span>
+          </div>
+        </footer>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- JS Volt -->
-  <script src="{{ asset('assets-guest/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('assets-guest/vendor/@popperjs/core/dist/umd/popper.min.js') }}"></script>
-  <script src="{{ asset('assets-guest/js/volt.js') }}"></script>
+  <!-- JS: Vendors -->
+  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
+  <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+  <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+
+  <!-- Custom JS -->
+  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
+  <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
+  <script src="{{ asset('assets/js/template.js') }}"></script>
+  <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 </body>
 </html>
+
+
