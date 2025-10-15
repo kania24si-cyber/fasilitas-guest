@@ -1,0 +1,17 @@
+/* Contoh style sederhana */
+body {
+    background-color: #f8f9fa;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Font kustom */
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('../fonts/MyCustomFont.ttf');
+}
+
+.font-custom {
+    font-family: 'MyCustomFont';
+    color: #333;
+}
