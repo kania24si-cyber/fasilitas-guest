@@ -2,200 +2,148 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guest Dashboard</title>
+    <meta charset="utf-8">
+    <title>Fasilitas Umum dan Peminjaman Ruangan - Guest</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-  <!-- Plugins: CSS -->
-  <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+    <!-- Favicon -->
+    <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
 
-  <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('assets/js/select.dataTables.min.css') }}">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Layout styles -->
-  <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
-  <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <!-- Libraries Stylesheet -->
+    <link href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 </head>
 
 <body>
-  <div class="container-scroller">
-    <!-- Navbar -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo me-5" href="#">
-          <img src="{{ asset('assets/images/logo.svg') }}" class="me-2" alt="logo" />
-        </a>
-        <a class="navbar-brand brand-logo-mini" href="#">
-          <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
-        </a>
-      </div>
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-          <span class="icon-menu"></span>
-        </button>
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-              <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-          </li>
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{ asset('assets/images/faces/face28.jpg') }}" alt="profile" />
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- End Navbar -->
-
-    <div class="container-fluid page-body-wrapper">
-      <!-- Sidebar -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item nav-category">Main</li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-              <span class="menu-icon"><i class="icon-speedometer"></i></span>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-              <span class="menu-icon"><i class="icon-grid"></i></span>
-              <span class="menu-title">UI Elements</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-              <span class="menu-icon"><i class="icon-layout"></i></span>
-              <span class="menu-title">Forms</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-              <span class="menu-icon"><i class="icon-bar-chart"></i></span>
-              <span class="menu-title">Charts</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <!-- Main Panel -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h4 class="font-weight-bold mb-0">Welcome John</h4>
-                  <p class="text-muted">All systems are running smoothly! You have 3 unread alerts!</p>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-primary btn-icon-text">
-                    <i class="ti-calendar btn-icon-prepend"></i>Today (10 Jan 2021)
-                  </button>
-                </div>
-              </div>
+    <div class="container-fluid position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-          </div>
-
-          <div class="row">
-            <!-- Weather Card -->
-            <div class="col-xl-6 col-sm-6 grid-margin stretch-card">
-              <div class="card tale-bg">
-                <div class="card-people mt-auto">
-                  <img src="{{ asset('assets/images/dashboard/people.svg') }}" alt="people" />
-                  <div class="weather-info">
-                    <div class="d-flex">
-                      <div>
-                        <h2 class="mb-0 font-weight-normal">
-                          <i class="icon-sun me-2"></i>31<sup>C</sup>
-                        </h2>
-                      </div>
-                      <div class="ms-2">
-                        <h4 class="location font-weight-normal">Chicago</h4>
-                        <h6 class="font-weight-normal">Illinois</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Today’s Bookings</h4>
-                  <h2 class="mb-2">4006</h2>
-                  <p>10.00% (30 days)</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Total Bookings</h4>
-                  <h2 class="mb-2">61344</h2>
-                  <p>22.00% (30 days)</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Number of Meetings</h4>
-                  <h2 class="mb-2">34040</h2>
-                  <p>2.00% (30 days)</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-sm-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Number of Clients</h4>
-                  <h2 class="mb-2">47033</h2>
-                  <p>0.22% (30 days)</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
+        <!-- Spinner End -->
 
-        <!-- Footer -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-              © 2025 Guest Dashboard (Assets Template)
-            </span>
-          </div>
-        </footer>
-      </div>
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="{{ route('dashboard') }}" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user me-2"></i>Bina Desa</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="{{ asset('assets/img/user.jpg') }}" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">User</h6>
+                        <span>guest</span>
+                    </div>
+                </div>
+               <div class="navbar-nav w-100">
+                    <a href="{{ route('dashboard') }}" class="nav-item nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <i class="fa fa-tachometer-alt me-2"></i>Dashboard
+                    </a>
+                    <a href="{{ route('warga.index') }}" class="nav-item nav-link {{ request()->routeIs('warga.*') ? 'active' : '' }}">
+                        <i class="fa fa-users me-2"></i>Data Warga
+                    </a>
+                    <a href="{{ route('peminjaman.index') }}" class="nav-item nav-link {{ request()->routeIs('peminjaman.*') ? 'active' : '' }}">
+                        <i class="fa fa-clipboard me-2"></i>Peminjaman Fasilitas
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="#" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user"></i></h2>
+                </a>
+                  <h4 class="text-primary ms-3 my-0">Dashboard Guest</h4> 
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item d-flex align-items-center">
+                        <img class="rounded-circle me-2" src="{{ asset('assets/img/user.jpg') }}" alt="" style="width: 40px; height: 40px;">
+                        <span class="fw-bold text-dark">guest</span>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            {{-- ======= MAIN CONTENT FROM TEMPLATE ======= --}}
+            <div class="container-fluid pt-4 px-4">    
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @yield('content')
+            </div>
+            {{-- ===== END MAIN CONTENT ===== --}}
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">           
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-  </div>
 
-  <!-- JS: Vendors -->
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-  <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
-  <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
-  <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/lib/chart/chart.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/tempusdominus/js/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
-  <!-- Custom JS -->
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
-  <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
-  <script src="{{ asset('assets/js/template.js') }}"></script>
-  <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <!-- Template Javascript -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 </html>
-
-
