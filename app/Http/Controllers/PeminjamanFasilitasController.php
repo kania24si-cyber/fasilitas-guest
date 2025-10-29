@@ -14,7 +14,7 @@ class PeminjamanFasilitasController extends Controller
     public function index()
     {
         $peminjaman = PeminjamanFasilitas::with('warga')->get();
-        return view('peminjaman.index', compact('peminjaman'));
+        return view('guest.peminjaman.index', compact('peminjaman'));
     }
 
     /**
@@ -23,7 +23,7 @@ class PeminjamanFasilitasController extends Controller
     public function create()
     {
       $warga = Warga::all();
-        return view('peminjaman.create', compact('warga'));  
+        return view('guest.peminjaman.create', compact('warga'));  
     }
 
     /**
@@ -63,7 +63,7 @@ class PeminjamanFasilitasController extends Controller
     {
         $peminjaman = PeminjamanFasilitas::findOrFail($id);
         $warga = Warga::all();
-        return view('peminjaman.edit', compact('peminjaman', 'warga'));
+        return view('guest.peminjaman.edit', compact('peminjaman', 'warga'));
     }
 
     /**

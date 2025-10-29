@@ -13,7 +13,7 @@ class WargaController extends Controller
     public function index()
     {
         $warga = \App\Models\Warga::all();
-        return view('warga.index', compact('warga'));
+        return view('guest.warga.index', compact('warga'));
     }
 
     /**
@@ -21,7 +21,7 @@ class WargaController extends Controller
      */
     public function create()
     {
-        return view('warga.create');
+        return view('guest.warga.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class WargaController extends Controller
     public function edit(string $id)
     {
         $warga = Warga::findOrFail($id);
-        return view('warga.edit', compact('warga'));
+        return view('guest.warga.edit', compact('warga'));
     }
 
     /**

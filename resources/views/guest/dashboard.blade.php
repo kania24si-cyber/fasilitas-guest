@@ -3,147 +3,174 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fasilitas Umum dan Peminjaman Ruangan - Guest</title>
+    <title>Bina Desa | Dashboard Guest</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="Bina Desa, Dashboard, Fasilitas Umum, Peminjaman Ruangan" name="keywords">
+    <meta content="Dashboard Guest - Bina Desa" name="description"> <!-- Favicons -->
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700" rel="stylesheet"> <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet"> <!-- Main CSS File -->
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+    <style>
+        /* HERO */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('{{ asset(' assets/img/banner.jpg') }}') center center/cover no-repeat;
+            color: #fff;
+            text-align: center;
+        }
 
-    <!-- Favicon -->
-    <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
+        .hero h1 {
+            font-weight: 700;
+            font-size: 2.8rem;
+        }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        .hero p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+        }
 
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
+        /* NAVIGATION */
+        #navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        #navbar ul li {
+            position: relative;
+            padding: 10px 15px;
+        }
 
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        #navbar ul li a {
+            color: #012970;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        #navbar ul li a:hover,
+        #navbar ul li a.active {
+            color: #4154f1;
+        }
+
+        /* SECTION CARD */
+        .dashboard-section {
+            padding: 60px 0;
+        }
+
+        .card-dashboard {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .card-dashboard:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-dashboard img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-dashboard i {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-top: 20px;
+        }
+
+        .card-dashboard .btn {
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container-fluid position-relative bg-white d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+<body> <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between"> <!-- Logo + Tombol Logout sejajar -->
+            <div class="d-flex align-items-center"> <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center me-3"> <img src="{{ asset('assets/img/logo.png') }}" alt=""> <span class="ms-2">BinaDesa</span> </a> <!-- Tombol Logout persis di samping "BinaDesa" --> <a href="{{ route('auth.logout') }}" class="btn btn-danger btn-sm" style="font-weight: 600;"> Logout </a> </div>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Home</a></li>
+                    <li><a class="{{ request()->routeIs('warga.*') ? 'active' : '' }}" href="{{ route('warga.index') }}">Data Warga</a></li>
+                    <li><a class="{{ request()->routeIs('peminjaman.*') ? 'active' : '' }}" href="{{ route('peminjaman.index') }}">Peminjaman</a></li>
+                    <li><a class="{{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a></li>
+            </nav> <!-- .navbar -->
         </div>
-        <!-- Spinner End -->
-
-
-        <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-light navbar-light">
-                <a href="{{ route('dashboard') }}" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-user me-2"></i>Bina Desa</h3>
-                </a>
-                <div class="d-flex align-items-center ms-4 mb-4">
-                    <div class="position-relative">
-                        <img class="rounded-circle" src="{{ asset('assets/img/user.jpg') }}" alt="" style="width: 40px; height: 40px;">
-                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-                    </div>
-                    <div class="ms-3">
-                        <h6 class="mb-0">User</h6>
-                        <span>guest</span>
+    </header> <!-- End Header --> <!-- ======= Hero Section ======= --> @section('content') {{-- Bagian Hero --}}
+    <section id="hero" class="hero d-flex align-items-center" data-aos="fade-up">
+        <div class="container text-center">
+            <h1 class="fw-bold mb-3">Selamat Datang di <span class="text-primary">Bina Desa</span></h1>
+            <p class="mb-4"> Sistem informasi terpadu untuk pengelolaan data warga dan peminjaman fasilitas umum desa.<br> Semua kegiatan desa kini lebih transparan, mudah, dan efisien. </p>
+        </div>
+    </section> {{-- Bagian Gambar --}}
+    <section class="dashboard-section" data-aos="fade-up" data-aos-delay="200">
+        <div class="container text-center">
+            <div class="row justify-content-center gy-4">
+                <div class="col-md-5">
+                    <div class="card card-dashboard"> <img src="{{ asset('assets/img/binadesautama1.jpg') }}" alt="Data Warga" />
+                        <div class="card-body">
+                            <h5 class="fw-bold mt-3">Data Warga</h5>
+                            <p class="text-muted">Berisi informasi lengkap warga desa untuk membantu administrasi dan pelayanan publik.</p>
+                        </div>
                     </div>
                 </div>
-               <div class="navbar-nav w-100">
-                    <a href="{{ route('dashboard') }}" class="nav-item nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="fa fa-tachometer-alt me-2"></i>Dashboard
-                    </a>
-                    <a href="{{ route('warga.index') }}" class="nav-item nav-link {{ request()->routeIs('warga.*') ? 'active' : '' }}">
-                        <i class="fa fa-users me-2"></i>Data Warga
-                    </a>
-                    <a href="{{ route('peminjaman.index') }}" class="nav-item nav-link {{ request()->routeIs('peminjaman.*') ? 'active' : '' }}">
-                        <i class="fa fa-clipboard me-2"></i>Peminjaman Fasilitas
-                    </a>
-                </div>
-            </nav>
-        </div>
-        <!-- Sidebar End -->
-
-
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="#" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-user"></i></h2>
-                </a>
-                  <h4 class="text-primary ms-3 my-0">Dashboard Guest</h4> 
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item d-flex align-items-center">
-                        <img class="rounded-circle me-2" src="{{ asset('assets/img/user.jpg') }}" alt="" style="width: 40px; height: 40px;">
-                        <span class="fw-bold text-dark">guest</span>
+                <div class="col-md-5">
+                    <div class="card card-dashboard"> <img src="{{ asset('assets/img/binadesautama2.jpg') }}" alt="Peminjaman Ruangan" />
+                        <div class="card-body">
+                            <h5 class="fw-bold mt-3">Peminjaman Ruangan</h5>
+                            <p class="text-muted">Fitur yang memudahkan masyarakat dalam mengatur dan mengajukan peminjaman fasilitas desa.</p>
+                        </div>
                     </div>
                 </div>
-            </nav>
-            <!-- Navbar End -->
-
-            {{-- ======= MAIN CONTENT FROM TEMPLATE ======= --}}
-            <div class="container-fluid pt-4 px-4">    
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="col-md-5">
+                    <div class="card card-dashboard"> <img src="{{ asset('assets/img/binadesautama3.jpg') }}" alt="Users yang login" />
+                        <div class="card-body">
+                            <h5 class="fw-bold mt-3">Users</h5>
+                            <p class="text-muted">Fitur untuk melihat semua akses login</p>
+                        </div>
                     </div>
-                @endif
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @yield('content')
+                </div>
             </div>
-            {{-- ===== END MAIN CONTENT ===== --}}
-
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">           
-            </div>
-            <!-- Footer End -->
         </div>
-        <!-- Content End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/lib/chart/chart.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/tempusdominus/js/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
-    <script src="{{ asset('assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-
-    <!-- Template Javascript -->
+    </section>  <main id="main" style="margin-top: 100px;"> @yield('content') </main> <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 <strong>Bina Desa</strong>. All Rights Reserved</p>
+        </div>
+    </footer> <a href="#" class="scroll-top d-flex align-items-center justify-content-center"> <i class="bi bi-arrow-up-short"></i> </a> <!-- Vendor JS Files -->
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script> <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
+
 </html>

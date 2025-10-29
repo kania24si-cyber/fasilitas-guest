@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,8 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Tambahkan user Guest Bina Desa
+        User::create([
+            'name' => 'Guest Bina Desa',
+            'email' => 'kania24si@mahasiswa.pcr.ac.id',
+            'password' => Hash::make('Guest12345'), // otomatis terenkripsi bcrypt
+        ]);
 
+        // Optional: user test bawaan
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
