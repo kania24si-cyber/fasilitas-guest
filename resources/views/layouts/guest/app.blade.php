@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Bina Desa | Dashboard Guest</title>
@@ -12,7 +13,9 @@
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700"
+        rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
@@ -27,19 +30,24 @@
 
     @include('layouts.guest.css')
 </head>
+
 <body>
     @include('layouts.guest.header')
-
 
     <main id="main" style="margin-top: 100px;">
         @yield('content')
     </main>
 
     @include('layouts.guest.footer')
+
     <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
         <i class="bi bi-arrow-up-short"></i>
     </a>
 
     @include('layouts.guest.js')
+
+    {{-- Floating WhatsApp Button --}}
+    @include('layouts.guest.whatsapp')
 </body>
+
 </html>

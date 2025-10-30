@@ -12,7 +12,7 @@ class AuthController extends Controller
     // Halaman login
     public function index()
     {
-        return view('guest.login.login-form');
+        return view('pages.login.login-form');
     }
 
     // Proses login

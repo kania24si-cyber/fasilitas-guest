@@ -8,6 +8,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanFasilitasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+
 
 
 
@@ -45,4 +48,13 @@ Route::get('/home', function () {
     return view('guest.home.home'); // ← ini yang berubah
 })->name('home');
 
+Route::get('/home', function () {
+    if (!Auth::check()) {
+        return redirect()->route('auth.index');
+    }
+    return view('guest.home'); // pastikan file ada di resources/views/guest/home.blade.php
+})->name('home');
+
 Route::resource('/users', UserController::class);
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
