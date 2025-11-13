@@ -20,7 +20,6 @@
                     <div class="card card-dashboard">
                         <img src="{{ asset('assets/img/binadesautama1.jpg') }}" alt="Data Warga" />
                         <div class="card-body">
-                            <h5 class="fw-bold mt-3">Data Warga</h5>
                             <p class="text-muted">
                                 Berisi informasi lengkap warga desa untuk membantu administrasi dan pelayanan publik.
                             </p>
@@ -53,5 +52,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>                   
+         
 @endsection

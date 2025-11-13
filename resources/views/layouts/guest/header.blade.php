@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="{{ request()->routeIs('peminjaman.*') ? 'active' : '' }}"
+                    <a class="{{ request()->routeIs(patterns: 'peminjaman.*') ? 'active' : '' }}"
                         href="{{ route('peminjaman.index') }}">
                         <i class="bi bi-door-open-fill me-1 text-warning"></i> Peminjaman
                     </a>
