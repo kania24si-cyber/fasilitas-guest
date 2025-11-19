@@ -23,9 +23,19 @@ return new class extends Migration
     $table->string('bukti_pembayaran')->nullable();
     $table->timestamps();
 
-    $table->foreign('warga_id')->references('warga_id')->on('warga')->onDelete('cascade');
-    $table->foreign('fasilitas_id')->references('id')->on('fasilitas_umum')->onDelete('cascade');
-    });
+    // FK warga
+    $table->foreign('warga_id')
+        ->references('warga_id')
+        ->on('warga')
+        ->onDelete('cascade');
+
+    // FK fasilitas
+    $table->foreign('fasilitas_id')
+        ->references('fasilitas_id')
+        ->on('fasilitas_umum')
+        ->onDelete('cascade');
+});
+
     }
 
     /**
