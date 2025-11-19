@@ -22,4 +22,8 @@ class PeminjamanFasilitas extends Model
     {
         return $this->belongsTo(Warga::class, 'warga_id', 'warga_id');
     }
+    public function fasilitas()
+    {
+        return $this->belongsTo(FasilitasUmum::class, 'fasilitas_id', 'id');
+    }    
 }

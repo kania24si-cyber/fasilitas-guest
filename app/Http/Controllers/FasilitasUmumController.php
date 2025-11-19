@@ -2,45 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FasilitasUmum;
 use Illuminate\Http\Request;
 
 class FasilitasUmumController extends Controller
 {
     public function index()
     {
-        $judul = 'Daftar Fasilitas Umum Bina Desa';
-        $fasilitas = [
-            [ 
-                'fasilitas_id' => 1,
-                'nama' => 'Masjid Bina Desa',
-                'jenis' => 'Tempat Ibadah',
-                'Alamat' => 'Jl. Merdeka No. 10, Bina Desa',
-                'rt' => '01',
-                'rw' => '02',
-                'Kapasitas' => 200,
-                'deskripsi' => 'Masjid yang terletak di pusat desa, menyediakan tempat ibadah bagi warga sekitar'
-            ],
-            [ 
-                'fasilitas_id' => 2,
-                'nama' => 'Lapangan Olahraga',
-                'jenis' => 'Lapangan',
-                'Alamat' => 'Jl. Sudirman No. 5, Bina Desa',
-                'rt' => '03',
-                'rw' => '04',
-                'Kapasitas' => 150,
-                'deskripsi' => 'Merupakan Lapangan Serbaguna untuk berbagai kegiatan Olahraga dan acara desa',
-            ],
-            [
-                'fasilitas_id' => 3,
-                'nama' => 'Puskesmas Bina Desa',
-                'jenis' => 'Fasilitas Kesehatan',
-                'Alamat' => 'Jl. Tartini No. 8, Bina Desa',
-                'rt' => '05',
-                'rw' => '06',
-                'Kapasitas' => 200,
-                'deskripsi' => 'Pusat Layanan Kesehatan bagi warga desa dan sekitarnya',
-            ]
-            ];
-            return view('index', compact ('judul', 'fasilitas'));
+        $data = FasilitasUmum::all();
+        return view('pages.fasilitas.index', compact('data'));
+    }
+
+    public function create()
+    {
+        return view('pages.fasilitas.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama' => 'required',
+            'jenis' => 'required',
+            'alamat' => 'required',
+            'kapasitas' => 'nullable|integer',
+            'media' => 'image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($request->hasFile('media')) {
+            $validated['media'] = $request->file('media')->store('fasilitas', 'public');
+        }
+
+        FasilitasUmum::create($validated);
+
+        return redirect()->route('fasilitas.index')->with('success', 'Data berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $item = FasilitasUmum::findOrFail($id);
+        return view('pages.fasilitas.edit', compact('item'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $item = FasilitasUmum::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama' => 'required',
+            'jenis' => 'required',
+            'alamat' => 'required',
+            'kapasitas' => 'nullable|integer',
+            'media' => 'image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($request->hasFile('media')) {
+            $validated['media'] = $request->file('media')->store('fasilitas', 'public');
+        }
+
+        $item->update($validated);
+
+        return redirect()->route('fasilitas.index')->with('success', 'Data berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $item = FasilitasUmum::findOrFail($id);
+        $item->delete();
+        return back()->with('success', 'Data berhasil dihapus!');
     }
 }

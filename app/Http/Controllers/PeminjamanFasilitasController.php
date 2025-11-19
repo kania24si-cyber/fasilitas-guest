@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\PeminjamanFasilitas;
 use App\Models\Warga;
+use App\Models\FasilitasUmum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,8 +23,9 @@ class PeminjamanFasilitasController extends Controller
      */
     public function create()
     {
-        $warga = Warga::all();
-        return view('pages.peminjaman.create', compact('warga'));
+    $warga = Warga::all();
+    $fasilitas = FasilitasUmum::all();
+    return view('pages.peminjaman.create', compact('warga','fasilitas'));
     }
 
     /**
@@ -33,6 +35,7 @@ class PeminjamanFasilitasController extends Controller
     {
         $validated = $request->validate([
             'warga_id' => 'required',
+            'fasilitas_id' => 'required',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'tujuan' => 'required',

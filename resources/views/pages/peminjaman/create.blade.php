@@ -18,6 +18,17 @@
         </div>
 
         <div class="mb-3">
+            <label>Pilih Fasilitas</label>
+            <select name="fasilitas_id" class="form-control">
+                <option value="">-- Pilih Fasilitas --</option>
+                @foreach($fasilitas as $f)
+                    <option value="{{ $f->id }}">{{ $f->nama }} ({{ $f->jenis }})</option>
+            @endforeach
+            </select>
+        </div>
+
+
+        <div class="mb-3">
             <label>Tanggal Mulai</label>
             <input type="date" name="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai') }}">
         </div>

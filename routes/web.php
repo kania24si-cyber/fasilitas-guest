@@ -18,7 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/fasilitas', [FasilitasUmumController::class, 'index']);
+
+Route::get('/fasilitas', [FasilitasUmumController::class, 'index'])
+    ->name('fasilitas.index');
 route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -58,3 +60,4 @@ Route::get('/home', function () {
 Route::resource('/users', UserController::class);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::resource('fasilitas', FasilitasUmumController::class);
