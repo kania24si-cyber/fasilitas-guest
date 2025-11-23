@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         UserSeeder::class,
         FasilitasUmumSeeder::class,
         PeminjamanFasilitasSeeder::class,
+        WargaSeeder::class,
     ]);
 }
 }

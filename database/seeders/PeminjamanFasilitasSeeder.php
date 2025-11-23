@@ -12,11 +12,11 @@ class PeminjamanFasilitasSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Ambil seluruh id fasilitas sebagai foreign key
-        $fasilitasIDs = DB::table('fasilitas_umum')->pluck('id'); // FIX DI SINI
+        // Ambil seluruh fasilitas_id sebagai foreign key
+        $fasilitasIDs = DB::table('fasilitas_umum')->pluck('fasilitas_id');
 
         // Ambil seluruh warga_id untuk relasi
-        $wargaIDs = DB::table('warga')->pluck('warga_id'); // FIX juga
+        $wargaIDs = DB::table('warga')->pluck('warga_id');
 
         foreach (range(1, 20) as $i) {
             DB::table('peminjaman_fasilitas')->insert([
