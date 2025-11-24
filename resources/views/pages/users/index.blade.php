@@ -10,17 +10,23 @@
     </div>
 
     {{-- Notifikasi sukses --}}
-    @if (session('success'))
+    @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
+    {{-- SEARCH --}}
+    <form method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Cari nama atau email..." value="{{ request('search') }}">
+            <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
+
     <div class="row">
-        @forelse ($users as $i => $user)
+        @forelse ($users as $user)
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
@@ -33,9 +39,6 @@
                                 <small class="text-muted">{{ $user->email }}</small>
                             </div>
                         </div>
-
-                        <p class="mb-1"><strong>Password (Hashed):</strong></p>
-                        <p><code class="text-break">{{ $user->password }}</code></p>
 
                         <div class="d-flex justify-content-between mt-3">
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-outline-warning btn-sm">
@@ -57,6 +60,10 @@
                 <p>Belum ada user terdaftar.</p>
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-3">
+        {{ $users->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

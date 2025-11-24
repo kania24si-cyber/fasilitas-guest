@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash; // penting!
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $filterableColumns = []; // bisa ditambah misal ['role'] jika ada role
+        $searchableColumns = ['name', 'email'];
+
+        $users = User::filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->orderBy('id', 'desc')
+            ->paginate(9)
+            ->withQueryString();
+
         return view('pages.users.index', compact('users'));
     }
 
@@ -21,21 +29,19 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        // Simpan user baru ke database
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // password di-hash
+            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan dan dapat login.');
+        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -48,14 +54,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Validasi update
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:8|confirmed',
         ]);
 
-        // Data yang akan diupdate
         $data = [
             'name' => $request->name,
             'email' => $request->email,
