@@ -7,26 +7,25 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $warga = \App\Models\Warga::all();
-        return view('pages.warga.index', compact('warga'));
+        $filterable = ['jenis_kelamin', 'agama'];
+        $searchable = ['nama', 'no_ktp', 'pekerjaan', 'email', 'telp'];
+
+        $data = Warga::filter($request, $filterable)
+            ->search($request, $searchable)
+            ->orderBy('warga_id', 'DESC')
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('pages.warga.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('pages.warga.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -36,54 +35,40 @@ class WargaController extends Controller
             'agama' => 'nullable|string',
             'pekerjaan' => 'nullable|string',
             'telp' => 'nullable',
-            'email' => 'required|email|',
+            'email' => 'required|email|unique:warga,email',
         ]);
 
-     warga::create($validated);
-    return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan.');
+        Warga::create($validated);
+
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $item = Warga::findOrFail($id);
+        return view('pages.warga.edit', compact('item'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        $warga = Warga::findOrFail($id);
-        return view('pages.warga.edit', compact('warga'));
-    }
+        $item = Warga::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $warga = Warga::findOrFail($id);
         $validated = $request->validate([
-            'no_ktp' => 'required|unique:warga,no_ktp',
+            'no_ktp' => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
             'nama' => 'required',
             'jenis_kelamin' => 'required',
             'agama' => 'nullable|string',
             'pekerjaan' => 'nullable|string',
             'telp' => 'nullable',
-            'email' => 'required|email|',
+            'email' => 'required|email|unique:warga,email,' . $id . ',warga_id',
         ]);
-    
-        $warga->update($validated);
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui.');
-}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+        $item->update($validated);
+
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui.');
+    }
+
+    public function destroy($id)
     {
         Warga::findOrFail($id)->delete();
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus.');

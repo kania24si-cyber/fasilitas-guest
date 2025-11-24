@@ -9,18 +9,44 @@
         </a>
     </div>
 
-    {{-- Notifikasi sukses --}}
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    {{-- FILTER & SEARCH --}}
+    <form method="GET" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <select name="jenis_kelamin" class="form-control">
+                    <option value="">-- Filter Jenis Kelamin --</option>
+                    <option value="Laki-laki" {{ request('jenis_kelamin')=='Laki-laki'?'selected':'' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ request('jenis_kelamin')=='Perempuan'?'selected':'' }}>Perempuan</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="agama" class="form-control">
+                    <option value="">-- Filter Agama --</option>
+                    <option value="Islam" {{ request('agama')=='Islam'?'selected':'' }}>Islam</option>
+                    <option value="Kristen" {{ request('agama')=='Kristen'?'selected':'' }}>Kristen</option>
+                    <option value="Katolik" {{ request('agama')=='Katolik'?'selected':'' }}>Katolik</option>
+                    <option value="Hindu" {{ request('agama')=='Hindu'?'selected':'' }}>Hindu</option>
+                    <option value="Buddha" {{ request('agama')=='Buddha'?'selected':'' }}>Buddha</option>
+                    <option value="Konghucu" {{ request('agama')=='Konghucu'?'selected':'' }}>Konghucu</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari nama / KTP / email..." value="{{ request('search') }}">
+                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button class="btn btn-success w-100">Filter</button>
+                @if(request()->has('search') || request()->has('jenis_kelamin') || request()->has('agama'))
+                <a href="{{ route('warga.index') }}" class="btn btn-secondary w-100">Reset</a>
+                @endif
+            </div>
         </div>
-    @endif
+    </form>
 
     <div class="row">
-        @forelse ($warga as $item)
+        @forelse ($data as $item)
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
@@ -60,6 +86,10 @@
                 <p>Belum ada data warga.</p>
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-3">
+        {{ $data->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

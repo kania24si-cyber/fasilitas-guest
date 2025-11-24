@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FasilitasUmum;
 use Illuminate\Http\Request;
+use App\Models\FasilitasUmum;
 
 class FasilitasUmumController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = FasilitasUmum::all();
+        $filterable = ['jenis'];
+        $searchable = ['nama', 'alamat'];
+
+        $data = FasilitasUmum::filter($request, $filterable)
+            ->search($request, $searchable)
+            ->orderBy('fasilitas_id', 'DESC')
+            ->paginate(9)
+            ->withQueryString();
+
         return view('pages.fasilitas.index', compact('data'));
     }
 
@@ -25,7 +33,10 @@ class FasilitasUmumController extends Controller
             'jenis' => 'required',
             'alamat' => 'required',
             'kapasitas' => 'nullable|integer',
-            'media' => 'image|mimes:jpg,png,jpeg|max:2048'
+            'rt' => 'nullable|integer',
+            'rw' => 'nullable|integer',
+            'deskripsi' => 'nullable|string',
+            'media' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($request->hasFile('media')) {
@@ -52,7 +63,10 @@ class FasilitasUmumController extends Controller
             'jenis' => 'required',
             'alamat' => 'required',
             'kapasitas' => 'nullable|integer',
-            'media' => 'image|mimes:jpg,png,jpeg|max:2048'
+            'rt' => 'nullable|integer',
+            'rw' => 'nullable|integer',
+            'deskripsi' => 'nullable|string',
+            'media' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($request->hasFile('media')) {
@@ -68,6 +82,7 @@ class FasilitasUmumController extends Controller
     {
         $item = FasilitasUmum::findOrFail($id);
         $item->delete();
-        return back()->with('success', 'Data berhasil dihapus!');
+
+        return redirect()->route('fasilitas.index')->with('success', 'Data berhasil dihapus!');
     }
 }

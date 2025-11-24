@@ -12,9 +12,9 @@ class WargaSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        foreach (range(1, 20) as $i) {
+        foreach (range(1, 100) as $i) {
             DB::table('warga')->insert([
-                'no_ktp'        => $faker->nik(), // nomor KTP valid format Indonesia
+                'no_ktp'        => $faker->nik(),
                 'nama'          => $faker->name(),
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
                 'agama'         => $faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']),

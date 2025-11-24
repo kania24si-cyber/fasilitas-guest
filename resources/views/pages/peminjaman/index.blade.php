@@ -3,30 +3,60 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Data Peminjaman</h4>
+        <h4>Data Peminjaman Fasilitas</h4>
         <a href="{{ route('peminjaman.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Peminjaman
         </a>
     </div>
 
-    {{-- Notifikasi sukses --}}
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    {{-- FILTER & SEARCH --}}
+    <form method="GET" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">-- Filter Status --</option>
+                    <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
+                    <option value="disetujui" {{ request('status')=='disetujui'?'selected':'' }}>Disetujui</option>
+                    <option value="ditolak" {{ request('status')=='ditolak'?'selected':'' }}>Ditolak</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="warga_id" class="form-control">
+                    <option value="">-- Filter Warga --</option>
+                    @foreach($warga as $w)
+                        <option value="{{ $w->warga_id }}" {{ request('warga_id')==$w->warga_id?'selected':'' }}>{{ $w->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="fasilitas_id" class="form-control">
+                    <option value="">-- Filter Fasilitas --</option>
+                    @foreach($fasilitas as $f)
+                        <option value="{{ $f->fasilitas_id }}" {{ request('fasilitas_id')==$f->fasilitas_id?'selected':'' }}>{{ $f->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari tujuan..." value="{{ request('search') }}">
+                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+            @if(request()->has('search') || request()->has('status') || request()->has('warga_id') || request()->has('fasilitas_id'))
+            <div class="col-md-12 mt-2">
+                <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Reset Filter</a>
+            </div>
+            @endif
         </div>
-    @endif
+    </form>
 
     <div class="row">
-        @forelse ($peminjaman as $item)
+        @forelse ($data as $item)
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm h-100 border-0">
+                <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
-                        <h5 class="card-title text-primary mb-2">
-                            {{ $item->warga->nama ?? 'Tidak diketahui' }}
-                        </h5>
+                        <h5 class="card-title text-primary mb-2">{{ $item->warga->nama ?? '-' }}</h5>
+                        <p class="mb-1"><strong>Fasilitas:</strong> {{ $item->fasilitas->nama ?? '-' }}</p>
                         <p class="mb-1"><strong>Tujuan:</strong> {{ $item->tujuan }}</p>
                         <p class="mb-1"><strong>Tanggal Mulai:</strong> {{ $item->tanggal_mulai }}</p>
                         <p class="mb-1"><strong>Tanggal Selesai:</strong> {{ $item->tanggal_selesai }}</p>
@@ -38,8 +68,6 @@
                                 <span class="badge bg-success">Disetujui</span>
                             @elseif ($item->status == 'ditolak')
                                 <span class="badge bg-danger">Ditolak</span>
-                            @else
-                                <span class="badge bg-secondary">{{ ucfirst($item->status) }}</span>
                             @endif
                         </p>
 
@@ -63,6 +91,10 @@
                 <p>Belum ada data peminjaman.</p>
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-3">
+        {{ $data->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\PeminjamanFasilitas;
 use App\Models\Warga;
 use App\Models\FasilitasUmum;
@@ -9,102 +10,95 @@ use Illuminate\Support\Facades\Storage;
 
 class PeminjamanFasilitasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $peminjaman = PeminjamanFasilitas::with('warga')->get();
-        return view('pages.peminjaman.index', compact('peminjaman'));
+        $filterable = ['status', 'fasilitas_id', 'warga_id'];
+        $searchable = ['tujuan'];
+
+        $data = PeminjamanFasilitas::with(['warga', 'fasilitas'])
+            ->filter($request, $filterable)
+            ->search($request, $searchable)
+            ->orderBy('pinjam_id', 'DESC')
+            ->paginate(9)
+            ->withQueryString();
+
+        $warga = Warga::all();
+        $fasilitas = FasilitasUmum::all();
+
+        return view('pages.peminjaman.index', compact('data', 'warga', 'fasilitas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-    $warga = Warga::all();
-    $fasilitas = FasilitasUmum::all();
-    return view('pages.peminjaman.create', compact('warga','fasilitas'));
+        $warga = Warga::all();
+        $fasilitas = FasilitasUmum::all();
+        return view('pages.peminjaman.create', compact('warga', 'fasilitas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'warga_id' => 'required',
-            'fasilitas_id' => 'required',
+            'warga_id' => 'required|exists:warga,warga_id',
+            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'tujuan' => 'required',
+            'tujuan' => 'required|string',
             'total_biaya' => 'nullable|numeric',
             'bukti_pembayaran' => 'nullable|image|max:2048',
         ]);
 
-        if ($request->hasFile('bukti_bayar')) {
-            $validated['bayar'] = $request->file('bukti_bayar')->store('bukti_pembayaran', 'public');
+        if ($request->hasFile('bukti_pembayaran')) {
+            $validated['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
         }
 
         PeminjamanFasilitas::create($validated);
+
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $peminjaman = PeminjamanFasilitas::findOrFail($id);
+        $item = PeminjamanFasilitas::findOrFail($id);
         $warga = Warga::all();
-        return view('pages.peminjaman.edit', compact('peminjaman', 'warga'));
+        $fasilitas = FasilitasUmum::all();
+        return view('pages.peminjaman.edit', compact('item', 'warga', 'fasilitas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $peminjaman = PeminjamanFasilitas::findOrFail($id);
+        $item = PeminjamanFasilitas::findOrFail($id);
+
         $validated = $request->validate([
-            'warga_id' => 'required',
+            'warga_id' => 'required|exists:warga,warga_id',
+            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'tujuan' => 'required',
+            'tujuan' => 'required|string',
             'total_biaya' => 'nullable|numeric',
             'bukti_pembayaran' => 'nullable|image|max:2048',
+            'status' => 'nullable|in:pending,disetujui,ditolak'
         ]);
 
-        if ($request->hasFile('bukti_bayar')) {
-            if ($peminjaman->bukti_bayar) {
-                Storage::disk('public')->delete($peminjaman->bukti_bayar);
+        if ($request->hasFile('bukti_pembayaran')) {
+            if ($item->bukti_pembayaran) {
+                Storage::disk('public')->delete($item->bukti_pembayaran);
             }
-            $validated['bukti_bayar'] = $request->file('bukti_bayar')->store('bukti_bayar', 'public');
+            $validated['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
         }
 
-        $peminjaman->update($validated);
+        $item->update($validated);
+
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $peminjaman = PeminjamanFasilitas::findOrFail($id);
-        if ($peminjaman->bukti_bayar) {
-            Storage::disk('public')->delete($peminjaman->bukti_bayar);
+        $item = PeminjamanFasilitas::findOrFail($id);
+        if ($item->bukti_pembayaran) {
+            Storage::disk('public')->delete($item->bukti_pembayaran);
         }
-        $peminjaman->delete();
+        $item->delete();
+
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil dihapus.');
     }
 }

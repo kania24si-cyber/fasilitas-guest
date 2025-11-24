@@ -10,59 +10,86 @@
         </a>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    {{-- FILTER & SEARCH --}}
+    <form method="GET" class="mb-4">
+        <div class="row g-2">
+
+            <div class="col-md-3">
+                <select name="jenis" class="form-control">
+                    <option value="">-- Filter Jenis --</option>
+                    <option value="Ruang Publik" {{ request('jenis')=='Ruang Publik'?'selected':'' }}>Ruang Publik</option>
+                    <option value="Olahraga" {{ request('jenis')=='Olahraga'?'selected':'' }}>Olahraga</option>
+                    <option value="Kesehatan" {{ request('jenis')=='Kesehatan'?'selected':'' }}>Kesehatan</option>
+                    <option value="Pendidikan" {{ request('jenis')=='Pendidikan'?'selected':'' }}>Pendidikan</option>
+                </select>
+            </div>
+
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="form-control" 
+                        placeholder="Cari nama / alamat..."
+                        value="{{ request('search') }}">
+                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-success w-100">Filter</button>
+            </div>
+
+            @if(request()->has('search') || request()->has('jenis'))
+            <div class="col-md-2">
+                <a href="{{ route('fasilitas.index') }}" class="btn btn-secondary w-100">Reset</a>
+            </div>
+            @endif
+
         </div>
-    @endif
+    </form>
 
     <div class="row">
         @forelse ($data as $item)
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm h-100 border-0">
+                <div class="card shadow-sm h-100">
 
                     @if ($item->media)
-                        <img src="{{ asset('storage/' . $item->media) }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $item->media) }}" 
+                            class="card-img-top"
+                            style="height: 180px; object-fit: cover;">
                     @endif
 
                     <div class="card-body">
-                        <h5 class="card-title text-primary mb-2">{{ $item->nama }}</h5>
+                        <h5 class="text-primary">{{ $item->nama }}</h5>
 
-                        <p class="mb-1"><strong>Jenis:</strong> {{ $item->jenis }}</p>
-                        <p class="mb-1"><strong>Alamat:</strong> {{ $item->alamat }} RT {{ $item->rt }}/RW {{ $item->rw }}</p>
-                        <p class="mb-1"><strong>Kapasitas:</strong> {{ $item->kapasitas ?? '-' }}</p>
+                        <p><b>Jenis:</b> {{ $item->jenis }}</p>
+                        <p><b>Alamat:</b> {{ $item->alamat }} (RT {{ $item->rt }}/RW {{ $item->rw }})</p>
+                        <p><b>Kapasitas:</b> {{ $item->kapasitas ?? '-' }}</p>
+                        <p><b>Deskripsi:</b> {{ Str::limit($item->deskripsi, 60) }}</p>
 
-                        <p class="mb-2">
-                            <strong>Deskripsi:</strong> 
-                            {{ Str::limit($item->deskripsi, 60) }}
-                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('fasilitas.edit', $item->fasilitas_id) }}" 
+                                class="btn btn-warning btn-sm">Edit</a>
 
-                        <div class="d-flex justify-content-between mt-3">
-                            <a href="{{ route('fasilitas.edit', $item->fasilitas_id) }}" class="btn btn-outline-warning btn-sm">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-
-                            <form action="{{ route('fasilitas.destroy', $item->fasilitas_id) }}" method="POST">
+                            <form method="POST" 
+                                  action="{{ route('fasilitas.destroy', $item->fasilitas_id) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Hapus fasilitas ini?')">
-                                    <i class="bi bi-trash"></i> Hapus
-                                </button>
+                                <button class="btn btn-danger btn-sm">Hapus</button>
                             </form>
                         </div>
 
                     </div>
                 </div>
             </div>
-
         @empty
-            <div class="col-12 text-center text-muted">
-                <p>Belum ada fasilitas umum</p>
-            </div>
+            <p class="text-center text-muted">Tidak ada data</p>
         @endforelse
+    </div>
+
+    <div class="mt-3">
+        {{ $data->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection
