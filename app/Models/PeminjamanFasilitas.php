@@ -31,27 +31,31 @@ class PeminjamanFasilitas extends Model
     }
 
     // FILTERING
-    public function scopeFilter($query, Request $request, array $columns)
-    {
-        foreach ($columns as $col) {
-            if ($request->filled($col)) {
-                $query->where($col, $request->$col);
-            }
+public function scopeFilter($query, Request $request, array $columns)
+{
+    foreach ($columns as $col) {
+
+        // gunakan filled() bukan has()
+        if ($request->filled($col)) {
+            $query->where($col, $request->$col);
         }
-        return $query;
     }
 
+    return $query;
+}
+
+
     // SEARCHING
-    public function scopeSearch($query, Request $request, array $columns)
-    {
-        if ($request->filled('search')) {
-            $keyword = $request->search;
-            $query->where(function ($q) use ($columns, $keyword) {
-                foreach ($columns as $col) {
-                    $q->orWhere($col, 'LIKE', '%' . $keyword . '%');
-                }
-            });
-        }
-        return $query;
+ public function scopeSearch($query, Request $request, array $columns)
+{
+    if ($request->filled('search')) {
+        $keyword = $request->search;
+        $query->where(function ($q) use ($columns, $keyword) {
+            foreach ($columns as $col) {
+                $q->orWhere($col, 'LIKE', '%' . $keyword . '%');
+            }
+        });
     }
+    return $query;
+}
 }
