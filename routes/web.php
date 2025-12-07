@@ -33,7 +33,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['checkislogin', 'checkrole:user'])->group(function () {
+Route::middleware(['checkislogin', 'checkrole:Guest'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

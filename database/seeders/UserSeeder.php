@@ -12,12 +12,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
+        $roles = ['Guest', 'Admin'];
         // User default (admin/guest)
         User::create([
             'name' => 'Guest Bina Desa',
             'email' => 'kania24si@mahasiswa.pcr.ac.id',
             'password' => Hash::make('Guest12345'),
+            'role' => 'Guest',
         ]);
 
         // Generate 100 user random
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'password' => Hash::make('Password123'), // password default untuk semua user faker
+                'role' => $faker->randomElement($roles), // pilih role secara random,
             ]);
         }
     }
