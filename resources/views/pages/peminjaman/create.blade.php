@@ -1,4 +1,5 @@
 @extends('layouts.guest.app')
+
 @section('content')
 <div class="bg-light rounded p-4">
     <h5>Tambah Peminjaman</h5>
@@ -22,11 +23,10 @@
             <select name="fasilitas_id" class="form-control">
                 <option value="">-- Pilih Fasilitas --</option>
                 @foreach($fasilitas as $f)
-                    <option value="{{ $f->id }}">{{ $f->nama }} ({{ $f->jenis }})</option>
-            @endforeach
+                    <option value="{{ $f->fasilitas_id }}">{{ $f->nama }} ({{ $f->jenis }})</option>
+                @endforeach
             </select>
         </div>
-
 
         <div class="mb-3">
             <label>Tanggal Mulai</label>
@@ -43,9 +43,9 @@
             <input type="text" name="tujuan" class="form-control" value="{{ old('tujuan') }}">
         </div>
 
-        <div class="mb-3">
-            <label>Bukti Bayar</label>
-            <input type="file" name="bukti_bayar" class="form-control">
+      <div class="mb-3">
+            <label>Upload Bukti Pembayaran (boleh banyak):</label>
+            <input type="file" name="files[]" class="form-control" multiple>
         </div>
 
         <button class="btn btn-primary">Simpan</button>

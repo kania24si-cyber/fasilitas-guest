@@ -36,6 +36,14 @@
         </div>
 
         <div class="form-group mt-2">
+            <label>Role</label>
+            <select name="role" class="form-control" required>
+            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+        </select>
+        </div>
+
+        <div class="form-group mt-2">
             <label>Password Lama (Hashed)</label>
             <input type="text" class="form-control" value="{{ $user->password }}" readonly>
         </div>

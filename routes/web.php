@@ -1,63 +1,82 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\FasilitasUmumController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PeminjamanFasilitasController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WargaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\FasilitasUmumController;
+use App\Http\Controllers\PeminjamanFasilitasController;
+use App\Http\Controllers\WargaController;
 
-
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('/fasilitas', [FasilitasUmumController::class, 'index'])
-    ->name('fasilitas.index');
-route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
-route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-
-Route::get('/dashboard', function () {
-    return view('guest.dashboard');
-})->name('dashboard');
-Route::resource('/warga', WargaController::class);
-Route::resource('/peminjaman', PeminjamanFasilitasController::class);
-
-
-Route::get('/home', function () {
-    return view('guest.home');
-})->name('home');
+/*
+|--------------------------------------------------------------------------
+| AUTH (PUBLIC)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
+Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 
+/*
+|--------------------------------------------------------------------------
+| WAJIB LOGIN + CEK ROLE
+|--------------------------------------------------------------------------
+|
+| checkislogin  → memastikan user sudah login
+| checkrole:User → memastikan role = 'User'
+|
+| Setelah login, user bisa masuk dashboard, home, about, dan semua fitur lainnya.
+|--------------------------------------------------------------------------
+*/
 
-// Setelah login → arahkan ke halaman home
-Route::get('/home', function () {
-    if (!Auth::check()) {
-        return redirect()->route('auth.index');
-    }
-    return view('guest.home.home'); // ← ini yang berubah
-})->name('home');
+Route::middleware(['checkislogin', 'checkrole:user'])->group(function () {
 
-Route::get('/home', function () {
-    if (!Auth::check()) {
-        return redirect()->route('auth.index');
-    }
-    return view('guest.home'); // pastikan file ada di resources/views/guest/home.blade.php
-})->name('home');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('/users', UserController::class);
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [AboutController::class, 'index'])->name('about');
-Route::resource('fasilitas', FasilitasUmumController::class);
+    // Home
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // About
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+    /*
+    |--------------------------------------------------------------------------
+    | USERS (TIDAK DIHAPUS)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('/users', UserController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | FASILITAS (TIDAK DIHAPUS)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('fasilitas', FasilitasUmumController::class);
+    Route::get('/fasilitas/{id}', [FasilitasUmumController::class, 'show'])->name('fasilitas.show');
+    Route::get('/fasilitas/create', [FasilitasUmumController::class, 'create'])->name('fasilitas.create');
+    Route::post('/fasilitas', [FasilitasUmumController::class, 'store'])->name('fasilitas.store');
+    Route::delete('/media/{id}', [FasilitasUmumController::class, 'deleteMedia'])->name('media.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PEMINJAMAN (TIDAK DIHAPUS)
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('/peminjaman', PeminjamanFasilitasController::class);
+    Route::get('/peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
+    Route::put('/peminjaman/{id}', [PeminjamanFasilitasController::class, 'update'])->name('peminjaman.update');
+    Route::post('/peminjaman', [PeminjamanFasilitasController::class, 'store'])->name('peminjaman.store');
+    Route::delete('/media/{id}', [PeminjamanFasilitasController::class, 'deleteMedia'])->name('media.delete');
+
+    /*
+    |--------------------------------------------------------------------------
+    | WARGA
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('/warga', WargaController::class);
+});

@@ -27,7 +27,6 @@ class PeminjamanFasilitasSeeder extends Seeder
                 'tujuan' => $faker->sentence(),
                 'total_biaya' => $faker->numberBetween(0, 500000),
                 'status' => $faker->randomElement(['pending','disetujui','ditolak']),
-                'bukti_pembayaran' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

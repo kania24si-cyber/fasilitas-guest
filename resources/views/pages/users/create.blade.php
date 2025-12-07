@@ -34,6 +34,15 @@
         </div>
 
         <div class="form-group mt-2">
+            <label>Role</label>
+            <select name="role" class="form-control" required>
+            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+        </select>
+        </div>
+
+
+        <div class="form-group mt-2">
             <label>Password</label>
             <input type="password" name="password" class="form-control" required>
         </div>
@@ -42,6 +51,7 @@
             <label>Konfirmasi Password</label>
             <input type="password" name="password_confirmation" class="form-control" required>
         </div>
+
 
         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
         <a href="{{ route('users.index') }}" class="btn btn-secondary mt-3">Kembali</a>

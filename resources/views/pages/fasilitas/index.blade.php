@@ -13,7 +13,6 @@
     {{-- FILTER & SEARCH --}}
     <form method="GET" class="mb-4">
         <div class="row g-2">
-
             <div class="col-md-3">
                 <select name="jenis" class="form-control">
                     <option value="">-- Filter Jenis --</option>
@@ -26,12 +25,7 @@
 
             <div class="col-md-5">
                 <div class="input-group">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        class="form-control" 
-                        placeholder="Cari nama / alamat..."
-                        value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control" placeholder="Cari nama / alamat..." value="{{ request('search') }}">
                     <button class="btn btn-primary"><i class="bi bi-search"></i></button>
                 </div>
             </div>
@@ -53,13 +47,6 @@
         @forelse ($data as $item)
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm h-100">
-
-                    @if ($item->media)
-                        <img src="{{ asset('storage/' . $item->media) }}" 
-                            class="card-img-top"
-                            style="height: 180px; object-fit: cover;">
-                    @endif
-
                     <div class="card-body">
                         <h5 class="text-primary">{{ $item->nama }}</h5>
 
@@ -69,11 +56,12 @@
                         <p><b>Deskripsi:</b> {{ Str::limit($item->deskripsi, 60) }}</p>
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('fasilitas.edit', $item->fasilitas_id) }}" 
-                                class="btn btn-warning btn-sm">Edit</a>
+                            <!-- Tombol Detail untuk melihat fasilitas lebih lengkap -->
+                            <a href="{{ route('fasilitas.show', $item->fasilitas_id) }}" class="btn btn-info btn-sm">Detail</a>
 
-                            <form method="POST" 
-                                  action="{{ route('fasilitas.destroy', $item->fasilitas_id) }}">
+                            <a href="{{ route('fasilitas.edit', $item->fasilitas_id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                            <form method="POST" action="{{ route('fasilitas.destroy', $item->fasilitas_id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm">Hapus</button>

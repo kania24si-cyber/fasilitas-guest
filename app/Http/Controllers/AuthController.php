@@ -38,7 +38,7 @@ class AuthController extends Controller
         // Cek password terenkripsi
         if (Hash::check($request->password, $user->password)) {
             Auth::login($user);
-            return redirect()->route('home');
+           return redirect()->route('dashboard');
         }
 
         // Kalau gagal login

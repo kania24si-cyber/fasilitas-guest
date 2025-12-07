@@ -16,7 +16,6 @@ class PeminjamanFasilitas extends Model
         'tanggal_selesai',
         'tujuan',
         'total_biaya',
-        'bukti_pembayaran',
         'status',
     ];
 
@@ -30,6 +29,7 @@ class PeminjamanFasilitas extends Model
         return $this->belongsTo(FasilitasUmum::class, 'fasilitas_id', 'fasilitas_id');
     }
 
+    
     // FILTERING
 public function scopeFilter($query, Request $request, array $columns)
 {
