@@ -18,27 +18,20 @@
     <h4>Foto/SOP Media:</h4>
     <div class="media-list">
         @foreach($media as $m)
-            <!-- Menampilkan media berdasarkan mime_type, hanya tampilkan tombol download pertama -->
-            @if($loop->first)  <!-- Hanya tampilkan untuk file pertama -->
-                @if(Str::startsWith($m->mime_type, 'image'))
-                    <img src="{{ asset('uploads/media/'.$m->file_name) }}" width="200" class="m-2" alt="Media">
-                @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                    <!-- Tombol Download PDF -->
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download PDF</a>
-                @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                    <!-- Tombol Download DOCX -->
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download DOCX</a>
-                @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                    <!-- Tombol Download XLSX -->
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download XLSX</a>
-                @else
-                    <p>File tidak dikenali</p>
-                @endif
+            @if(Str::startsWith($m->mime_type, 'image'))
+                <img src="{{ asset('storage/uploads/media/'.$m->file_name) }}" width="200" class="m-2" alt="Media">
+            @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
+                <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download PDF</a>
+            @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
+                <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download DOCX</a>
+            @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download XLSX</a>
+            @else
+                <p>File tidak dikenali</p>
             @endif
         @endforeach
     </div>
 
-    <!-- Tombol untuk kembali ke daftar fasilitas -->
     <a href="{{ route('fasilitas.index') }}" class="btn btn-secondary btn-sm">Kembali ke Daftar</a>
 
 </div>

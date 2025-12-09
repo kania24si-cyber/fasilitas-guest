@@ -46,14 +46,14 @@ Route::middleware(['checkislogin', 'checkrole:Guest'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | USERS (TIDAK DIHAPUS)
+    | USERS 
     |--------------------------------------------------------------------------
     */
     Route::resource('/users', UserController::class);
 
     /*
     |--------------------------------------------------------------------------
-    | FASILITAS (TIDAK DIHAPUS)
+    | FASILITAS 
     |--------------------------------------------------------------------------
     */
     Route::resource('fasilitas', FasilitasUmumController::class);
@@ -64,7 +64,7 @@ Route::middleware(['checkislogin', 'checkrole:Guest'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | PEMINJAMAN (TIDAK DIHAPUS)
+    | PEMINJAMAN 
     |--------------------------------------------------------------------------
     */
     Route::resource('/peminjaman', PeminjamanFasilitasController::class);

@@ -23,19 +23,25 @@
         </p>
     </div>
 
+    <!-- Menampilkan media terkait peminjaman -->
     <h4>Media Pembayaran dan Dokumen</h4>
     <div class="media-list">
         @foreach($media as $m)
             <div class="media-item mb-3">
                 @if(Str::startsWith($m->mime_type, 'image'))
-                    <img src="{{ asset('uploads/media/'.$m->file_name) }}" width="200" class="m-2" alt="Media">
+                    <!-- Menampilkan gambar -->
+                    <img src="{{ asset('storage/uploads/media/'.$m->file_name) }}" width="200" class="m-2" alt="Media">
                 @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download PDF</a>
+                    <!-- Tombol Download PDF -->
+                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download PDF</a>
                 @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download DOCX</a>
+                    <!-- Tombol Download DOCX -->
+                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download DOCX</a>
                 @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                    <a href="{{ asset('uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download XLSX</a>
+                    <!-- Tombol Download XLSX -->
+                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary">Download XLSX</a>
                 @else
+                    <!-- Jika tipe file tidak dikenali -->
                     <p>File tidak dikenali</p>
                 @endif
             </div>
