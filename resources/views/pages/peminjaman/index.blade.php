@@ -98,24 +98,40 @@
                             @endif
                         </p>
 
+                        <p class="mb-1"><strong>Total Biaya:</strong> Rp {{ number_format($item->total_biaya, 2, ',', '.') }}</p>
+
                         <!-- Tombol Detail, Edit, Hapus diatur supaya rapi -->
+                           @if(auth()->check() && auth()->user()->role === 'admin')
                         <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="{{ route('peminjaman.show', $item->pinjam_id) }}" class="btn btn-info btn-sm">
+
+                            {{-- Tombol Detail --}}
+                            <a href="{{ route('peminjaman.show', $item->pinjam_id) }}"
+                            class="btn btn-info btn-sm">
                                 <i class="bi bi-eye"></i> Detail
                             </a>
 
-                            <a href="{{ route('peminjaman.edit', $item->pinjam_id) }}" class="btn btn-outline-warning btn-sm">
+                            {{-- Tombol Edit --}}
+                            <a href="{{ route('peminjaman.edit', $item->pinjam_id) }}"
+                            class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
 
-                            <form action="{{ route('peminjaman.destroy', $item->pinjam_id) }}" method="POST" class="d-inline">
+                            {{-- Tombol Hapus --}}
+                            <form action="{{ route('peminjaman.destroy', $item->pinjam_id) }}"
+                                method="POST"
+                                class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Yakin ingin menghapus data ini?')">
                                     <i class="bi bi-trash"></i> Hapus
                                 </button>
                             </form>
+
                         </div>
+                    @endif
+
 
                     </div>
                 </div>

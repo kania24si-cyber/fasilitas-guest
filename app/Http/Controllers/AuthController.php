@@ -16,39 +16,51 @@ class AuthController extends Controller
     }
 
     // Proses login
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ], [
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'password.required' => 'Password wajib diisi.',
-        ]);
+   // Proses login
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ], [
+        'email.required' => 'Email wajib diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'password.required' => 'Password wajib diisi.',
+    ]);
 
-        // Ambil user berdasarkan email
-        $user = User::where('email', $request->email)->first();
+    // Ambil user berdasarkan email
+    $user = User::where('email', $request->email)->first();
 
-        // Kalau email tidak ditemukan
-        if (!$user) {
-            return back()->with('error', 'Email tidak ditemukan!')->withInput();
-        }
-
-        // Cek password terenkripsi
-        if (Hash::check($request->password, $user->password)) {
-            Auth::login($user);
-           return redirect()->route('dashboard');
-        }
-
-        // Kalau gagal login
-        return back()->with('error', 'Email atau password salah!')->withInput();
+    // Kalau email tidak ditemukan
+    if (!$user) {
+        return back()->with('error', 'Email tidak ditemukan!')->withInput();
     }
+
+    // Cek password terenkripsi
+    if (Hash::check($request->password, $user->password)) {
+        Auth::login($user);
+
+        // Cek role dan arahkan sesuai role
+        if ($user->role == 'admin') {
+            return redirect()->route('dashboard'); // Admin diarahkan ke dashboard
+        } else {
+            return redirect()->route('home'); // Guest diarahkan ke home
+        }
+    }
+
+    // Kalau gagal login
+    return back()->with('error', 'Email atau password salah!')->withInput();
+}
+
 
     // Logout
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('auth.index')->with('success', 'Anda telah keluar.');
-    }
+public function logout()
+{
+    Auth::logout(); // Logout pengguna
+    session()->flush();  // Menghapus semua session yang ada
+
+    // Arahkan ke halaman yang hanya dapat diakses oleh guest (home atau about)
+    return redirect()->route('auth.index')->with('success', 'Anda telah keluar.');
+}
+
 }

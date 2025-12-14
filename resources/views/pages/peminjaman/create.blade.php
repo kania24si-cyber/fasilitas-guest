@@ -23,9 +23,10 @@
             <select name="fasilitas_id" class="form-control">
                 <option value="">-- Pilih Fasilitas --</option>
                 @foreach($fasilitas as $f)
-                    <option value="{{ $f->fasilitas_id }}">{{ $f->nama }} ({{ $f->jenis }})</option>
+                    <option value="{{ $f->fasilitas_id }}" {{ old('fasilitas_id') == $f->fasilitas_id ? 'selected' : '' }}>{{ $f->nama }} ({{ $f->jenis }})</option>
                 @endforeach
             </select>
+            @error('fasilitas_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
         <div class="mb-3">
@@ -43,9 +44,24 @@
             <input type="text" name="tujuan" class="form-control" value="{{ old('tujuan') }}">
         </div>
 
-      <div class="mb-3">
+        <div class="mb-3">
+            <label>Status</label>
+            <select name="status" class="form-control">
+                <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="disetujui" {{ old('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+            </select>
+            @error('status') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        <div class="mb-3">
             <label>Upload Bukti Pembayaran (boleh banyak):</label>
             <input type="file" name="files[]" class="form-control" multiple>
+        </div>
+
+        <div class="mb-3">
+            <label>Total Biaya</label>
+            <input type="number" name="total_biaya" class="form-control" value="{{ old('total_biaya') }}" placeholder="Masukkan Total Biaya">
         </div>
 
         <button class="btn btn-primary">Simpan</button>

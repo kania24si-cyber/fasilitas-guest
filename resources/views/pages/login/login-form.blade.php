@@ -40,12 +40,15 @@
             background-color: #007bff;
             border: none;
         }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
     </style>
 </head>
 
 <body>
-   
-
     <!-- FORM LOGIN -->
     <div class="container login-section">
         <div class="row justify-content-center">
@@ -92,6 +95,13 @@
                                 <button type="submit" class="btn btn-primary btn-sm btn-block">Login</button>
                             </div>
                         </form>
+
+                        <!-- Link to Dashboard if already logged in or after successful login -->
+                        <div class="mt-3">
+                            <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm btn-block">
+                                Fasilitas Desa & Peminjaman Ruang 
+                            </a>
+                        </div>
 
                         <!-- End Form -->
                     </div>

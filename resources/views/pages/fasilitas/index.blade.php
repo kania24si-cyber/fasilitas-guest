@@ -57,6 +57,7 @@
 
                         <div class="d-flex justify-content-between">
                             <!-- Tombol Detail untuk melihat fasilitas lebih lengkap -->
+                             @if(auth()->check() && auth()->user()->role === 'admin')
                             <a href="{{ route('fasilitas.show', $item->fasilitas_id) }}" class="btn btn-info btn-sm">Detail</a>
 
                             <a href="{{ route('fasilitas.edit', $item->fasilitas_id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -66,6 +67,7 @@
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm">Hapus</button>
                             </form>
+                            @endif
                         </div>
 
                     </div>

@@ -28,3 +28,4 @@ public function down()
     Schema::dropIfExists('media');
 }
 };
+

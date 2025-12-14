@@ -33,13 +33,14 @@
             <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
         </div>
 
-        <div class="form-group mt-2">
-            <label>Role</label>
-            <select name="role" class="form-control" required>
-            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-            <option value="user" {{ $user->role == 'Guest' ? 'selected' : '' }}>Guest</option>
-        </select>
-        </div>
+       <div class="form-group mt-2">
+    <label>Role</label>
+    <select name="role" class="form-control" required>
+        <option value="admin">Admin</option>
+        <option value="user">Guest</option>
+    </select>
+</div>
+
 
 
         <div class="form-group mt-2">

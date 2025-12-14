@@ -60,6 +60,11 @@
             <input type="file" name="files[]" class="form-control" multiple>
         </div>
 
+        <div class="mb-3">
+    <label>Total Biaya</label>
+    <input type="number" name="total_biaya" class="form-control" value="{{ old('total_biaya', $item->total_biaya) }}" placeholder="Masukkan Total Biaya">
+</div>
+
         <button class="btn btn-primary">Update</button>
         <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Batal</a>
     </form>

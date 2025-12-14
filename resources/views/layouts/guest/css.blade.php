@@ -1,88 +1,86 @@
+<style>
+/* HEADER */
+#header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Menipiskan shadow */
+    padding: 5px 0; /* Mengurangi padding vertikal agar header lebih tipis */
+}
 
-    <style>
-        /* HERO */
-        .hero {
-            padding: 120px 0 80px;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-            url('{{ asset(' assets/img/banner.jpg') }}') center center/cover no-repeat;
-            color: #fff;
-            text-align: center;
-        }
+#header .container-xl {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Memastikan logo dan navbar berada di ujung yang berbeda */
+    padding: 0 20px;
+}
 
-        .hero h1 {
-            font-weight: 700;
-            font-size: 2.8rem;
-        }
+.d-flex.align-items-center {
+    display: flex;
+    align-items: center;
+}
 
-        .hero p {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: 0px; /* Memberikan sedikit jarak di kiri logo */
+}
 
-        /* NAVIGATION */
-        #navbar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
+.logo img {
+    width: 40px;
+    height: 40px;
+}
 
-        #navbar ul li {
-            position: relative;
-            padding: 10px 15px;
-        }
+#hamburger-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-right: 20px; /* Jarak antara hamburger dan logo */
+}
 
-        #navbar ul li a {
-            color: #012970;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: center; /* Memusatkan navbar di tengah */
+    width: 100%; /* Pastikan navbar memenuhi lebar yang ada */
+}
 
-        #navbar ul li a:hover,
-        #navbar ul li a.active {
-            color: #4154f1;
-        }
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Memastikan item navbar tetap di tengah */
+}
 
-        /* SECTION CARD */
-        .dashboard-section {
-            padding: 60px 0;
-        }
+.navbar ul li {
+    position: relative;
+    padding: 10px 15px;
+}
 
-        .card-dashboard {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-            background-color: #fff;
-        }
+.navbar ul li a {
+    color: #012970;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
 
-        .card-dashboard:hover {
-            transform: translateY(-10px);
-        }
+.navbar ul li a:hover,
+.navbar ul li a.active {
+    color: #4154f1;
+}
 
-        .card-dashboard img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
 
-        .card-dashboard i {
-            font-size: 3rem;
-            color: #0d6efd;
-            margin-top: 20px;
-        }
-
-        .card-dashboard .btn {
-            margin-bottom: 20px;
-        }
-
-        footer {
-            background-color: #f8f9fa;
-            padding: 20px 0;
-        }
-    </style>
+.dropdown-menu .dropdown-item {
+    font-weight: 600;
+    padding: 10px;
+}
+</style>

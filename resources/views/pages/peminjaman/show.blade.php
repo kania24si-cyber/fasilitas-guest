@@ -12,6 +12,9 @@
         <p><strong>Tanggal Mulai:</strong> {{ $item->tanggal_mulai }}</p>
         <p><strong>Tanggal Selesai:</strong> {{ $item->tanggal_selesai }}</p>
 
+        <!-- Menambahkan Total Biaya -->
+        <p><strong>Total Biaya:</strong> Rp {{ number_format($item->total_biaya, 2, ',', '.') }}</p>
+
         <p><strong>Status:</strong>
             @if ($item->status == 'pending')
                 <span class="badge bg-warning text-dark">Pending</span>

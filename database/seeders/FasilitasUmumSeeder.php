@@ -21,7 +21,6 @@ class FasilitasUmumSeeder extends Seeder
                 'rw'        => $faker->numberBetween(1, 5),
                 'kapasitas' => $faker->numberBetween(10, 300),
                 'deskripsi' => $faker->sentence(12),
-                'media'     => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

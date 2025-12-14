@@ -120,7 +120,5 @@
                 dan <strong>mudah diakses</strong> oleh masyarakat desa.
             </p>
         </div>
-
-        <p class="copyright">© {{ date('Y') }} BinaDesa | Sistem Informasi Desa Digital</p>
     </div>
 @endsection

@@ -16,7 +16,6 @@ class FasilitasUmum extends Model
         'jenis',
         'alamat',
         'kapasitas',
-        'media',
         'rt',
         'rw',
         'deskripsi'

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('rw')->nullable();
             $table->integer('kapasitas')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->string('media')->nullable(); // Foto / SOP
             $table->timestamps();
         });
     }
