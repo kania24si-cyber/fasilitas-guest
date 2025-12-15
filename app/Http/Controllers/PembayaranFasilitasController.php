@@ -1,10 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\PembayaranFasilitas;
-use App\Models\PeminjamanFasilitas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\PembayaranFasilitas;
+use App\Models\PeminjamanFasilitas;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PembayaranFasilitasController extends Controller
@@ -63,7 +64,7 @@ class PembayaranFasilitasController extends Controller
         // Simpan data pembayaran fasilitas
         $pembayaran = PembayaranFasilitas::create($validated);
 
-        // Menyimpan resi ke tabel media
+        // Menyimpan resi ke tabel media jika ada file yang di-upload
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 if ($file->isValid()) {
@@ -84,8 +85,15 @@ class PembayaranFasilitasController extends Controller
             }
         }
 
-        return redirect()->route('pembayaran_fasilitas.index')->with('success', 'Pembayaran berhasil disimpan!');
+        // Setelah pembayaran berhasil, arahkan ke home jika sudah login
+        if (Auth::check()) {  // Hanya periksa apakah sudah login
+            return redirect()->route('about')->with('success', 'Pembayaran berhasil disimpan!');
+        }
+
+        // Jika pengguna belum login, arahkan ke halaman login
+        return redirect()->route('auth.index')->with('error', 'Anda harus login terlebih dahulu!');
     }
+
 
     public function edit($id)
     {

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Bina Desa | Dashboard Guest</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Bina Desa, Dashboard, Fasilitas Umum, Peminjaman Ruangan">
+    <meta name="keywords" content="Desa, Dashboard, Fasilitas Umum, Peminjaman Ruangan">
     <meta name="description" content="Dashboard Guest - Bina Desa">
 
     <!-- Favicons -->

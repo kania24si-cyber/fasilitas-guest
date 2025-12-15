@@ -44,18 +44,25 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 |---------------------------------------------------------------------------|
 */
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 /*
 |---------------------------------------------------------------------------|
 | ROUTES FOR ADMIN (WITH ROLE CHECK)
 |---------------------------------------------------------------------------|
 */
+Route::middleware('auth')->group(function () {
+   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Hanya bisa diakses oleh pengguna yang sudah login
+    Route::get('petugas', [PetugasFasilitasController::class, 'index'])->name('petugas.index');
+    Route::get('/fasilitas', [FasilitasUmumController::class, 'index'])->name('fasilitas.index');
+    Route::get('/pembayaran_fasilitas', [PembayaranFasilitasController::class, 'index'])->name('pembayaran_fasilitas.index');
+    Route::get('pembayaran_fasilitas/create', [PembayaranFasilitasController::class, 'create'])->name('pembayaran_fasilitas.create');
+    Route::post('pembayaran_fasilitas', [PembayaranFasilitasController::class, 'store'])->name('pembayaran_fasilitas.store');
+    Route::get('/peminjaman', [PeminjamanFasilitasController::class, 'index'])->name('peminjaman.index');
+    Route::get('/syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
 
 Route::middleware([CheckRole::class.':admin'])->group(function () {
   // User
-        Route::resource('/users', UserController::class);
-
+        Route::resource('/users', UserController::class); 
 
         // Fasilitas Umum
         Route::resource('fasilitas', FasilitasUmumController::class)->except(['show']);
@@ -70,12 +77,9 @@ Route::middleware([CheckRole::class.':admin'])->group(function () {
         // Syarat Fasilitas
         Route::resource('syarat_fasilitas', SyaratFasilitasController::class)->except(['show']);
         Route::get('/syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
-        Route::delete('/syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
+        Route::delete('/syarat_fasilitas/{delete}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
 
     // Pembayaran Fasilitas
-        Route::resource('pembayaran_fasilitas', PembayaranFasilitasController::class);
-        Route::get('pembayaran_fasilitas/create', [PembayaranFasilitasController::class, 'create'])->name('pembayaran_fasilitas.create');
-        Route::post('pembayaran_fasilitas', [PembayaranFasilitasController::class, 'store'])->name('pembayaran_fasilitas.store');
         Route::get('pembayaran_fasilitas/{id}/edit', [PembayaranFasilitasController::class, 'edit'])->name('pembayaran_fasilitas.edit');
         Route::put('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'update'])->name('pembayaran_fasilitas.update');
         // Route untuk Show
@@ -92,24 +96,17 @@ Route::middleware([CheckRole::class.':admin'])->group(function () {
         Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('petugas.show');
         Route::delete('petugas/{id}', [PetugasFasilitasController::class, 'destroy'])->name('petugas.destroy');
 
+         // Warga
+    Route::get('warga', [WargaController::class, 'index'])->name('warga.index');
+    Route::get('warga/create', [WargaController::class, 'create'])->name('warga.create');
+    Route::get('warga/edit', [WargaController::class, 'edit'])->name('warga.edit');
+    Route::post('warga/store', [WargaController::class, 'store'])->name('warga.store');
 });
-
+});
 /*
 |---------------------------------------------------------------------------|
 | ROUTES FOR GUEST (Non-Admin)
 |---------------------------------------------------------------------------|
 */
 
-//Route::middleware([CheckRole::class.':guest'])->group(function () {
-    Route::get('/fasilitas', [FasilitasUmumController::class, 'index'])->name('fasilitas.index');
-    Route::get('/pembayaran_fasilitas', [PembayaranFasilitasController::class, 'index'])->name('pembayaran_fasilitas.index');
-    Route::get('pembayaran_fasilitas/create', [PembayaranFasilitasController::class, 'create'])->name('pembayaran_fasilitas.create');
-    Route::get('pembayaran_fasilitas/index', [PembayaranFasilitasController::class, 'index'])->name('pembayaran_fasilitas/index');
-    Route::get('/peminjaman', [PeminjamanFasilitasController::class, 'index'])->name('peminjaman.index');
-    Route::get('/syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
-    // Warga
-    Route::get('warga', [WargaController::class, 'index'])->name('warga.index');
-    Route::get('warga/create', [WargaController::class, 'create'])->name('warga.create');
-    Route::get('warga/edit', [WargaController::class, 'edit'])->name('warga.edit');
-    Route::post('warga/store', [WargaController::class, 'store'])->name('warga.store');
-//});
+

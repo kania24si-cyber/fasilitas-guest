@@ -21,8 +21,9 @@ class CheckRole
         // Log untuk memastikan role yang diterima middleware
         Log::info('User Role in Middleware:', [$userRole]);
 
+        // Periksa apakah userRole ada di dalam roles yang diterima
         if (!in_array($userRole, $roles)) {
-            return abort(403, 'Login terlebih Dahulu');
+            return abort(403, 'Access denied');
         }
 
         return $next($request);

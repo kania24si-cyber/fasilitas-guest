@@ -4,9 +4,11 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Peminjaman Fasilitas</h4>
+         @if(auth()->check() && auth()->user()->role === 'admin')
         <a href="{{ route('peminjaman.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Peminjaman
         </a>
+        @endif
     </div>
 
     {{-- FILTER & SEARCH --}}

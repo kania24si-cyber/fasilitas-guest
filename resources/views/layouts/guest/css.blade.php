@@ -83,4 +83,13 @@
     font-weight: 600;
     padding: 10px;
 }
+
+/* Card Dashboard Styles */
+/* Styling untuk Hero Section */
+
+/* Bagian About yang ada link tombol crud login guest*/
+  
+    /* Bagian About yang dibawah */
+    
 </style>
+

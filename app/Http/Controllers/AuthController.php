@@ -44,7 +44,7 @@ public function login(Request $request)
         if ($user->role == 'admin') {
             return redirect()->route('dashboard'); // Admin diarahkan ke dashboard
         } else {
-            return redirect()->route('home'); // Guest diarahkan ke home
+            return redirect()->route('about'); // Guest diarahkan ke home
         }
     }
 
