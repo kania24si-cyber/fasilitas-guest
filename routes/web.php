@@ -37,7 +37,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/DesaSface', [AboutController::class, 'index'])->name('about');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/developer-profile', [DeveloperProfileController::class, 'show'])->name('profile');
 Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
 

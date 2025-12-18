@@ -5,9 +5,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Fasilitas Umum</h4>
+        @if(auth()->check() && auth()->user()->role === 'admin')
         <a href="{{ route('fasilitas.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Fasilitas
         </a>
+        @endif
     </div>
 
     {{-- FILTER & SEARCH --}}
