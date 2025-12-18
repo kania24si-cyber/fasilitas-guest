@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Syarat Fasilitas</h4>
-         @if(auth()->check() && auth()->user()->role === 'admin')
+        @if(auth()->check() && auth()->user()->role === 'admin')
         <a href="{{ route('syarat_fasilitas.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Syarat Fasilitas
         </a>
@@ -40,32 +40,34 @@
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <h5 class="text-primary">{{ $item->nama_syarat }}</h5>
-
                         <p><b>Fasilitas:</b> {{ $item->fasilitas->nama }}</p>
                         <p><b>Deskripsi:</b> {{ Str::limit($item->deskripsi, 60) }}</p>
 
                         <!-- Menampilkan media terkait syarat fasilitas -->
-                        <h6>Dokumen Media:</h6>
-                        <div class="media-list">
+                    <h6>Dokumen Media:</h6>
+                    <div class="media-list mb-3">
+                        @if($item->media && $item->media->count() > 0) <!-- Cek jika ada media -->
                             @foreach($item->media as $m)
                                 @if(Str::startsWith($m->mime_type, 'image'))
                                     <img src="{{ asset('storage/uploads/media/'.$m->file_name) }}" width="100" class="m-2" alt="Media">
                                 @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm">Download PDF</a>
+                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download PDF</a>
                                 @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm">Download DOCX</a>
+                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download DOCX</a>
                                 @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm">Download XLSX</a>
+                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download XLSX</a>
                                 @else
-                                    <p>File tidak dikenali</p>
+                                    <p class="text-muted">File tidak dikenali</p>
                                 @endif
                             @endforeach
-                        </div>
+                        @else
+                            <p class="text-muted">Tidak ada media terkait.</p>
+                        @endif
+                    </div>
 
                         <div class="d-flex justify-content-between mt-3">
-                            
-                             @if(auth()->check() && auth()->user()->role === 'admin')
-                             <!-- Tombol Detail -->
+                            @if(auth()->check() && auth()->user()->role === 'admin')
+                            <!-- Tombol Detail -->
                             <a href="{{ route('syarat_fasilitas.show', $item->syarat_id) }}" class="btn btn-info btn-sm">Detail</a>
 
                             <!-- Tombol Edit -->
@@ -83,7 +85,9 @@
                 </div>
             </div>
         @empty
-            <p class="text-center text-muted">Tidak ada data syarat fasilitas.</p>
+            <div class="col-12 text-center text-muted">
+                <p>Tidak ada data syarat fasilitas.</p>
+            </div>
         @endforelse
     </div>
 

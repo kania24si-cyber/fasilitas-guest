@@ -10,24 +10,24 @@ use Illuminate\Support\Facades\Storage;
 class SyaratFasilitasController extends Controller
 {
   public function index(Request $request)
-    {
-        // Mendefinisikan kolom yang bisa difilter dan dicari
-        $filterable = ['fasilitas_id']; // Kolom yang bisa difilter
-        $searchable = ['nama_syarat', 'deskripsi']; // Kolom yang bisa dicari
+{
+    // Mendefinisikan kolom yang bisa difilter dan dicari
+    $filterable = ['fasilitas_id']; // Kolom yang bisa difilter
+    $searchable = ['nama_syarat', 'deskripsi']; // Kolom yang bisa dicari
 
-        // Mengambil data syarat fasilitas berdasarkan filter dan pencarian
-        $syaratFasilitas = SyaratFasilitas::with('fasilitas')  // Eager load relasi fasilitas
-            ->filter($request, $filterable)  // Apply filter berdasarkan request
-            ->search($request, $searchable)  // Apply search berdasarkan request
-            ->orderBy('syarat_id', 'DESC')  // Urutkan berdasarkan ID syarat
-            ->paginate(10)  // Pagination 10 data per halaman
-            ->withQueryString();  // Menyertakan query string agar bisa reset filter
+    // Mengambil data syarat fasilitas dengan eager loading untuk media dan fasilitas
+    $syaratFasilitas = SyaratFasilitas::with(['fasilitas', 'media'])  // Eager load fasilitas dan media
+        ->filter($request, $filterable)  // Apply filter berdasarkan request
+        ->search($request, $searchable)  // Apply search berdasarkan request
+        ->orderBy('syarat_id', 'DESC')  // Urutkan berdasarkan ID syarat
+        ->paginate(10)  // Pagination 10 data per halaman
+        ->withQueryString();  // Menyertakan query string agar bisa reset filter
 
-        // Ambil data fasilitas untuk dropdown
-        $fasilitas = FasilitasUmum::all();
+    // Ambil data fasilitas untuk dropdown
+    $fasilitas = FasilitasUmum::all();
 
-        return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'fasilitas'));
-    }
+    return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'fasilitas'));
+}
 
     public function create()
     {
@@ -131,6 +131,8 @@ class SyaratFasilitasController extends Controller
             ->where('ref_table', 'syarat_fasilitas')
             ->where('ref_id', $id)
             ->get();
+
+        $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
         return view('pages.SyaratFasilitas.show', compact('syarat', 'media'));
     }
 }

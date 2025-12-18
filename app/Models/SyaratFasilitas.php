@@ -47,4 +47,11 @@ public function scopeFilter($query, Request $request, array $columns)
     }
     return $query;
 }
+// Di model SyaratFasilitas
+public function media()
+{
+    return $this->hasMany(Media::class, 'ref_id', 'syarat_id')
+                ->where('ref_table', 'syarat_fasilitas'); // Pastikan ref_table sesuai
+}
+
 }

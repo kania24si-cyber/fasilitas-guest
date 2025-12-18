@@ -15,6 +15,7 @@ class User extends Authenticatable
     'email',
     'password',
     'role',  // tambahkan role
+    'profile_picture',
 ];
 
 
@@ -30,6 +31,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getAvatarAttribute()
+{
+    return $this->profile_picture
+        ? asset('storage/' . $this->profile_picture)
+        : asset('assets/img/default-avatar.png');
+}
+
 
     // -----------------------------
     // FILTERING

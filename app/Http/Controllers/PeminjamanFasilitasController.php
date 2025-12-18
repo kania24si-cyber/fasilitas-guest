@@ -204,7 +204,10 @@ class PeminjamanFasilitasController extends Controller
             ->where('ref_id', $id)
             ->get();
 
+        // Menyediakan gambar placeholder
+        $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
+
         // Mengembalikan view dengan data peminjaman dan media terkait
-        return view('pages.peminjaman.show', compact('item', 'media'));
+        return view('pages.peminjaman.show', compact('item', 'media', 'placeholderImage'));
     }
 }

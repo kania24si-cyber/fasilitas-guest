@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -28,23 +29,34 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-            'role' => 'required|in:admin,user',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:100',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:8|confirmed',
+        'role' => 'required|in:admin,guest',
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+    $profilePicturePath = null;
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+    if ($request->hasFile('profile_picture')) {
+        $profilePicturePath = $request->file('profile_picture')
+            ->store('profile_pictures', 'public');
     }
+
+    User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+        'profile_picture' => $profilePicturePath,
+    ]);
+
+    return redirect()->route('users.index')
+        ->with('success', 'User berhasil ditambahkan.');
+}
+
 
     public function edit($id)
     {
@@ -53,32 +65,63 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+{
+    $user = User::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:8|confirmed',
-        ]);
+    // Validasi input
+    $request->validate([
+        'name' => 'required|string|max:100',
+        'email' => 'required|email|unique:users,email,' . $user->id,  // Mengabaikan email lama
+        'password' => 'nullable|min:8|confirmed',  // Password boleh kosong jika tidak diubah
+        'role' => 'required|in:admin,guest',  // Validasi role harus 'admin' atau 'guest'
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi file gambar
+    ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
+    $data = [
+        'name' => $request->name,
+        'email' => $request->email,
+    ];
 
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+    // Update password jika disertakan
+    if ($request->filled('password')) {
+        $data['password'] = Hash::make($request->password);
+    }
+
+    // Handle update foto profil
+    if ($request->hasFile('profile_picture')) {
+        // Hapus foto lama jika ada
+        if ($user->profile_picture) {
+            Storage::disk('public')->delete($user->profile_picture);
         }
 
-        $user->update($data);
-
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+        // Unggah foto profil baru
+        $data['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
     }
+
+    // Perbarui data pengguna
+    $user->update($data);
+
+    return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+}
 
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+
+        // Delete the profile picture if exists
+        if ($user->profile_picture) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+
+        $user->delete();
+
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
+
+    public function show($id)
+{
+    $user = User::findOrFail($id);
+    return view('pages.users.show', compact('user'));
+}
+
 }

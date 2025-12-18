@@ -78,4 +78,11 @@ class PetugasFasilitasController extends Controller
 
         return redirect()->route('petugas.index')->with('success', 'Petugas berhasil dihapus');
     }
+    
+    public function show($id)
+{
+    $petugas = PetugasFasilitas::with(['fasilitas', 'petugas_warga'])->findOrFail($id);
+    return view('pages.PetugasFasilitas.show', compact('petugas'));
+}
+
 }

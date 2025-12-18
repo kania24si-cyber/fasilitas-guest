@@ -67,6 +67,9 @@
                         <p class="mb-1"><strong>Telp:</strong> {{ $item->telp }}</p>
 
                         <div class="d-flex justify-content-between mt-3">
+
+                        <!-- Tombol Detail -->
+                            <a href="{{ route('warga.show', $item->warga_id) }}" class="btn btn-info btn-sm">Detail</a>
                             <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>

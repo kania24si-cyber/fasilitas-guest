@@ -12,30 +12,30 @@ class PetugasFasilitasSeeder extends Seeder
 {
     public function run()
     {
-        // Menggunakan Faker
+        // Menggunakan Faker untuk menghasilkan data dalam bahasa Indonesia
         $faker = Faker::create('id_ID');
 
-        // Ambil semua fasilitas dan warga
+        // Mengambil semua data fasilitas dan warga
         $fasilitas = FasilitasUmum::all();
         $warga = Warga::all();
 
-        // Buat data petugas fasilitas
+        // Membuat data petugas fasilitas
         foreach ($fasilitas as $f) {
             foreach ($warga->random(2) as $w) {  // Ambil 2 warga secara acak untuk setiap fasilitas
                 PetugasFasilitas::create([
-                    'fasilitas_id' => $f->fasilitas_id,
-                    'petugas_warga_id' => $w->warga_id,
-                    'peran' => $this->assignRole($faker) // Menggunakan Faker untuk peran
+                    'fasilitas_id' => $f->fasilitas_id,  // ID fasilitas
+                    'petugas_warga_id' => $w->warga_id,  // ID warga
+                    'peran' => $this->assignRole($faker) // Menggunakan Faker untuk memilih peran dalam bahasa Indonesia
                 ]);
             }
         }
     }
 
-    // Fungsi untuk memberi peran acak
+    // Fungsi untuk memberi peran acak dalam bahasa Indonesia
     private function assignRole($faker)
     {
-        // Menggunakan Faker untuk memilih peran secara acak
+        // Daftar peran dalam bahasa Indonesia
         $roles = ['Penanggung Jawab', 'Pengelola', 'Admin', 'Operator'];
-        return $faker->randomElement($roles);
+        return $faker->randomElement($roles);  // Memilih peran secara acak
     }
 }

@@ -169,7 +169,13 @@ class FasilitasUmumController extends Controller
             ->where('ref_table', 'fasilitas_umum')
             ->where('ref_id', $id)
             ->get();
+        
+        // Jika tidak ada gambar, kita set placeholder
+        $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
+// Gambar placeholder yang sudah di-compress
 
+
+        // Mengembalikan view dengan data fasilitas dan media terkait
         return view('pages.fasilitas.show', compact('item', 'media'));
     }
 

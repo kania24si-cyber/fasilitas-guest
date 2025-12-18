@@ -1,8 +1,10 @@
 <?php
 
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 
 return new class extends Migration
 {
@@ -14,7 +16,7 @@ return new class extends Migration
         Schema::create('fasilitas_umum', function (Blueprint $table) {
             $table->id('fasilitas_id');
             $table->string('nama');
-            $table->string('jenis'); 
+            $table->string('jenis');
             $table->string('alamat');
             $table->string('rt')->nullable();
             $table->string('rw')->nullable();
@@ -23,6 +25,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

@@ -155,7 +155,12 @@ class PembayaranFasilitasController extends Controller
             ->where('ref_id', $id)
             ->get();
 
-        return view('pages.PembayaranFasilitas.show', compact('pembayaran', 'media'));
+            
+    // Jika tidak ada gambar, kita set placeholder
+    $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
+
+
+      return view('pages.PembayaranFasilitas.show', compact('pembayaran', 'media'));
     }
 
     public function deleteMedia($media_id)

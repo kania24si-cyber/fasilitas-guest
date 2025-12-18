@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         FasilitasUmumSeeder::class,
         PeminjamanFasilitasSeeder::class,
         WargaSeeder::class,
+        SyaratFasilitasSeeder::class,
+        PetugasFasilitasSeeder::class,
+        PembayaranFasilitasSeeder::class,
     ]);
 }
 }
