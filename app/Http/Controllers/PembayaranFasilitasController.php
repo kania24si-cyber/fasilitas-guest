@@ -50,50 +50,52 @@ class PembayaranFasilitasController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi data input
-        $validated = $request->validate([
-            'pinjam_id' => 'required|exists:peminjaman_fasilitas,pinjam_id',
-            'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric',
-            'metode' => 'required|string',
-            'keterangan' => 'nullable|string',
-            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048', // Validasi file
-        ]);
+{
+    // Validasi data input
+    $validated = $request->validate([
+        'pinjam_id' => 'required|exists:peminjaman_fasilitas,pinjam_id',
+        'tanggal'   => 'required|date',
+        'jumlah'    => 'required|numeric',
+        'metode'    => 'required|string',
+        'keterangan'=> 'nullable|string',
+        'files.*'   => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
+    ]);
 
-        // Simpan data pembayaran fasilitas
-        $pembayaran = PembayaranFasilitas::create($validated);
+    // Simpan data pembayaran fasilitas
+    $pembayaran = PembayaranFasilitas::create($validated);
 
-        // Menyimpan resi ke tabel media jika ada file yang di-upload
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                if ($file->isValid()) {
-                    $filename = time() . '_' . $file->getClientOriginalName();
-                    $filePath = $file->storeAs('uploads/media', $filename, 'public');
+    // Menyimpan resi ke tabel media jika ada file yang di-upload
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $file) {
+            if ($file->isValid()) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads/media', $filename, 'public');
 
-                    DB::table('media')->insert([
-                        'ref_table' => 'pembayaran_fasilitas',
-                        'ref_id' => $pembayaran->bayar_id,
-                        'file_name' => basename($filePath),
-                        'mime_type' => $file->getMimeType(),
-                        'caption' => null,
-                        'sort_order' => 0,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
+                DB::table('media')->insert([
+                    'ref_table'  => 'pembayaran_fasilitas',
+                    'ref_id'     => $pembayaran->bayar_id,
+                    'file_name'  => basename($filePath),
+                    'mime_type'  => $file->getMimeType(),
+                    'caption'    => null,
+                    'sort_order' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
         }
 
-        // Setelah pembayaran berhasil, arahkan ke home jika sudah login
-        if (Auth::check()) {  // Hanya periksa apakah sudah login
-            return redirect()->route('about')->with('success', 'Pembayaran berhasil disimpan!');
-        }
-
-        // Jika pengguna belum login, arahkan ke halaman login
-        return redirect()->route('auth.index')->with('error', 'Anda harus login terlebih dahulu!');
+        // ✅ SETELAH BERHASIL → ARAHKAN KE INDEX
+        return redirect()
+            ->route('pembayaran_fasilitas.index')
+            ->with('success', 'Pembayaran berhasil disimpan!');
     }
 
+    // ❗ TETAP ADA (TIDAK DIHAPUS)
+    return redirect()
+        ->route('auth.index')
+        ->with('error', 'Anda harus login terlebih dahulu!');
+
+}
 
     public function edit($id)
     {
@@ -148,20 +150,19 @@ class PembayaranFasilitasController extends Controller
     }
 
     public function show($id)
-    {
-        $pembayaran = PembayaranFasilitas::findOrFail($id);
-        $media = DB::table('media')
-            ->where('ref_table', 'pembayaran_fasilitas')
-            ->where('ref_id', $id)
-            ->get();
+{
+    $pembayaran = PembayaranFasilitas::findOrFail($id);
+    $media = DB::table('media')
+        ->where('ref_table', 'pembayaran_fasilitas')
+        ->where('ref_id', $id)
+        ->get();
 
-            
-    // Jika tidak ada gambar, kita set placeholder
-    $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
+    // Set placeholder image if no image is available
+    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image in public/assets/img/
 
+    return view('pages.PembayaranFasilitas.show', compact('pembayaran', 'media', 'placeholderImage'));
+}
 
-      return view('pages.PembayaranFasilitas.show', compact('pembayaran', 'media'));
-    }
 
     public function deleteMedia($media_id)
     {

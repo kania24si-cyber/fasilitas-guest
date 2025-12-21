@@ -5,9 +5,9 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Syarat Fasilitas</h4>
         @if(auth()->check() && auth()->user()->role === 'admin')
-        <a href="{{ route('syarat_fasilitas.create') }}" class="btn btn-primary btn-sm">
-            <i class="bi bi-plus-circle"></i> Tambah Syarat Fasilitas
-        </a>
+            <a href="{{ route('syarat_fasilitas.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle"></i> Tambah Syarat Fasilitas
+            </a>
         @endif
     </div>
 
@@ -16,8 +16,14 @@
         <div class="row g-2">
             <div class="col-md-5">
                 <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari nama syarat..." value="{{ request('search') }}">
-                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Cari nama syarat..."
+                           value="{{ request('search') }}">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </div>
             </div>
 
@@ -26,59 +32,101 @@
             </div>
 
             @if(request()->has('search'))
-            <div class="col-md-2">
-                <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-secondary w-100">Reset</a>
-            </div>
+                <div class="col-md-2">
+                    <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-secondary w-100">
+                        Reset
+                    </a>
+                </div>
             @endif
         </div>
     </form>
 
-    {{-- Card Display --}}
+    {{-- CARD DISPLAY --}}
     <div class="row">
         @forelse ($syaratFasilitas as $item)
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm h-100">
+
+                    {{-- Placeholder Logic --}}
+                    @php
+                        // Check if the media has an image
+                        $image = $item->media->first(fn($m) => Str::startsWith($m->mime_type, 'image'));
+                        // If image exists, get the file path, otherwise use placeholder image
+                        $imagePath = $image ? asset('storage/uploads/media/' . $image->file_name) : $placeholderImage;
+                    @endphp
+
+                    <img src="{{ $imagePath }}"
+                         class="card-img-top"
+                         alt="Syarat Fasilitas"
+                         style="height:180px; object-fit:cover;">
+
                     <div class="card-body">
                         <h5 class="text-primary">{{ $item->nama_syarat }}</h5>
-                        <p><b>Fasilitas:</b> {{ $item->fasilitas->nama }}</p>
-                        <p><b>Deskripsi:</b> {{ Str::limit($item->deskripsi, 60) }}</p>
 
-                        <!-- Menampilkan media terkait syarat fasilitas -->
-                    <h6>Dokumen Media:</h6>
-                    <div class="media-list mb-3">
-                        @if($item->media && $item->media->count() > 0) <!-- Cek jika ada media -->
-                            @foreach($item->media as $m)
-                                @if(Str::startsWith($m->mime_type, 'image'))
-                                    <img src="{{ asset('storage/uploads/media/'.$m->file_name) }}" width="100" class="m-2" alt="Media">
-                                @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download PDF</a>
-                                @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download DOCX</a>
-                                @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                                    <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-primary btn-sm mb-1">Download XLSX</a>
-                                @else
-                                    <p class="text-muted">File tidak dikenali</p>
-                                @endif
-                            @endforeach
-                        @else
-                            <p class="text-muted">Tidak ada media terkait.</p>
-                        @endif
-                    </div>
+                        <p class="mb-1">
+                            <strong>Fasilitas:</strong>
+                            {{ $item->fasilitas->nama ?? '-' }}
+                        </p>
 
-                        <div class="d-flex justify-content-between mt-3">
+                        <p class="mb-2">
+                            <strong>Deskripsi:</strong>
+                            {{ Str::limit($item->deskripsi, 60) }}
+                        </p>
+
+                        {{-- MEDIA LIST --}}
+                        <h6>Dokumen Media:</h6>
+                        <div class="media-list mb-3">
+                            @if($item->media && $item->media->count())
+                                @foreach($item->media as $m)
+                                    @php
+                                        $fileUrl = asset('storage/uploads/media/' . $m->file_name);
+                                    @endphp
+
+                                    @if(Str::startsWith($m->mime_type, 'image'))
+                                        <img src="{{ $fileUrl }}" width="80" class="m-1 rounded" alt="Media">
+                                    @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
+                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-danger btn-sm mb-1">
+                                            PDF
+                                        </a>
+                                    @elseif(Str::contains($m->mime_type, 'word'))
+                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-primary btn-sm mb-1">
+                                            DOCX
+                                        </a>
+                                    @elseif(Str::contains($m->mime_type, 'sheet'))
+                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-success btn-sm mb-1">
+                                            XLSX
+                                        </a>
+                                    @else
+                                        <span class="text-muted d-block">File tidak dikenali</span>
+                                    @endif
+                                @endforeach
+                            @else
+                                <p class="text-muted mb-0">Tidak ada media terkait.</p>
+                            @endif
+                        </div>
+
+                        {{-- ACTION BUTTON --}}
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('syarat_fasilitas.show', $item->syarat_id) }}"
+                               class="btn btn-info btn-sm">
+                                Detail
+                            </a>
+                            
                             @if(auth()->check() && auth()->user()->role === 'admin')
-                            <!-- Tombol Detail -->
-                            <a href="{{ route('syarat_fasilitas.show', $item->syarat_id) }}" class="btn btn-info btn-sm">Detail</a>
+                                <a href="{{ route('syarat_fasilitas.edit', $item->syarat_id) }}"
+                                   class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
 
-                            <!-- Tombol Edit -->
-                            <a href="{{ route('syarat_fasilitas.edit', $item->syarat_id) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                            <!-- Tombol Hapus -->
-                            <form method="POST" action="{{ route('syarat_fasilitas.destroy', $item->syarat_id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</button>
-                            </form>
+                                <form method="POST"
+                                      action="{{ route('syarat_fasilitas.destroy', $item->syarat_id) }}"
+                                      onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm">
+                                        Hapus
+                                    </button>
+                                </form>
                             @endif
                         </div>
                     </div>
@@ -91,7 +139,7 @@
         @endforelse
     </div>
 
-    {{-- Paginasi --}}
+    {{-- PAGINATION --}}
     <div class="mt-3">
         {{ $syaratFasilitas->links('pagination::bootstrap-5') }}
     </div>

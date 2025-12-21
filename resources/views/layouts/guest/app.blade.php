@@ -48,8 +48,6 @@
 
     @include('layouts.guest.js')
 
-    {{-- Floating WhatsApp Button --}}
-    @include('layouts.guest.whatsapp')
 </body>
 
 </html>

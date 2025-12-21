@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Peminjaman Fasilitas</h4>
-         @if(auth()->check() && auth()->user()->role === 'admin')
+        @if(auth()->check() && auth()->user()->role === 'admin')
         <a href="{{ route('peminjaman.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Peminjaman
         </a>
@@ -21,6 +21,7 @@
                     <option value="">-- Filter Status --</option>
                     <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
                     <option value="disetujui" {{ request('status')=='disetujui'?'selected':'' }}>Disetujui</option>
+                    <option value="lunas" {{ request('status')=='lunas'?'selected':'' }}>Lunas</option>
                     <option value="ditolak" {{ request('status')=='ditolak'?'selected':'' }}>Ditolak</option>
                 </select>
             </div>
@@ -52,10 +53,10 @@
             {{-- SEARCH --}}
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" 
-                           name="search" 
-                           class="form-control" 
-                           placeholder="Cari tujuan..." 
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Cari tujuan..."
                            value="{{ request('search') }}">
                     <button class="btn btn-primary">
                         <i class="bi bi-search"></i>
@@ -82,7 +83,10 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
-                        <h5 class="card-title text-primary mb-2">{{ $item->warga->nama ?? '-' }}</h5>
+
+                        <h5 class="card-title text-primary mb-2">
+                            {{ $item->warga->nama ?? '-' }}
+                        </h5>
 
                         <p class="mb-1"><strong>Fasilitas:</strong> {{ $item->fasilitas->nama ?? '-' }}</p>
                         <p class="mb-1"><strong>Tujuan:</strong> {{ $item->tujuan }}</p>
@@ -91,37 +95,49 @@
 
                         <p class="mb-2">
                             <strong>Status:</strong>
-                            @if ($item->status == 'pending')
+                            @if ($item->status === 'pending')
                                 <span class="badge bg-warning text-dark">Pending</span>
-                            @elseif ($item->status == 'disetujui')
-                                <span class="badge bg-success">Disetujui</span>
-                            @elseif ($item->status == 'ditolak')
+                            @elseif ($item->status === 'disetujui')
+                                <span class="badge bg-primary">Disetujui, silahkan bayar</span>
+                            @elseif ($item->status === 'lunas')
+                                <span class="badge bg-success">Lunas</span>
+                            @elseif ($item->status === 'ditolak')
                                 <span class="badge bg-danger">Ditolak</span>
                             @endif
                         </p>
 
-                        <p class="mb-1"><strong>Total Biaya:</strong> Rp {{ number_format($item->total_biaya, 2, ',', '.') }}</p>
+                        <p class="mb-2">
+                            <strong>Total Biaya:</strong>
+                            Rp {{ number_format($item->total_biaya, 0, ',', '.') }}
+                        </p>
 
-                        <!-- Tombol Detail, Edit, Hapus diatur supaya rapi -->
-                           @if(auth()->check() && auth()->user()->role === 'admin')
+                        {{-- TOMBOL KIRIM BUKTI PEMBAYARAN (USER) --}}
+                        @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'disetujui')
+                            <div class="mt-3">
+                                <a href="{{ route('peminjaman.edit', $item->pinjam_id) }}"
+                                   class="btn btn-primary btn-sm w-100">
+                                    <i class="bi bi-upload"></i> Kirim Bukti Pembayaran
+                                </a>
+                            </div>
+                        @endif
+
+                        {{-- TOMBOL ADMIN --}}
+                        @if(auth()->check() && auth()->user()->role === 'admin')
                         <div class="d-flex justify-content-between align-items-center mt-3">
 
-                            {{-- Tombol Detail --}}
                             <a href="{{ route('peminjaman.show', $item->pinjam_id) }}"
-                            class="btn btn-info btn-sm">
+                               class="btn btn-info btn-sm">
                                 <i class="bi bi-eye"></i> Detail
                             </a>
 
-                            {{-- Tombol Edit --}}
                             <a href="{{ route('peminjaman.edit', $item->pinjam_id) }}"
-                            class="btn btn-outline-warning btn-sm">
+                               class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
 
-                            {{-- Tombol Hapus --}}
                             <form action="{{ route('peminjaman.destroy', $item->pinjam_id) }}"
-                                method="POST"
-                                class="d-inline">
+                                  method="POST"
+                                  class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -132,8 +148,7 @@
                             </form>
 
                         </div>
-                    @endif
-
+                        @endif
 
                     </div>
                 </div>

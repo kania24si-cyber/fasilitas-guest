@@ -51,13 +51,18 @@
                         <h5 class="text-primary">{{ $item->peminjaman->tujuan }}</h5>
 
                         <p><b>Tanggal Pembayaran:</b> {{ $item->tanggal }}</p>
-                        <p><b>Jumlah:</b> {{ number_format($item->jumlah, 2) }}</p>
+                        <p class="mb-2">
+                        <strong>Jumlah:</strong>
+                        Rp {{ number_format($item->jumlah, 0, ',', '.') }}
+                    </p>
                         <p><b>Metode:</b> {{ $item->metode }}</p>
 
+                        
                         <div class="d-flex justify-content-between">
+                            @if(auth()->check() && auth()->user()->role === 'admin')
                             <!-- Tombol Detail -->
                             <a href="{{ route('pembayaran_fasilitas.show', $item->bayar_id) }}" class="btn btn-info btn-sm">Detail</a>
-                            
+
                             <!-- Tombol Edit -->
                             <a href="{{ route('pembayaran_fasilitas.edit', $item->bayar_id) }}" class="btn btn-warning btn-sm">Edit</a>
 
@@ -67,6 +72,14 @@
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm">Hapus</button>
                             </form>
+                            @endif
+
+                            {{-- Conditionally Display View Resi Button --}}
+                            @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'lunas')
+                                <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-success btn-sm">
+                                    <i class="bi bi-file-earmark-pdf"></i> Lihat Resi
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

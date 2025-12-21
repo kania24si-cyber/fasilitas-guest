@@ -27,10 +27,10 @@
 
     <div class="hero-text">
         <h1 class="fw-bold mb-3 text-white">
-            Selamat Datang di <span class="highlight-text">DesaSface</span>
+            <span class="welcome-text">Selamat Datang</span> di <span class="highlight-text">DesaSface</span>
         </h1>
         <p class="mb-4 text-white">
-            <span class="fw-bold fs-3">DesaSface</span> adalah platform digital yang mempermudah pengelolaan informasi warga dan fasilitas umum di desa Anda.
+            <span class="highlight-text">DesaSface</span> adalah platform digital yang mempermudah pengelolaan informasi warga dan fasilitas umum di desa Anda.
             Dengan sistem informasi terintegrasi, seluruh aktivitas desa menjadi lebih transparan, efisien, dan mudah diakses oleh masyarakat.
         </p>
     </div>
@@ -87,14 +87,17 @@ body {
 .hero-text h1 {
     font-size: 3rem;
     font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Menambahkan shadow pada teks di hero */
 }
 
 .hero-text p {
     font-size: 1.25rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Menambahkan shadow pada teks di hero */
 }
 
 .highlight-text {
-    color: #00b029ff;
+    color: #00b029ff; /* Warna hijau */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Menambahkan shadow pada teks di hero */
 }
 
 /* =========================
@@ -110,78 +113,90 @@ body {
     }
 }
 
-
 /*teks saja*/
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #243f56ff; /* biru muda lembut */
-        color: #333;
-        margin: 0;
-        padding-top: 100px;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #243f56ff; /* biru muda lembut */
+    color: #333;
+    margin: 0;
+    padding-top: 100px;
+}
 
-    h1 {
-        text-align: center;
-        color: #00b029ff; /* biru soft */
-        margin-bottom: 40px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
+h1 {
+    text-align: center;
+    color: #00b029ff; /* biru soft */
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
 
-    .about-card {
-        background: #effff6ff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 160, 176, 0.15); /* biru soft */
-        padding: 30px;
-        margin-bottom: 25px;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
+.about-card {
+    background: #effff6ff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 160, 176, 0.15); /* biru soft */
+    padding: 30px;
+    margin-bottom: 25px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
 
-    .about-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 6px 15px rgba(0, 160, 176, 0.25); /* biru soft */
-    }
+.about-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 15px rgba(0, 160, 176, 0.25); /* biru soft */
+}
 
-    .about-card h2,
-    .about-card h4 {
-        color: #00A0B0; /* biru soft */
-        margin-bottom: 10px;
-    }
+.about-card h2,
+.about-card h4 {
+    color: #00A0B0; /* biru soft */
+    margin-bottom: 10px;
+}
 
-    .about-card p,
-    .about-card li {
-        line-height: 1.6;
-    }
+.about-card p,
+.about-card li {
+    line-height: 1.6;
+}
 
-    .about-section {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 20px 80px;
-    }
+.about-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
 
-    .about-section img {
-        width: 100%;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 160, 176, 0.15); /* biru soft */
-        transition: transform 0.3s ease;
-    }
+.about-section img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 160, 176, 0.15); /* biru soft */
+    transition: transform 0.3s ease;
+}
 
-    .about-section img:hover {
-        transform: scale(1.03);
-    }
+.about-section img:hover {
+    transform: scale(1.03);
+}
 
-    .copyright {
-        text-align: center;
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-top: 50px;
-    }
+.copyright {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
 
-    strong {
-        color: #2C7D59; /* hijau soft */
-    }
+strong {
+    color: #2C7D59; /* hijau soft */
+}
+
+/* Teks "Selamat Datang" akan diubah menjadi warna kuning emas */
+.welcome-text {
+    color: #FFD700; /* Warna kuning emas untuk 'Selamat Datang' */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Menambahkan shadow pada teks di hero */
+}
+
+/* Highlight Teks "DesaSface" */
+.highlight-text {
+    color: #00b029ff; /* Warna hijau */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Menambahkan shadow pada teks di hero */
+}
 </style>
+
 
 <div class="about-section container">
     <div class="about-card">
@@ -276,9 +291,7 @@ body {
                         @if(!auth()->check())
                         <p class="fw-bold text-danger">Login terlebih dahulu untuk mengakses</p>
                         @endif
-                        @if(auth()->check()) {{-- Cek jika sudah login --}}
-                            <a href="{{ route('petugas.index') }}" class="btn btn-primary btn-sm mt-auto">Lihat Peran Petugas</a>
-                        @endif
+
                     </div>
                 </div>
             </div>
@@ -293,9 +306,6 @@ body {
                         @if(!auth()->check())
                         <p class="fw-bold text-danger">Login terlebih dahulu untuk mengakses</p>
                         @endif
-                        @if(auth()->check()) {{-- Cek jika sudah login --}}
-                            <a href="{{ route('fasilitas.index') }}" class="btn btn-primary btn-sm mt-auto">Lihat Fasilitas</a>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -306,12 +316,15 @@ body {
                     <img src="{{ asset('assets/img/peminjaman.jpg') }}" alt="Peminjaman Fasilitas">
                     <div class="card-body d-flex flex-column">
                         <h5 class="fw-bold mt-3">Peminjaman Fasilitas</h5>
-                        <p class="text-muted">Pantau peminjaman fasilitas desa secara online dan transparan.</p>
-                       @if(!auth()->check())
-                        <p class="fw-bold text-danger">Login terlebih dahulu untuk mengakses</p>
-                        @endif
-                        @if(auth()->check()) {{-- Cek jika sudah login --}}
-                            <a href="{{ route('peminjaman.index') }}" class="btn btn-primary btn-sm mt-auto">Lihat List Peminjaman</a>
+                        <p class="text-muted">
+                           Ajukan peminjaman dan pantau peminjaman fasilitas desa secara online dan transparan.
+                           jika disetujui, silahkan lakukan pembayaran sesuai instruksi yang diberikan.
+                        </p>
+
+                        @if(!auth()->check())
+                            <p class="fw-bold text-danger">
+                                Login terlebih dahulu untuk mengakses
+                            </p>
                         @endif
                     </div>
                 </div>
@@ -319,20 +332,23 @@ body {
 
             {{-- Pembayaran Fasilitas --}}
             <div class="col-md-5 col-lg-4">
-                <div class="card card-dashboard h-100">
-                    <img src="{{ asset('assets/img/pembayaran.jpg') }}" alt="Pembayaran Fasilitas">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="fw-bold mt-3">Pembayaran Fasilitas</h5>
-                        <p class="text-muted">Lakukan pembayaran dan unggah bukti pembayaran untuk peminjaman fasilitas.</p>
-                        @if(!auth()->check())
-                        <p class="fw-bold text-danger">Login terlebih dahulu untuk mengakses</p>
-                        @endif
-                        @if(auth()->check()) {{-- Cek jika sudah login --}}
-                            <a href="{{ route('pembayaran_fasilitas.create') }}" class="btn btn-success btn-sm mt-auto">Bayar Sekarang</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            <div class="card card-dashboard h-100">
+            <img src="{{ asset('assets/img/pembayaran.jpg') }}" alt="Pembayaran Fasilitas">
+            <div class="card-body d-flex flex-column">
+            <h5 class="fw-bold mt-3">Pembayaran Fasilitas</h5>
+            <p class="text-muted">
+                Lakukan pengisian pembayaran untuk mengkonfirmasi dan unggah resi pembayaran.
+            </p>
+
+            @if(!auth()->check())
+                <p class="fw-bold text-danger">
+                    Login terlebih dahulu untuk mengakses
+                </p>
+            @endif
+        </div>
+    </div>
+</div>
+
 
             {{-- Syarat Fasilitas --}}
             <div class="col-md-5 col-lg-4">
@@ -343,9 +359,6 @@ body {
                         <p class="text-muted">Lihat dan unduh syarat serta ketentuan peminjaman fasilitas desa.</p>
                         @if(!auth()->check())
                         <p class="fw-bold text-danger">Login terlebih dahulu untuk mengakses</p>
-                        @endif
-                        @if(auth()->check()) {{-- Cek jika sudah login --}}
-                            <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-outline-primary btn-sm mt-auto">Lihat Syarat</a>
                         @endif
                     </div>
                 </div>
@@ -450,7 +463,7 @@ body {
 
     /* Styling untuk judul dan teks dalam card */
     .card-dashboard h5 {
-        color: #effff6ff; /* Biru soft */
+        color: #198949ff; /* Biru soft */
         font-weight: 600;
         font-size: 1.2rem; /* Ukuran font lebih besar */
     }

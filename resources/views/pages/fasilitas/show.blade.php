@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-primary font-weight-bold">Detail Fasilitas Umum</h2>
 
-    <!-- Menampilkan data fasilitas menggunakan grid bootstrap -->
+    <!-- Detail fasilitas -->
     <div class="row mb-4">
         <div class="col-md-6">
             <h3 class="font-weight-bold">{{ $item->nama }}</h3>
@@ -18,43 +18,83 @@
         </div>
     </div>
 
-    <!-- Menampilkan media terkait fasilitas -->
+    <!-- Media fasilitas -->
     <h4 class="mt-5 mb-4 text-muted">Foto / SOP Media</h4>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach($media as $m)
-        <div class="col mb-4">
-            <div class="card shadow-sm rounded-lg">
-                <div class="card-body">
+        @forelse($media as $m)
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+
+                    @php
+                        $filePath = storage_path('app/public/uploads/media/' . $m->file_name);
+                        $fileExists = file_exists($filePath);
+                        $fileUrl = asset('storage/uploads/media/' . $m->file_name);
+                    @endphp
+
+                    {{-- IMAGE --}}
                     @if(Str::startsWith($m->mime_type, 'image'))
-                        <!-- Cek jika file gambar ada, atau tampilkan placeholder jika tidak ada -->
-                        @php
-                            $imagePath = storage_path('app/public/uploads/media/' . $m->file_name);
-                            $fileExists = file_exists($imagePath);
-                        @endphp
-                        <img src="{{ $fileExists ? asset('storage/uploads/media/'.$m->file_name) : $placeholderImage }}" 
-                             class="img-fluid rounded border border-light shadow-sm m-2" alt="Media">
+                        <img src="{{ $fileExists ? $fileUrl : $placeholderImage }}"
+                             class="img-fluid rounded mb-3"
+                             style="max-height: 200px; object-fit: cover;"
+                             alt="Media Fasilitas">
+
+                        @if($fileExists)
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
+                            <i class="bi bi-download"></i> Download Gambar
+                        </a>
+                        @endif
+
+                    {{-- PDF --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                        <!-- Tombol Download PDF -->
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-primary btn-sm w-100 mt-2">Download PDF</a>
+                        <i class="bi bi-file-earmark-pdf text-danger fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-danger btn-sm w-100 mt-2" download>
+                            <i class="bi bi-download"></i> Download PDF
+                        </a>
+
+                    {{-- DOCX --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                        <!-- Tombol Download DOCX -->
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-primary btn-sm w-100 mt-2">Download DOCX</a>
+                        <i class="bi bi-file-earmark-word text-primary fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
+                            <i class="bi bi-download"></i> Download DOCX
+                        </a>
+
+                    {{-- XLSX --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                        <!-- Tombol Download XLSX -->
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-primary btn-sm w-100 mt-2">Download XLSX</a>
+                        <i class="bi bi-file-earmark-excel text-success fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-success btn-sm w-100 mt-2" download>
+                            <i class="bi bi-download"></i> Download XLSX
+                        </a>
+
+                    {{-- DEFAULT / placeholder --}}
                     @else
-                        <!-- Jika tipe file lainnya, tampilkan gambar placeholder -->
-                        <img src="{{ $placeholderImage }}" class="img-fluid rounded border border-light shadow-sm m-2" alt="Tidak Ada Gambar">
+                        <img src="{{ $placeholderImage }}"
+                             class="img-fluid rounded"
+                             style="max-height: 200px;"
+                             alt="Tidak Ada Media">
                     @endif
+
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        {{-- Jika tidak ada media sama sekali --}}
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <img src="{{ $placeholderImage }}"
+                         class="img-fluid rounded"
+                         style="max-height: 200px;"
+                         alt="Tidak Ada Media">
+                </div>
+            </div>
+        </div>
+        @endforelse
     </div>
 
-    <!-- Tombol Kembali -->
-    <div class="mt-4">
-        <a href="{{ route('fasilitas.index') }}" class="btn btn-outline-secondary btn-sm px-4 py-2">
+    <!-- Tombol kembali -->
+    <div class="mt-4 text-center">
+        <a href="{{ route('fasilitas.index') }}" class="btn btn-outline-secondary btn-sm">
             <i class="bi bi-arrow-left"></i> Kembali ke Daftar Fasilitas
         </a>
     </div>

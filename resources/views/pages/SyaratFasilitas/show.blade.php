@@ -27,50 +27,71 @@
 
     <!-- Dokumen Terkait -->
     <h4 class="mt-5 mb-3 text-muted">Dokumen Terkait:</h4>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach($media as $m)
-        <div class="col mb-4">
-            @if(Str::startsWith($m->mime_type, 'image'))
-                <!-- Cek apakah file gambar ada di server -->
-                @php
-                    $imagePath = storage_path('app/public/uploads/media/' . $m->file_name);
-                    $fileExists = file_exists($imagePath);
-                @endphp
 
-                <div class="card shadow-sm rounded-lg">
-                    <img src="{{ $fileExists ? asset('storage/uploads/media/'.$m->file_name) : $placeholderImage }}" 
-                         class="card-img-top" alt="Media" style="max-height: 200px; object-fit: cover;">
-                </div>
-            @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                <div class="card shadow-sm rounded-lg">
-                    <div class="card-body text-center">
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-danger w-100">
-                            <i class="bi bi-file-earmark-pdf"></i> Download PDF
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @forelse($media as $m)
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+
+                    @php
+                        // Path to check if file exists
+                        $filePath = storage_path('app/public/uploads/media/' . $m->file_name);
+                        $fileExists = file_exists($filePath);
+                        $fileUrl = asset('storage/uploads/media/' . $m->file_name);
+                    @endphp
+
+                    {{-- IMAGE --}}
+                    @if(Str::startsWith($m->mime_type, 'image'))
+                        <img src="{{ $fileExists ? $fileUrl : $placeholderImage }}"
+                             class="img-fluid rounded mb-2"
+                             alt="Dokumen"
+                             style="max-width: 200px;">
+
+                        @if($fileExists)
+                            <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
+                                <i class="bi bi-download"></i> Download Gambar
+                            </a>
+                        @endif
+
+                    {{-- PDF --}}
+                    @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
+                        <i class="bi bi-file-earmark-pdf text-danger fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-danger btn-sm w-100 mt-3" download>
+                            <i class="bi bi-download"></i> Download PDF
                         </a>
-                    </div>
-                </div>
-            @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                <div class="card shadow-sm rounded-lg">
-                    <div class="card-body text-center">
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-warning w-100">
-                            <i class="bi bi-file-earmark-word"></i> Download DOCX
+
+                    {{-- DOCX --}}
+                    @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
+                        <i class="bi bi-file-earmark-word text-primary fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-info btn-sm w-100 mt-3" download>
+                            <i class="bi bi-download"></i> Download DOCX
                         </a>
-                    </div>
-                </div>
-            @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                <div class="card shadow-sm rounded-lg">
-                    <div class="card-body text-center">
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-success w-100">
-                            <i class="bi bi-file-earmark-excel"></i> Download XLSX
+
+                    {{-- XLSX --}}
+                    @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                        <i class="bi bi-file-earmark-excel text-success fs-1 mb-3"></i>
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-success btn-sm w-100 mt-3" download>
+                            <i class="bi bi-download"></i> Download XLSX
                         </a>
-                    </div>
+
+                    {{-- DEFAULT / NO FILE --}}
+                    @else
+                        <!-- If no image or file, show the placeholder -->
+                        <img src="{{ $placeholderImage }}" class="img-fluid" alt="Tidak Ada Gambar" style="max-width: 200px;">
+                    @endif
                 </div>
-            @else
-                <!-- Menampilkan gambar placeholder jika tidak ada gambar -->
-                <img src="{{ $placeholderImage }}" width="200" class="m-2 rounded" alt="Tidak Ada Gambar">
-            @endif
+            </div>
         </div>
-        @endforeach
+        @empty
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <img src="{{ $placeholderImage }}" class="img-fluid" alt="Tidak Ada Gambar" style="max-width: 200px;">
+                </div>
+            </div>
+        </div>
+        @endforelse
     </div>
 </div>
 @endsection

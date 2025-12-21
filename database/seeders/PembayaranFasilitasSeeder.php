@@ -25,7 +25,7 @@ class PembayaranFasilitasSeeder extends Seeder
                 PembayaranFasilitas::create([
                     'pinjam_id' => $p->pinjam_id,  // ID peminjaman
                     'tanggal' => $faker->dateTimeThisYear()->format('Y-m-d'),  // Menghasilkan tanggal pembayaran
-                    'jumlah' => $faker->randomFloat(2, 100000, 500000), // Menghasilkan jumlah pembayaran antara 100.000 - 500.000
+                    'jumlah' => $faker->numberBetween(0, 500000), // Menghasilkan jumlah pembayaran antara 100.000 - 500.000
                     'metode' => $this->assignMetodePembayaran($faker), // Menentukan metode pembayaran
                     'keterangan' => $this->generateKeterangan($faker), // Menghasilkan keterangan pembayaran dalam kalimat acak dalam bahasa Indonesia
                 ]);

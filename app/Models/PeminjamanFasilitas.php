@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class PeminjamanFasilitas extends Model
+class  PeminjamanFasilitas extends Model
 {
     protected $table = 'peminjaman_fasilitas';
     protected $primaryKey = 'pinjam_id';

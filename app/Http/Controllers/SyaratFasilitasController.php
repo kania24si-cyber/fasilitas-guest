@@ -11,23 +11,25 @@ class SyaratFasilitasController extends Controller
 {
   public function index(Request $request)
 {
-    // Mendefinisikan kolom yang bisa difilter dan dicari
-    $filterable = ['fasilitas_id']; // Kolom yang bisa difilter
-    $searchable = ['nama_syarat', 'deskripsi']; // Kolom yang bisa dicari
+    // Define filterable and searchable columns
+    $filterable = ['fasilitas_id'];
+    $searchable = ['nama_syarat', 'deskripsi'];
 
-    // Mengambil data syarat fasilitas dengan eager loading untuk media dan fasilitas
-    $syaratFasilitas = SyaratFasilitas::with(['fasilitas', 'media'])  // Eager load fasilitas dan media
-        ->filter($request, $filterable)  // Apply filter berdasarkan request
-        ->search($request, $searchable)  // Apply search berdasarkan request
-        ->orderBy('syarat_id', 'DESC')  // Urutkan berdasarkan ID syarat
-        ->paginate(10)  // Pagination 10 data per halaman
-        ->withQueryString();  // Menyertakan query string agar bisa reset filter
+    // Fetch data with eager loading for media and fasilitas
+    $syaratFasilitas = SyaratFasilitas::with(['fasilitas', 'media'])
+        ->filter($request, $filterable)
+        ->search($request, $searchable)
+        ->orderBy('syarat_id', 'DESC')
+        ->paginate(10)
+        ->withQueryString();
 
-    // Ambil data fasilitas untuk dropdown
-    $fasilitas = FasilitasUmum::all();
+    // Path for the placeholder image
+    $placeholderImage = asset('assets/img/placeholder.jpg'); // Make sure this is correct
 
-    return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'fasilitas'));
+    return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'placeholderImage'));
 }
+
+
 
     public function create()
     {
@@ -125,14 +127,22 @@ class SyaratFasilitasController extends Controller
     }
 
     public function show($id)
-    {
-        $syarat = SyaratFasilitas::findOrFail($id);
-        $media = DB::table('media')
-            ->where('ref_table', 'syarat_fasilitas')
-            ->where('ref_id', $id)
-            ->get();
+{
+    $syarat = SyaratFasilitas::findOrFail($id);
 
-        $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
-        return view('pages.SyaratFasilitas.show', compact('syarat', 'media'));
-    }
+    $media = DB::table('media')
+        ->where('ref_table', 'syarat_fasilitas')
+        ->where('ref_id', $id)
+        ->get();
+
+    // ✅ placeholder jika tidak ada media
+    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image in public/assets/img/
+
+
+    return view('pages.SyaratFasilitas.show', compact(
+        'syarat',
+        'media',
+        'placeholderImage'
+    ));
+}
 }

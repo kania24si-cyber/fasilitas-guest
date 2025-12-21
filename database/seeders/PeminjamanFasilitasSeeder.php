@@ -30,7 +30,13 @@ class PeminjamanFasilitasSeeder extends Seeder
                 'tanggal_selesai' => $tanggal_selesai->format('Y-m-d'),  // Tanggal selesai peminjaman
                 'tujuan' => $this->generateTujuan($faker),  // Tujuan peminjaman dalam bahasa Indonesia
                 'total_biaya' => $faker->numberBetween(0, 500000),  // Total biaya peminjaman
-                'status' => $faker->randomElement(['pending', 'disetujui', 'ditolak']),  // Status peminjaman
+                'status' => $faker->randomElement([
+                'pending',
+                'disetujui', // Disetujui, silahkan bayar
+                'lunas',
+                'ditolak'
+            ]),
+
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

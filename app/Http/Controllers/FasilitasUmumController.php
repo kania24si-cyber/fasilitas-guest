@@ -10,28 +10,33 @@ use Illuminate\Support\Facades\Storage;  // Correctly included for file handling
 class FasilitasUmumController extends Controller
 {
     public function index(Request $request)
-    {
-        $filterable = ['jenis'];
-        $searchable = ['nama', 'alamat'];
+{
+    $filterable = ['jenis'];
+    $searchable = ['nama', 'alamat'];
 
-        // Ambil data fasilitas dengan filter dan search
-        $data = FasilitasUmum::filter($request, $filterable)
-            ->search($request, $searchable)
-            ->orderBy('fasilitas_id', 'DESC')
-            ->paginate(9)
-            ->withQueryString();
+    // Fetch data with filter and search
+    $data = FasilitasUmum::filter($request, $filterable)
+        ->search($request, $searchable)
+        ->orderBy('fasilitas_id', 'DESC')
+        ->paginate(9)
+        ->withQueryString();
 
-        // Ambil media untuk setiap fasilitas
-        foreach ($data as $item) {
-            $item->media = DB::table('media')
-                ->where('ref_table', 'fasilitas_umum')
-                ->where('ref_id', $item->fasilitas_id)
-                ->get();
-        }
-
-        // Kirim data fasilitas dan media ke view
-        return view('pages.fasilitas.index', compact('data'));
+    // For each facility, get the related media
+    foreach ($data as $item) {
+        $item->media = DB::table('media')
+            ->where('ref_table', 'fasilitas_umum')
+            ->where('ref_id', $item->fasilitas_id)
+            ->get();
     }
+
+    // Define the path for the placeholder image
+    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image
+
+    // Return the data to the view
+    return view('pages.fasilitas.index', compact('data', 'placeholderImage'));
+}
+
+
 
     public function create()
     {
@@ -160,24 +165,23 @@ class FasilitasUmumController extends Controller
     }
 
     public function show($id)
-    {
-        // Ambil data fasilitas berdasarkan ID
-        $item = FasilitasUmum::findOrFail($id);
+{
+    // Ambil data fasilitas berdasarkan ID
+    $item = FasilitasUmum::findOrFail($id);
 
-        // **PERBAIKI: Ambil semua media yang terkait dengan fasilitas ini**
-        $media = DB::table('media')
-            ->where('ref_table', 'fasilitas_umum')
-            ->where('ref_id', $id)
-            ->get();
-        
-        // Jika tidak ada gambar, kita set placeholder
-        $placeholderImage = asset('assets/img/placeholder.png');  // Path gambar placeholder di public/assets/img/
-// Gambar placeholder yang sudah di-compress
+    // Ambil semua media terkait fasilitas ini
+    $media = DB::table('media')
+        ->where('ref_table', 'fasilitas_umum')
+        ->where('ref_id', $id)
+        ->get();
 
+    // Set placeholder image jika tidak ada gambar
+    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path ke placeholder di public/assets/img/
 
-        // Mengembalikan view dengan data fasilitas dan media terkait
-        return view('pages.fasilitas.show', compact('item', 'media'));
-    }
+    // Mengembalikan view dengan data fasilitas, media, dan placeholder
+    return view('pages.fasilitas.show', compact('item', 'media', 'placeholderImage'));
+}
+
 
     public function deleteMedia($media_id)
     {

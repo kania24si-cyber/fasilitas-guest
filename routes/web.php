@@ -1,20 +1,21 @@
 <?php
 
+use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\FasilitasUmumController;
-use App\Http\Controllers\PeminjamanFasilitasController;
 use App\Http\Controllers\WargaController;
-use App\Http\Controllers\PetugasFasilitasController;
-use App\Http\Controllers\SyaratFasilitasController;
-use App\Http\Controllers\PembayaranFasilitasController;
-use App\Http\Middleware\CheckRole;
-use App\Http\Controllers\DeveloperProfileController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WhatsAppController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FasilitasUmumController;
+use App\Http\Controllers\SyaratFasilitasController;
+use App\Http\Controllers\DeveloperProfileController;
+use App\Http\Controllers\PetugasFasilitasController;
+use App\Http\Controllers\PembayaranFasilitasController;
+use App\Http\Controllers\PeminjamanFasilitasController;
 /*
 |---------------------------------------------------------------------------|
 | AUTH (PUBLIC)
@@ -22,6 +23,7 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
+Route::get('/login', [AuthController::class, 'index'])->name('login'); // Tambahkan rute ini untuk menampilkan halaman login
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 // Rute logout harus menggunakan metode POST
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -49,6 +51,7 @@ Route::put('profile', [ProfileController::class, 'update'])->name('profile.updat
 // Menghapus foto profil
 Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+Route::get('/whatsapp', [WhatsAppController::class, 'generateLink'])->name('whatsapp.link');
 /*
 |---------------------------------------------------------------------------|
 | PROTECTED ROUTES (AUTHENTICATION AND ROLE BASED ACCESS)
@@ -69,11 +72,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('pembayaran_fasilitas/create', [PembayaranFasilitasController::class, 'create'])->name('pembayaran_fasilitas.create');
     Route::post('pembayaran_fasilitas', [PembayaranFasilitasController::class, 'store'])->name('pembayaran_fasilitas.store');
+    Route::get('pembayaran_fasilitas', [PembayaranFasilitasController::class, 'index'])->name('pembayaran_fasilitas.index');
+    Route::get('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'show'])->name('pembayaran_fasilitas.show');
 
-    Route::resource('peminjaman', PeminjamanFasilitasController::class)->except(['show']);
+    Route::get('peminjaman/create', [PeminjamanFasilitasController::class, 'create'])->name('peminjaman.create');
+    Route::post('peminjaman', [PeminjamanFasilitasController::class, 'store'])->name('peminjaman.store');
+    Route::get('peminjaman', [PeminjamanFasilitasController::class, 'index'])->name('peminjaman.index');
+    Route::get('peminjaman/{id}/edit', [PeminjamanFasilitasController::class, 'edit'])->name('peminjaman.edit');
+
 
    Route::resource('syarat_fasilitas', SyaratFasilitasController::class)->except(['show']);
     // Menampilkan halaman profil pengguna
+  
     Route::middleware([CheckRole::class.':admin'])->group(function () {
   // User
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -85,19 +95,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/fasilitas/media/{id}', [FasilitasUmumController::class, 'deleteMedia'])->name('media.fasilitas.delete');
 
         // Peminjaman Fasilitas
-        Route::get('/peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
-        Route::delete('/peminjaman/media/{id}', [PeminjamanFasilitasController::class, 'deleteMedia'])->name('media.peminjaman.delete');
+      Route::put('peminjaman/{id}', [PeminjamanFasilitasController::class, 'update'])->name('peminjaman.update');
+      Route::delete('peminjaman/{id}', [PeminjamanFasilitasController::class, 'destroy'])->name('peminjaman.destroy');
+      Route::get('peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
 
         // Syarat Fasilitas
         Route::get('/syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
         Route::delete('/syarat_fasilitas/{delete}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
 
     // Pembayaran Fasilitas
-        Route::get('pembayaran_fasilitas', [PembayaranFasilitasController::class, 'index'])->name('pembayaran_fasilitas.index');
         Route::get('pembayaran_fasilitas/{id}/edit', [PembayaranFasilitasController::class, 'edit'])->name('pembayaran_fasilitas.edit');
         Route::put('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'update'])->name('pembayaran_fasilitas.update');
         // Route untuk Show
-        Route::get('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'show'])->name('pembayaran_fasilitas.show');
         // Route untuk Destroy (Hapus Data)
         Route::delete('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'destroy'])->name('pembayaran_fasilitas.destroy');
 

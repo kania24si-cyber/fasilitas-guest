@@ -16,8 +16,8 @@ return new class extends Migration
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('tujuan', 200);
-            $table->enum('status', ['pending', 'disetujui', 'ditolak'])->default('pending');
-            $table->decimal('total_biaya', 10, 2)->nullable();
+            $table->enum('status', ['pending', 'disetujui', 'lunas', 'ditolak'])->default('pending');
+            $table->decimal('total_biaya', 15, 2)->nullable();
 
             $table->timestamps();
 

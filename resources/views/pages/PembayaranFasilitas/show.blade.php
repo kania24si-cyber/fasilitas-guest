@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-6 text-md-end">
             <p class="mb-2"><strong>Tanggal Pembayaran:</strong> {{ \Carbon\Carbon::parse($pembayaran->tanggal)->format('d-m-Y') }}</p>
-            <p class="mb-2"><strong>Jumlah:</strong> Rp {{ number_format($pembayaran->jumlah, 2, ',', '.') }}</p>
+            <p class="mb-2"><strong>Jumlah:</strong> Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</p>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
     <!-- Menampilkan media terkait pembayaran fasilitas -->
     <h4 class="mb-4">Resi Pembayaran dan Dokumen Terkait:</h4>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach($media as $m)
+        @forelse($media as $m)
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center">
@@ -38,6 +38,10 @@
                         @endphp
                         <img src="{{ $fileExists ? asset('storage/uploads/media/'.$m->file_name) : $placeholderImage }}" 
                              class="img-fluid" alt="Resi" style="max-width: 200px;">
+                        <!-- Tombol download untuk gambar -->
+                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
+                            <i class="bi bi-download"></i> Download Resi
+                        </a>
                     @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
                         <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-danger btn-sm w-100 mt-2">
                             <i class="bi bi-file-earmark-pdf"></i> Download PDF
@@ -51,12 +55,21 @@
                             <i class="bi bi-file-earmark-excel"></i> Download XLSX
                         </a>
                     @else
+                        <!-- Jika tidak ada gambar atau file, tampilkan placeholder -->
                         <img src="{{ $placeholderImage }}" class="img-fluid" alt="Tidak Ada Gambar" style="max-width: 200px;">
                     @endif
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <img src="{{ $placeholderImage }}" class="img-fluid" alt="Tidak Ada Gambar" style="max-width: 200px;">
+                </div>
+            </div>
+        </div>
+        @endforelse
     </div>
 
     <!-- Tombol untuk kembali ke daftar pembayaran -->

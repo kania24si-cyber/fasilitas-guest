@@ -15,7 +15,7 @@
                     <select name="pinjam_id" class="form-control" required>
                         <option value="">-- Pilih Peminjaman --</option>
                         @foreach($peminjaman as $p)
-                        <option value="{{ $p->pinjam_id }}">{{ $p->tujuan }} - {{ $p->fasilitas->nama }}</option>
+                            <option value="{{ $p->pinjam_id }}">{{ $p->tujuan }} - {{ $p->fasilitas->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -27,7 +27,7 @@
 
                 <div class="mb-3">
                     <label>Jumlah</label>
-                    <input type="number" name="jumlah" class="form-control" required>
+                    <input type="text" name="jumlah" class="form-control" value="{{ old('jumlah') }}" placeholder="Masukkan Jumlah" required>
                 </div>
             </div>
 
@@ -49,10 +49,12 @@
                     <textarea name="keterangan" class="form-control"></textarea>
                 </div>
 
-                <div class="mb-3">
-                    <label>Upload Resi (boleh banyak)</label>
-                    <input type="file" name="files[]" class="form-control" multiple>
-                </div>
+                @if(auth()->check() && auth()->user()->role === 'admin')
+                    <div class="mb-3">
+                        <label>Upload Resi (boleh banyak)</label>
+                        <input type="file" name="files[]" class="form-control" multiple>
+                    </div>
+                @endif
             </div>
         </div>
 
