@@ -11,35 +11,58 @@
         @endif
     </div>
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text"
-                           name="search"
-                           class="form-control"
-                           placeholder="Cari nama syarat..."
-                           value="{{ request('search') }}">
-                    <button class="btn btn-primary">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <button class="btn btn-success w-100">Filter</button>
-            </div>
-
-            @if(request()->has('search'))
-                <div class="col-md-2">
-                    <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-secondary w-100">
-                        Reset
-                    </a>
-                </div>
-            @endif
+{{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-3">
+    <div class="d-flex align-items-center gap-3">
+        
+        <!-- Search by name -->
+        <div class="input-group" style="max-width: 250px;"> <!-- Mengatur lebar input pencarian -->
+            <input type="text"
+                   name="search"
+                   class="form-control form-control-sm"
+                   placeholder="Cari nama syarat..."
+                   value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm">
+                <i class="bi bi-search"></i>
+            </button>
         </div>
-    </form>
+
+        <!-- Filter by fasilitas_id with Icon -->
+        <div style="max-width: 220px; position: relative;"> <!-- Lebarkan dropdown filter -->
+            <!-- Add icon inside the select container -->
+            <select name="fasilitas_id" class="form-control form-control-sm">
+                <option value="">Pilih Fasilitas</option>
+                @if($fasilitas->isEmpty())
+                    <option disabled>Tidak ada fasilitas tersedia</option>
+                @else
+                    @foreach ($fasilitas as $fasilitasItem)
+                        <option value="{{ $fasilitasItem->fasilitas_id }}" 
+                                @if(request('fasilitas_id') == $fasilitasItem->fasilitas_id) selected @endif>
+                            {{ $fasilitasItem->nama }}
+                        </option>
+                    @endforeach
+                @endif
+            </select>
+            <!-- Icon for select dropdown -->
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+        </div>
+
+        <!-- Tombol Filter -->
+        <button type="submit" class="btn btn-success btn-sm">Filter</button>
+
+        <!-- Tombol Reset -->
+        @if(request()->has('search') || request()->has('fasilitas_id'))
+            <div>
+                <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-secondary btn-sm">
+                    Reset
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
+
 
     {{-- CARD DISPLAY --}}
     <div class="row">

@@ -51,11 +51,13 @@
            =============================== */
         .logo-container {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px; /* Adjust spacing between logos */
         }
 
         .logo-container img {
             max-width: 110px;
+            display: block;
+            margin: 0 auto 15px; /* Align logos in the center and add bottom margin */
         }
 
         /* ===============================
@@ -128,7 +130,10 @@
         <div class="card-body">
 
             <div class="logo-container">
-                <img src="{{ asset('assets/img/logo3.png') }}" alt="Logo DesaSface">
+                <!-- Logo pertama -->
+                <img src="{{ asset('assets/img/logo11.png') }}" alt="Logo DesaSface">
+                <!-- Logo kedua di bawah logo pertama -->
+                <img src="{{ asset('assets/img/logo9.png') }}" alt="Logo DesaSface 9">
             </div>
 
             <h5 class="card-title">Form Login</h5>

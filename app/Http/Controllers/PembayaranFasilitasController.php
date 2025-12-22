@@ -80,21 +80,15 @@ class PembayaranFasilitasController extends Controller
                     'sort_order' => 0,
                     'created_at' => now(),
                     'updated_at' => now(),
-                ]);
+                  ]);
             }
         }
-
-        // ✅ SETELAH BERHASIL → ARAHKAN KE INDEX
-        return redirect()
-            ->route('pembayaran_fasilitas.index')
-            ->with('success', 'Pembayaran berhasil disimpan!');
     }
 
-    // ❗ TETAP ADA (TIDAK DIHAPUS)
+    // Redirect ke halaman index dengan pesan sukses
     return redirect()
-        ->route('auth.index')
-        ->with('error', 'Anda harus login terlebih dahulu!');
-
+        ->route('pembayaran_fasilitas.index')
+        ->with('success', 'Pembayaran berhasil disimpan!');
 }
 
     public function edit($id)

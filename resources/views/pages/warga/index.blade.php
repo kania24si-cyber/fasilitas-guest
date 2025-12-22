@@ -8,42 +8,58 @@
             <i class="bi bi-person-plus"></i> Tambah Warga
         </a>
     </div>
+{{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-4">
+    <div class="d-flex align-items-center gap-3">
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-3">
-                <select name="jenis_kelamin" class="form-control">
-                    <option value="">-- Filter Jenis Kelamin --</option>
-                    <option value="Laki-laki" {{ request('jenis_kelamin')=='Laki-laki'?'selected':'' }}>Laki-laki</option>
-                    <option value="Perempuan" {{ request('jenis_kelamin')=='Perempuan'?'selected':'' }}>Perempuan</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select name="agama" class="form-control">
-                    <option value="">-- Filter Agama --</option>
-                    <option value="Islam" {{ request('agama')=='Islam'?'selected':'' }}>Islam</option>
-                    <option value="Kristen" {{ request('agama')=='Kristen'?'selected':'' }}>Kristen</option>
-                    <option value="Katolik" {{ request('agama')=='Katolik'?'selected':'' }}>Katolik</option>
-                    <option value="Hindu" {{ request('agama')=='Hindu'?'selected':'' }}>Hindu</option>
-                    <option value="Buddha" {{ request('agama')=='Buddha'?'selected':'' }}>Buddha</option>
-                    <option value="Konghucu" {{ request('agama')=='Konghucu'?'selected':'' }}>Konghucu</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari nama / KTP / email..." value="{{ request('search') }}">
-                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-            <div class="col-md-2 d-flex gap-2">
-                <button class="btn btn-success w-100">Filter</button>
-                @if(request()->has('search') || request()->has('jenis_kelamin') || request()->has('agama'))
-                <a href="{{ route('warga.index') }}" class="btn btn-secondary w-100">Reset</a>
-                @endif
-            </div>
+        {{-- SEARCH --}}
+        <div class="input-group" style="max-width: 250px;">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / KTP / email..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button> <!-- Tombol pencarian dengan ikon -->
         </div>
-    </form>
+
+       {{-- FILTER JENIS KELAMIN --}}
+<div style="max-width: 350px; position: relative;"> <!-- Lebarkan dropdown filter menjadi 280px -->
+    <select name="jenis_kelamin" class="form-control form-control-sm">
+        <option value="">Jenis Kelamin</option>
+        <option value="Laki-laki" {{ request('jenis_kelamin')=='Laki-laki'?'selected':'' }}>Laki-laki</option>
+        <option value="Perempuan" {{ request('jenis_kelamin')=='Perempuan'?'selected':'' }}>Perempuan</option>
+    </select>
+    <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i> <!-- Icon di dalam container filter -->
+</div>
+
+{{-- FILTER AGAMA --}}
+<div style="max-width: 350px; position: relative;"> <!-- Lebarkan dropdown filter menjadi 280px -->
+    <select name="agama" class="form-control form-control-sm">
+        <option value="">Agama</option>
+        <option value="Islam" {{ request('agama')=='Islam'?'selected':'' }}>Islam</option>
+        <option value="Kristen" {{ request('agama')=='Kristen'?'selected':'' }}>Kristen</option>
+        <option value="Katolik" {{ request('agama')=='Katolik'?'selected':'' }}>Katolik</option>
+        <option value="Hindu" {{ request('agama')=='Hindu'?'selected':'' }}>Hindu</option>
+        <option value="Buddha" {{ request('agama')=='Buddha'?'selected':'' }}>Buddha</option>
+        <option value="Konghucu" {{ request('agama')=='Konghucu'?'selected':'' }}>Konghucu</option>
+    </select>
+    <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i> <!-- Icon di dalam container filter -->
+</div>
+
+
+        {{-- BUTTON FILTER --}}
+        <div>
+            <button type="submit" class="btn btn-success btn-sm">Filter</button>
+        </div>
+
+        {{-- BUTTON RESET --}}
+        @if(request()->has('search') || request()->has('jenis_kelamin') || request()->has('agama'))
+            <div>
+                <a href="{{ route('warga.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
 
     <div class="row">
         @forelse ($data as $item)
@@ -69,7 +85,7 @@
                         <div class="d-flex justify-content-between mt-3">
 
                         <!-- Tombol Detail -->
-                            <a href="{{ route('warga.show', $item->warga_id) }}" class="btn btn-info btn-sm">Detail</a>
+                            <a href="{{ route('warga.show', $item->warga_id) }}" class="btn btn-info btn-sm btn-detail">Detail</a>
                             <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>

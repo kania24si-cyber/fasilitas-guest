@@ -12,37 +12,48 @@
         @endif
     </div>
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-3">
-                <select name="jenis" class="form-control">
-                    <option value="">-- Filter Jenis --</option>
-                    <option value="Ruang Publik" {{ request('jenis')=='Ruang Publik'?'selected':'' }}>Ruang Publik</option>
-                    <option value="Olahraga" {{ request('jenis')=='Olahraga'?'selected':'' }}>Olahraga</option>
-                    <option value="Kesehatan" {{ request('jenis')=='Kesehatan'?'selected':'' }}>Kesehatan</option>
-                    <option value="Pendidikan" {{ request('jenis')=='Pendidikan'?'selected':'' }}>Pendidikan</option>
-                </select>
-            </div>
-
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari nama / alamat..." value="{{ request('search') }}">
-                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <button class="btn btn-success w-100">Filter</button>
-            </div>
-
-            @if(request()->has('search') || request()->has('jenis'))
-            <div class="col-md-2">
-                <a href="{{ route('fasilitas.index') }}" class="btn btn-secondary w-100">Reset</a>
-            </div>
-            @endif
+   {{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-4">
+    <div class="d-flex align-items-center gap-3">
+        
+        <!-- Search -->
+        <div class="input-group" style="max-width: 250px;"> <!-- Mengatur lebar input pencarian -->
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / alamat..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm">
+                <i class="bi bi-search"></i> <!-- Menambahkan ikon pencarian -->
+            </button>
         </div>
-    </form>
+
+        <!-- Filter Jenis with Icon -->
+        <div style="max-width: 220px; position: relative;">
+            <select name="jenis" class="form-control form-control-sm">
+                <option value="">Jenis</option>
+                <option value="Ruang Publik" {{ request('jenis')=='Ruang Publik'?'selected':'' }}>Ruang Publik</option>
+                <option value="Olahraga" {{ request('jenis')=='Olahraga'?'selected':'' }}>Olahraga</option>
+                <option value="Kesehatan" {{ request('jenis')=='Kesehatan'?'selected':'' }}>Kesehatan</option>
+                <option value="Pendidikan" {{ request('jenis')=='Pendidikan'?'selected':'' }}>Pendidikan</option>
+            </select>
+            <!-- Icon for select dropdown -->
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i> <!-- Menambahkan ikon dropdown -->
+        </div>
+
+        <!-- Tombol Filter -->
+        <button type="submit" class="btn btn-success btn-sm">Filter</button> <!-- Menambahkan btn-sm untuk tombol filter -->
+
+        <!-- Tombol Reset -->
+        @if(request()->has('search') || request()->has('jenis'))
+            <div>
+                <a href="{{ route('fasilitas.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Reset <!-- Menambahkan ikon reset -->
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
+
+
 
     @php
     $placeholderImage = asset('assets/img/placeholder.jpg');

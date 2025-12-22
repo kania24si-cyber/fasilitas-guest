@@ -11,36 +11,45 @@
         @endif
     </div>
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-3">
-                <select name="metode" class="form-control">
-                    <option value="">-- Filter Metode --</option>
-                    @foreach($metodes as $metode)
-                        <option value="{{ $metode }}" {{ request('metode') == $metode ? 'selected' : '' }}>{{ $metode }}</option>
-                    @endforeach
-                </select>
-            </div>
 
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari tujuan peminjaman..." value="{{ request('search') }}">
-                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
+{{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-4">
+    <div class="d-flex align-items-center gap-3">
 
-            <div class="col-md-2">
-                <button class="btn btn-success w-100">Filter</button>
-            </div>
-
-            @if(request()->has('search') || request()->has('metode'))
-            <div class="col-md-2">
-                <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-secondary w-100">Reset</a>
-            </div>
-            @endif
+        <!-- Search -->
+        <div class="input-group" style="max-width: 250px;"> <!-- Mengatur lebar input pencarian -->
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari tujuan peminjaman..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button> <!-- Menambahkan btn-sm untuk ukuran kecil -->
         </div>
-    </form>
+
+       <!-- Filter Metode with Icon inside -->
+        <div style="max-width: 280px; position: relative;"> <!-- Lebarkan dropdown filter menjadi 280px -->
+            <select name="metode" class="form-control form-control-sm">
+                <option value="">Metode</option>
+                @foreach($metodes as $metode)
+                    <option value="{{ $metode }}" {{ request('metode') == $metode ? 'selected' : '' }}>{{ $metode }}</option>
+                @endforeach
+            </select>
+            <!-- Icon for select dropdown -->
+            <i class="bi bi-chevron-down position-absolute" style="right: 5px; top: 50%; transform: translateY(-50%);"></i> <!-- Menambahkan ikon dropdown di dalam container -->
+        </div>
+
+
+        <!-- Tombol Filter -->
+        <button type="submit" class="btn btn-success btn-sm">Filter</button> <!-- Menambahkan btn-sm untuk tombol filter -->
+
+        <!-- Tombol Reset -->
+        @if(request()->has('search') || request()->has('metode'))
+            <div>
+                <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Reset <!-- Menambahkan ikon reset -->
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
 
     {{-- Card Display --}}
     <div class="row">

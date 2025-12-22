@@ -1,157 +1,128 @@
 @extends('layouts.guest.app')
 
 @section('content')
-<section class="background-section"> 
-    <!-- Tombol Kembali ke About (KANAN BAWAH) -->
+<div class="whatsapp-page">
+
+    <!-- Tombol Back -->
     <a href="{{ route('about') }}" class="back-to-about-btn">
         <i class="bi bi-arrow-left-circle"></i> Kembali ke About
     </a>
-    
-    <!-- Gambar background -->
-    <img src="{{ asset('assets/img/backgroundwhatsapp.jpg') }}" alt="Background" class="background-image">
-    
+
     <div class="content-container">
         <h1>Hubungi Kami!</h1>
         <p>
             Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami melalui WhatsApp.
             Kami siap membantu Anda.
         </p>
-        
-        <!-- Button WhatsApp -->
-        <a href="https://wa.me/6282261042427?text=Halo%20DesaSface!%20Saya%20ingin%20bertanya%20tentang%20website%20ini."
-           class="whatsapp-btn" target="_blank" title="Chat via WhatsApp">
+
+        <a href="https://wa.me/6282261042427?text=Halo%20DesaSface!"
+           class="whatsapp-btn" target="_blank">
             <i class="bi bi-whatsapp"></i> Hubungi Kami di WhatsApp
         </a>
 
-        <!-- Tooltip -->
         <div class="whatsapp-tooltip">
             Silahkan hubungi jika ada pertanyaan 😊
         </div>
     </div>
-</section>
+</div>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-    section {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        overflow: hidden;
-    }
+/* ===============================
+   FULL PAGE BACKGROUND FOTO
+   =============================== */
+.whatsapp-page {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url("{{ asset('assets/img/whatsapp.jpg') }}"); /* ✅ FOTO TETAP ADA */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-    /* ===============================
-       BACK TO ABOUT (KANAN BAWAH)
-       =============================== */
-    .back-to-about-btn {
-        position: fixed; /* ⬅️ FIXED biar selalu nempel layar */
-        bottom: 25px;
-        right: 25px;
-        padding: 12px 25px;
-        background-color: #25D366;
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-        z-index: 10;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-    .back-to-about-btn:hover {
-        background-color: #1da918;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-        transform: translateY(-3px);
-        color: white;
-    }
+/* ===============================
+   BACK BUTTON
+   =============================== */
+.back-to-about-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    padding: 12px 25px;
+    background-color: #25D366;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    z-index: 10;
+}
 
-    .back-to-about-btn i {
-        margin-right: 8px;
-        font-size: 20px;
-    }
+.back-to-about-btn:hover {
+    background-color: #1da918;
+    transform: translateY(-3px);
+}
 
-    /* Background Image */
-    .background-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-    }
+/* ===============================
+   CONTENT CARD
+   =============================== */
+.content-container {
+    text-align: center;
+    background-color: rgba(255,255,255,0.88);
+    padding: 40px;
+    border-radius: 18px;
+    max-width: 600px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
 
-    .content-container {
-        text-align: center;
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 600px;
-        font-family: 'Poppins', sans-serif;
-    }
+h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
 
-    h1 {
-        font-size: 40px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: #333;
-    }
+p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
 
-    p {
-        font-size: 18px;
-        margin-bottom: 30px;
-        color: #555;
-    }
+/* ===============================
+   WHATSAPP BUTTON
+   =============================== */
+.whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    padding: 18px 35px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
 
-    .whatsapp-btn {
-        background-color: #25D366;
-        color: white;
-        padding: 18px 35px;
-        border-radius: 50px;
-        display: inline-flex;
-        align-items: center;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
+.whatsapp-btn i {
+    margin-right: 15px;
+    font-size: 24px;
+}
 
-    .whatsapp-btn:hover {
-        background-color: #1da918;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        transform: scale(1.05);
-    }
+.whatsapp-btn:hover {
+    background-color: #1da918;
+}
 
-    .whatsapp-btn i {
-        margin-right: 15px;
-        font-size: 24px;
-    }
-
-    .whatsapp-tooltip {
-        background-color: #25D366;
-        color: #b1ef90;
-        padding: 10px 18px;
-        border-radius: 15px;
-        font-size: 14px;
-        margin-top: 15px;
-        font-weight: bold;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease;
-    }
-
-    .whatsapp-btn:hover + .whatsapp-tooltip {
-        opacity: 1;
-        visibility: visible;
-    }
+/* Tooltip */
+.whatsapp-tooltip {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #25D366;
+    font-weight: bold;
+}
 </style>
 @endsection

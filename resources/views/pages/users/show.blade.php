@@ -2,7 +2,9 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+
+    {{-- Tombol Kembali ke Index (ATAS) --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Detail User</h4>
         <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left"></i> Kembali ke Daftar User
@@ -17,8 +19,10 @@
         </div>
     @endif
 
+    {{-- Card Detail User --}}
     <div class="card shadow-sm border-0">
         <div class="card-body">
+
             <div class="row mb-4">
                 {{-- Foto Profil --}}
                 <div class="col-md-3 d-flex justify-content-center align-items-center">
@@ -31,7 +35,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 {{-- Informasi User --}}
                 <div class="col-md-9">
                     <h4 class="card-title mb-0">{{ $user->name }}</h4>
@@ -76,7 +80,18 @@
                     </button>
                 </form>
             </div>
+
         </div>
     </div>
+
+    {{-- Tombol Kembali ke Index (BAWAH) --}}
+    <div class="mt-3">
+        <a href="{{ route('users.index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Kembali ke Daftar User
+        </a>
+    </div>
+
 </div>
+
+
 @endsection

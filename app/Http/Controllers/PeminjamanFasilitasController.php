@@ -139,7 +139,7 @@ class PeminjamanFasilitasController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'tujuan' => 'required|string',
-            'total_biaya' => 'nullable|numeric',
+            'total_biaya' => 'required|numeric',
             'status' => 'nullable|in:pending,disetujui,ditolak',
         ]);
 

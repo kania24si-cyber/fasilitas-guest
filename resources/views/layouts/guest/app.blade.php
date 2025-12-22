@@ -9,7 +9,7 @@
     <meta name="description" content="Dashboard Guest - DesaSface">
 
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/logo6.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/logo10.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">

@@ -19,11 +19,42 @@
 
 {{-- Pencarian --}}
 <form method="GET" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="Cari nama atau email..." value="{{ request('search') }}">
-        <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+    <div class="d-flex align-items-center gap-3">
+        
+        <!-- Pencarian -->
+        <div class="input-group" style="max-width: 250px;"> <!-- Mengatur lebar input pencarian -->
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama atau email..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+        </div>
+
+        <!-- Filter Role with Icon -->
+        <div style="max-width: 280px; position: relative;"> <!-- Lebarkan dropdown filter menjadi 280px -->
+            <select name="role" class="form-control form-control-sm">
+                <option value="">Role</option>
+                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                <option value="guest" {{ request('role') == 'guest' ? 'selected' : '' }}>Guest</option>
+            </select>
+            <!-- Icon for select dropdown -->
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+        </div>
+
+        <!-- Tombol Filter -->
+        <button type="submit" class="btn btn-success btn-sm">Filter</button>
+
+        <!-- Tombol Reset -->
+        @if(request()->has('search') || request()->has('role'))
+            <div>
+                <a href="{{ route('syarat_fasilitas.index') }}" class="btn btn-secondary btn-sm">
+                    Reset
+                </a>
+            </div>
+        @endif
     </div>
 </form>
+
+
+
+
 
 <div class="row">
     @forelse ($users as $user)

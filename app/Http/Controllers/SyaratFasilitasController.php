@@ -23,10 +23,11 @@ class SyaratFasilitasController extends Controller
         ->paginate(10)
         ->withQueryString();
 
+    $fasilitas = FasilitasUmum::all(); 
     // Path for the placeholder image
     $placeholderImage = asset('assets/img/placeholder.jpg'); // Make sure this is correct
 
-    return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'placeholderImage'));
+     return view('pages.SyaratFasilitas.index', compact('syaratFasilitas', 'placeholderImage', 'fasilitas'));
 }
 
 

@@ -11,72 +11,71 @@
         @endif
     </div>
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
+{{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-4">
+    <div class="d-flex align-items-center gap-3">
 
-            {{-- FILTER STATUS --}}
-            <div class="col-md-3">
-                <select name="status" class="form-control">
-                    <option value="">-- Filter Status --</option>
-                    <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
-                    <option value="disetujui" {{ request('status')=='disetujui'?'selected':'' }}>Disetujui</option>
-                    <option value="lunas" {{ request('status')=='lunas'?'selected':'' }}>Lunas</option>
-                    <option value="ditolak" {{ request('status')=='ditolak'?'selected':'' }}>Ditolak</option>
-                </select>
-            </div>
-
-            {{-- FILTER WARGA --}}
-            <div class="col-md-3">
-                <select name="warga_id" class="form-control">
-                    <option value="">-- Filter Warga --</option>
-                    @foreach($warga as $w)
-                        <option value="{{ $w->warga_id }}" {{ request('warga_id')==$w->warga_id?'selected':'' }}>
-                            {{ $w->nama }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- FILTER FASILITAS --}}
-            <div class="col-md-3">
-                <select name="fasilitas_id" class="form-control">
-                    <option value="">-- Filter Fasilitas --</option>
-                    @foreach($fasilitas as $f)
-                        <option value="{{ $f->fasilitas_id }}" {{ request('fasilitas_id')==$f->fasilitas_id?'selected':'' }}>
-                            {{ $f->nama }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- SEARCH --}}
-            <div class="col-md-3">
-                <div class="input-group">
-                    <input type="text"
-                           name="search"
-                           class="form-control"
-                           placeholder="Cari tujuan..."
-                           value="{{ request('search') }}">
-                    <button class="btn btn-primary">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
-
-            {{-- BUTTON FILTER --}}
-            <div class="col-md-2 mt-2">
-                <button class="btn btn-success w-100">Filter</button>
-            </div>
-
-            {{-- BUTTON RESET --}}
-            @if(request()->has('search') || request()->has('status') || request()->has('warga_id') || request()->has('fasilitas_id'))
-            <div class="col-md-2 mt-2">
-                <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary w-100">Reset</a>
-            </div>
-            @endif
+        {{-- FILTER STATUS --}}
+        <div class="position-relative" style="max-width: 220px;">
+            <select name="status" class="form-control form-control-sm">
+                <option value="">Status</option>
+                <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
+                <option value="disetujui" {{ request('status')=='disetujui'?'selected':'' }}>Disetujui</option>
+                <option value="lunas" {{ request('status')=='lunas'?'selected':'' }}>Lunas</option>
+                <option value="ditolak" {{ request('status')=='ditolak'?'selected':'' }}>Ditolak</option>
+            </select>
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
         </div>
-    </form>
+
+        {{-- FILTER WARGA --}}
+        <div class="position-relative" style="max-width: 220px;">
+            <select name="warga_id" class="form-control form-control-sm">
+                <option value="">Warga</option>
+                @foreach($warga as $w)
+                    <option value="{{ $w->warga_id }}" {{ request('warga_id')==$w->warga_id?'selected':'' }}>
+                        {{ $w->nama }}
+                    </option>
+                @endforeach
+            </select>
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+        </div>
+
+        {{-- FILTER FASILITAS --}}
+        <div class="position-relative" style="max-width: 220px;">
+            <select name="fasilitas_id" class="form-control form-control-sm">
+                <option value="">Fasilitas</option>
+                @foreach($fasilitas as $f)
+                    <option value="{{ $f->fasilitas_id }}" {{ request('fasilitas_id')==$f->fasilitas_id?'selected':'' }}>
+                        {{ $f->nama }}
+                    </option>
+                @endforeach
+            </select>
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+        </div>
+
+        {{-- SEARCH --}}
+        <div class="input-group" style="max-width: 250px;">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari tujuan..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        {{-- BUTTON FILTER --}}
+        <button type="submit" class="btn btn-success btn-sm">Filter</button>
+
+        {{-- BUTTON RESET --}}
+        @if(request()->has('search') || request()->has('status') || request()->has('warga_id') || request()->has('fasilitas_id'))
+            <div>
+                <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
 
     <div class="row">
         @forelse ($data as $item)

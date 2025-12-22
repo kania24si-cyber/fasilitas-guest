@@ -11,36 +11,43 @@
         @endif
     </div>
 
-    {{-- FILTER & SEARCH --}}
-    <form method="GET" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-3">
-                <select name="fasilitas" class="form-control">
-                    <option value="">-- Filter Fasilitas --</option>
-                    @foreach($fasilitas as $f)
-                        <option value="{{ $f->id }}" {{ request('fasilitas') == $f->id ? 'selected' : '' }}>{{ $f->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
+  {{-- FILTER & SEARCH --}}
+<form method="GET" class="mb-4">
+    <div class="d-flex align-items-center gap-3">
 
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari nama petugas..." value="{{ request('search') }}">
-                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <button class="btn btn-success w-100">Filter</button>
-            </div>
-
-            @if(request()->has('search') || request()->has('fasilitas'))
-            <div class="col-md-2">
-                <a href="{{ route('petugas.index') }}" class="btn btn-secondary w-100">Reset</a>
-            </div>
-            @endif
+        {{-- SEARCH --}}
+        <div class="input-group" style="max-width: 250px;">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama petugas..." value="{{ request('search') }}">
+            <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button> <!-- Tombol pencarian dengan ikon -->
         </div>
-    </form>
+
+        {{-- FILTER FASILITAS WITH ICON IN CONTAINER --}}
+        <div style="max-width: 220px; position: relative;" class="d-flex align-items-center">
+            <select name="fasilitas" class="form-control form-control-sm">
+                <option value="">Fasilitas</option>
+                @foreach($fasilitas as $f)
+                    <option value="{{ $f->id }}" {{ request('fasilitas') == $f->id ? 'selected' : '' }}>{{ $f->nama }}</option>
+                @endforeach
+            </select>
+            <!-- Icon inside the select container -->
+            <i class="bi bi-chevron-down position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i> <!-- Ikon berada di dalam container dropdown -->
+        </div>
+
+        {{-- BUTTON FILTER --}}
+        <button type="submit" class="btn btn-success btn-sm">Filter</button> <!-- Tombol filter di sebelah filter -->
+
+        {{-- BUTTON RESET --}}
+        @if(request()->has('search') || request()->has('fasilitas'))
+            <div>
+                <a href="{{ route('petugas.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </a>
+            </div>
+        @endif
+    </div>
+</form>
+
+
 
     {{-- Card Display --}}
     <div class="row">

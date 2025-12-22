@@ -1,218 +1,476 @@
 <style>
-/* HEADER 1 - Bagian Atas (Logo dan Icon Menu Profesional) */
+/* =========================================================
+   HEADER 1 - Bagian Atas (Logo dan Icon Menu Profesional)
+   (TIDAK DIUBAH)
+========================================================= */
 #header {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 999;
-    background-color: rgba(79, 198, 99, 1); /* Warna hijau terang untuk bagian atas header */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Bayangan lebih halus */
-    padding: 0px 0; /* Mengurangi padding agar header lebih kompak */
-    border-bottom: 0px solid #333; /* Menambahkan garis pemisah yang lebih tipis */
+    background-color: rgba(79, 198, 99, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 0px 0;
+    border-bottom: 0px solid #333;
 }
 
-/* Logo dan Menu Icon */
 #header .container-xl {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Menyusun elemen-elemen ke kiri dan kanan */
-    padding: 0 15px; /* Mengurangi padding agar lebih ringkas */
+    justify-content: space-between;
+    padding: 0 8;
 }
 
-/* Ukuran Ikon Hamburger - Sama untuk pengguna login dan tidak login */
 #menu-icon, #hamburger-icon {
-    font-size: 2rem; /* Ukuran ikon besar sama untuk keduanya */
+    font-size: 2rem;
     background: none;
     border: none;
-    z-index: 1100; /* Memastikan ikon berada di atas elemen lain */
+    z-index: 1100;
 }
 
-/* Ikon Hamburger */
 #hamburger-icon i {
-    color: #ffffffff; /* Warna hijau untuk ikon */
-    font-size: 2rem; /* Ukuran ikon */
+    color: #ffffffff;
+    font-size: 2rem;
 }
 
 #hamburger-icon:hover i {
-    color: #1da918ff; /* Warna hijau lebih gelap saat hover */
+    color: #1da918ff;
 }
 
-/* Logo */
 .logo {
     display: flex;
     align-items: center;
-    margin-left: 50px; /* Memberikan sedikit jarak di kiri logo */
+    margin-left: 35px;
 }
 
 .logo img {
-    width: 30px; /* Mengecilkan ukuran logo */
-    height: 30px; /* Mengecilkan ukuran logo */
+    width: 50px;
+    height: 50px;
 }
 
-/* Dropdown Menu */
 .dropdown-menu {
-    position: absolute; /* Agar dropdown muncul di bawah ikon menu */
-    top: 100%; /* Dropdown muncul tepat di bawah tombol menu */
-    left: 0; /* Menyelaraskan dropdown dengan tombol menu */
-    display: none; /* Menyembunyikan dropdown secara default */
-    z-index: 1000; /* Memastikan dropdown di atas elemen lain */
-    background-color: #98dc93ff; /* Warna latar belakang dropdown */
-    width: auto; /* Menyesuaikan lebar dropdown */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan untuk dropdown */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    z-index: 1000;
+    background-color: #98dc93ff;
+    width: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Tampilkan dropdown ketika 'show' class ditambahkan */
 .dropdown-menu.show {
-    display: block; /* Menampilkan dropdown saat toggle */
+    display: block;
 }
 
-/* Header Kedua - Navbar */
+/* ===============================
+   HAMBURGER ICON → HIJAU TERANG
+================================ */
+
+/* Hamburger icon default */
+#hamburger-icon i,
+#menu-icon i {
+    color: #bef7bcff; /* hijau terang */
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+#hamburger-icon:hover i,
+#menu-icon:hover i {
+    color: #224b05ff; /* hijau WhatsApp (lebih terang) */
+    transform: scale(1.1);
+}
+
+/* ===============================
+   WARNA ISI DROPDOWN HAMBURGER
+   (TAMBAHAN SAJA)
+================================ */
+
+/* Background dropdown */
+#hamburger-icon + .dropdown-menu,
+#menu-icon + .dropdown-menu {
+    background-color: #dcffdaff; /* hijau muda lembut */
+}
+
+/* Teks item dropdown */
+#hamburger-icon + .dropdown-menu .dropdown-item,
+#menu-icon + .dropdown-menu .dropdown-item {
+    color: #224b05ff; /* hijau gelap */
+    font-weight: 600;
+}
+
+/* Icon di dalam dropdown */
+#hamburger-icon + .dropdown-menu .dropdown-item i,
+#menu-icon + .dropdown-menu .dropdown-item i {
+    color: #158b46ff;
+}
+
+/* Hover item dropdown */
+#hamburger-icon + .dropdown-menu .dropdown-item:hover,
+#menu-icon + .dropdown-menu .dropdown-item:hover {
+    background: rgba(34, 75, 5, 0.15);
+    color: #0f6b34ff;
+}
+
+/* Hover icon */
+#hamburger-icon + .dropdown-menu .dropdown-item:hover i,
+#menu-icon + .dropdown-menu .dropdown-item:hover i {
+    color: #0f6b34ff;
+}
+/* ===============================
+   HEADER 2 - NAVBAR FIX
+================================ */
+
+/* Navbar container */
 .navbar-container {
-    background-color: #98dc93ff; /* Warna navbar yang gelap untuk pemisahan yang jelas */
-    padding: 2px 0; /* Padding untuk navbar agar lebih tipis */
-    width: 100%; /* Navbar memenuhi lebar layar */
-    margin-top: 10px; /* Memberikan jarak antara header 1 dan 2 */
+    background-color: #efffeeff;
+    padding: 2px 0;
+    width: 100%;
+    margin-top: 10px;
 }
 
-/* Styling untuk Navbar */
+/* Navbar utama */
 .navbar {
     display: flex;
-    justify-content: center; /* Menyusun navbar ke tengah */
+    align-items: center;
     width: 100%;
+    padding: 0 15px;
 }
 
+/* List menu */
 .navbar ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
-    justify-content: center; /* Menyusun item navbar ke tengah */
-    width: 100%; /* Navbar memenuhi lebar yang ada */
+    width: 100%;
+    gap: 10px; /* jarak antar menu */
 }
 
+/* Logo header 2 selalu di kiri */
+.header2-logo {
+    display: flex;
+    align-items: center;
+    margin-left: 40px; /* Memberikan jarak kecil ke kanan */
+}
+
+/* Navbar center (About untuk guest) */
+.navbar-center {
+    display: flex;
+    justify-content: center; /* posisikan isi di tengah */
+    flex: 1; /* ambil sisa ruang di antara logo & menu kanan */
+    position: absolute; /* untuk guest */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Link di navbar-center */
+.navbar-center a {
+    color: #158b46ff;             /* Sama dengan menu lainnya */
+    font-weight: 600;             /* Konsisten dengan menu lainnya */
+    font-size: 18px;              /* Serasi dengan ukuran menu */
+    text-decoration: none;
+    padding: 8px 15px;           /* Sedikit lebih lebar untuk tampilan */
+    border-radius: 8px;          /* Tidak terlalu bulat, lebih natural */
+    transition: all 0.3s ease;   /* Transisi halus untuk semua efek */
+    background-color: transparent; /* Menghilangkan background */
+}
+
+/* Hover dan active state */
+.navbar-center a:hover,
+.navbar-center a.active {
+    color: rgba(79, 198, 99, 1);               /* Ubah teks menjadi putih saat hover */
+    background-color: transparent; /* Tidak ada background */
+    transform: translateY(-3px);    /* Efek hover lebih ringan */
+}
+
+/* Efek ketika item dalam keadaan aktif */
+.navbar-center a:active {
+    color: #4c921bff;              /* Warna teks tetap setelah klik */
+    background-color: transparent; /* Tidak ada background */
+    transform: translateY(1px);    /* Efek pergeseran ke bawah sedikit */
+}
+
+/*-----*/
+
+
+/* Menu utama untuk guest */
+body.guest .navbar ul {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Menu utama untuk user login */
+body.auth .navbar ul {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Dorong menu login/admin/user ke kanan, kecuali logo dan user dropdown */
+body.auth .navbar ul li.navbar-right {
+    margin-left: auto;  /* dorong menu login/admin/user ke kanan */
+}
+
+/* Item menu */
 .navbar ul li {
     position: relative;
-    padding: 10px 15px; /* Mengurangi padding item navbar */
+    padding: 0 10px;
 }
 
-/* Link Navbar */
+/* Link menu */
 .navbar ul li a {
-    color: #d2ffd3ff;
+    color: #158b46ff;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 13px;
     text-decoration: none;
-    transition: 0.3s ease;
-    border-radius: 5px; /* Menambahkan border radius untuk sudut yang lebih halus */
-    padding: 8px 12px; /* Padding lebih kecil */
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: color 0.3s ease, transform 0.2s ease;
 }
 
-/* Warna Hover untuk Setiap Item */
-.navbar ul li:nth-child(1) a:hover {
-    background-color: #6fa34f; /* Hijau lebih gelap untuk item pertama */
-}
-
-.navbar ul li:nth-child(2) a:hover {
-    background-color: #4c9f52; /* Hijau berbeda untuk item kedua */
-}
-
-.navbar ul li:nth-child(3) a:hover {
-    background-color: #3b8e45; /* Hijau lebih gelap untuk item ketiga */
-}
-
-.navbar ul li:nth-child(4) a:hover {
-    background-color: #4c8d47; /* Hijau lebih terang untuk item keempat */
-}
-
-.navbar ul li:nth-child(5) a:hover {
-    background-color: #357d3d; /* Hijau dengan sedikit warna biru untuk item kelima */
-}
-
-.navbar ul li:nth-child(6) a:hover {
-    background-color: #498b44; /* Warna hijau sedikit lebih tua untuk item keenam */
-}
-
-/* Hover dan Active State */
+/* Hover dan active state */
 .navbar ul li a:hover,
 .navbar ul li a.active {
-    color: #fff;
-    transform: translateY(-3px); /* Efek angkat tombol saat hover */
+    color: #30ff25ff;
+    transform: translateY(-2px);
 }
 
-/* Efek Tertekan pada Link ketika Diklik */
-.navbar ul li a:active {
-    background-color: #78b78b; /* Warna sedikit lebih gelap saat tertekan */
-    transform: translateY(2px); /* Efek menekan tombol ke bawah */
-    box-shadow: none; /* Menghapus bayangan saat tertekan */
-}
+/* ===============================
+   USER DROPDOWN (NAMA USER)
+================================ */
 
-/* Fokus pada Link */
-.navbar ul li a:focus {
-    outline: none; /* Menghilangkan outline default */
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1); /* Menambahkan efek fokus */
-    background-color: #78b78b; /* Menambahkan efek fokus dengan warna yang lebih gelap */
-}
-
-/* Mengubah ukuran menu ikon pada perangkat mobile */
-@media (max-width: 768px) {
-    #menu-icon, #hamburger-icon {
-        font-size: 1.5rem; /* Mengubah ukuran ikon pada perangkat mobile */
-    }
-
-    /* Menyusun menu navbar dalam kolom pada perangkat kecil */
-    .navbar ul {
-        flex-direction: column;
-        width: 100%;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    /* Mengatur link navbar lebih kecil pada perangkat kecil */
-    li a {
-        font-size: 14px;
-        padding: 8px 12px;
-    }
-
-    .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-    }
-
-    /* Styling untuk link "About" pada navbar */
-.navbar ul li a.about-link {
-    color: #d2ffd3ff;  /* Warna teks link sesuai dengan warna header */
-    font-weight: 600;
-    font-size: 18px;  /* Menyesuaikan ukuran font */
+/* Kontainer tombol user dropdown */
+#user-dropdown {
+    display: flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #efffeeff;
+    transition: all 0.3s ease;
     text-decoration: none;
-    padding: 8px 12px; /* Padding yang sesuai */
-    border-radius: 5px;
 }
 
-/* Warna Hover dan Active untuk link About */
-.navbar ul li a.about-link:hover,
-.navbar ul li a.about-link.active {
-    background-color: #6fa34f;  /* Warna hijau lebih gelap untuk hover */
-    color: #fff; /* Mengubah warna teks menjadi putih saat hover */
+/* Hover efek tombol user */
+#user-dropdown:hover {
+    background: rgba(21, 139, 70, 0.35);
+    transform: translateY(-1px);
 }
 
-/* Efek Tertekan pada Link About */
-.navbar ul li a.about-link:active {
-    background-color: #78b78b; /* Warna sedikit lebih gelap saat tertekan */
-    transform: translateY(2px); /* Efek menekan tombol ke bawah */
-    box-shadow: none; /* Menghapus bayangan saat tertekan */
+/* Avatar user */
+#user-dropdown img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #65ca8dff;
+    transition: transform 0.3s ease;
 }
 
-/* Fokus pada Link About */
-.navbar ul li a.about-link:focus {
-    outline: none; /* Menghilangkan outline default */
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1); /* Menambahkan efek fokus */
-    background-color: #78b78b; /* Efek fokus dengan warna lebih gelap */
+#user-dropdown:hover img {
+    transform: scale(1.05);
 }
+
+/* Nama user */
+#user-dropdown span {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f6b34ff; /* Hijau gelap */
+    white-space: nowrap;
+    margin-left: 6px;
+}
+
+/* Ikon caret dropdown (di tombol user) */
+#user-dropdown i {
+    color: #158b46ff; /* hijau utama */
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+#user-dropdown:hover i {
+    color: #0f6b34ff; /* hijau gelap saat hover */
+}
+
+/* Dropdown menu */
+#user-dropdown + .dropdown-menu {
+    border-radius: 14px;
+    padding: 8px;
+    min-width: 160px;
+    background-color: #efffeeff;
+}
+
+/* Teks dan tombol item dropdown */
+#user-dropdown + .dropdown-menu .dropdown-item,
+#user-dropdown + .dropdown-menu .dropdown-item button {
+    color: #224b05ff;
+    font-weight: 600;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Hover item dropdown */
+#user-dropdown + .dropdown-menu .dropdown-item:hover,
+#user-dropdown + .dropdown-menu .dropdown-item button:hover {
+    background: rgba(34, 75, 5, 0.15);
+    color: #0f6b34ff; /* hijau gelap */
+}
+
+/* Ikon dalam dropdown */
+#user-dropdown + .dropdown-menu .dropdown-item i,
+#user-dropdown + .dropdown-menu .dropdown-item button i {
+    color: #158b46ff; /* hijau utama */
+}
+
+#user-dropdown + .dropdown-menu .dropdown-item:hover i,
+#user-dropdown + .dropdown-menu .dropdown-item button:hover i {
+    color: #0f6b34ff; /* hijau gelap saat hover */
+}
+
+/* Pastikan dropdown berada di posisi relatif dalam list item */
+.navbar ul li.dropdown,
+.navbar ul li.ms-auto {
+    position: relative;
+    margin-left: auto; /* pastikan berada di ujung kanan */
+}
+
+/* ===============================
+   OVERRIDE UKURAN FONT NAVBAR
+================================ */
+
+/* Ukuran teks menu navbar */
+.navbar ul li a {
+    font-size: 13px;      /* dari 16px → 13px */
+    padding: 5px 10px;    /* lebih ramping */
+}
+
+/* Dropdown item navbar */
+.navbar .dropdown-menu .dropdown-item {
+    font-size: 12px;       /* lebih kecil */
+}
+
+/* Perbesar logo header 2 */
+.header2-logo img {
+    height: 50px;   /* dari 22px → 40px */
 }
 
 
+/* =========================================================
+   🔥 TAMBAHAN CSS BACKGROUND FOTO (INI YANG DIPERBAIKI)
+========================================================= */
+
+/* Section background full layar */
+.background-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 120px; /* ⬅️ penting agar tidak ketutup header fixed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Background image FIX */
+.background-section .background-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ⬅️ kunci agar foto tidak rusak */
+    z-index: -2;
+}
+
+/* Overlay biar teks jelas */
+.background-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: -1;
+}
+
+/* Card konten */
+.content-container {
+    background: rgba(255, 255, 255, 0.88);
+    padding: 40px;
+    border-radius: 18px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Judul */
+.content-container h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1f7431ff;
+}
+
+/* Paragraf */
+.content-container p {
+    font-size: 17px;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+/* Tombol WhatsApp */
+.whatsapp-btn {
+    background-color: #25D366;
+    color: #fff;
+    padding: 16px 34px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    background-color: #1da918;
+    transform: scale(1.05);
+}
+
+/* Tooltip */
+.whatsapp-tooltip {
+    margin-top: 15px;
+    background: #25D366;
+    color: #eaffea;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.whatsapp-btn:hover + .whatsapp-tooltip {
+    opacity: 1;
+}
+
+/* Tombol Back */
+.back-to-about-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #25D366;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    z-index: 999;
+}
+
+.back-to-about-btn:hover {
+    background: #1da918;
+}
 
 
 
@@ -364,6 +622,328 @@ h3 {
         font-size: 1.1rem;
     }
 }
+
+/* Memberikan margin dan padding lebih pada setiap container */
+.container {
+    margin-top: 20px;  /* Menurunkan konten dari atas */
+    padding-bottom: 30px; /* Memberikan ruang di bawah konten */
+}
+
+/* Menurunkan container */
+.container.mt-4 {
+    margin-top: 40px; /* Jarak lebih besar untuk menurunkan seluruh konten */
+}
+
+/* Menurunkan bagian d-flex dalam container */
+.d-flex.justify-content-between.align-items-center.mb-3 {
+    margin-top: 20px; /* Jarak lebih kecil untuk menurunkan konten ini sedikit */
+}
+
+
+
+
+/* ------------------------------
+   Button Styles for Detail, Edit, and Delete
+------------------------------ */
+/* ------------------------------
+   General Button Styling
+------------------------------ */
+
+/* Tombol dengan warna hijau gelap (Detail) */
+.btn-detail {
+    background-color: #006400; /* Dark Green */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-detail:hover {
+    background-color: #004d00; /* Darker Green */
+}
+
+.btn-detail i {
+    margin-right: 5px;
+}
+
+/* Tombol Edit */
+.btn-edit {
+    background-color: transparent;
+    color: #ffc107; /* Yellow (warning) */
+    border: 1px solid #ffc107;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-edit:hover {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-edit i {
+    margin-right: 5px;
+}
+
+/* Tombol Hapus */
+.btn-delete {
+    background-color: transparent;
+    color: #dc3545; /* Red (danger) */
+    border: 1px solid #dc3545;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-delete:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-delete i {
+    margin-right: 5px;
+}
+
+/* ------------------------------
+   Filter Dropdown Styles
+------------------------------ */
+
+/* Dropdown filter container */
+.select-container {
+    position: relative;
+    max-width: 350px; /* Lebar filter */
+}
+
+/* Icon inside the filter dropdown */
+.select-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* ------------------------------
+   Font untuk Judul Data Warga
+------------------------------ */
+
+h4 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem; /* Ukuran font untuk judul */
+    color: #28a745; /* Warna hijau */
+    font-weight: bold;
+    text-transform: uppercase; /* Mengubah judul menjadi uppercase */
+    letter-spacing: 1px; /* Menambahkan jarak antar huruf */
+    margin-bottom: 20px; /* Menambahkan jarak bawah */
+}
+/*---------------------------
+   Tombol Detail (Warna Hijau) 
+------------------------------ */
+/* Tombol Detail */
+.btn-detail {
+    background-color: #9dffb4ff;  /* Green */
+    color: #ffffff;             /* Warna teks putih - ini tetap terang */
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    font-family: 'Arial', sans-serif;  /* Font default yang tidak aneh */
+    font-weight: bold;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Tambahkan efek transisi pada warna font */
+}
+
+.btn-detail:hover {
+    background-color: #39c557ff;  /* Darker Green */
+    color: #406c38ff !important;     /* Pastikan warna font tetap terang saat hover */
+}
+
+.btn-detail:active {
+    color: #f1f1f1;             /* Warna font yang lebih terang saat ditekan */
+}
+
+.btn-detail i {
+    margin-right: 5px;
+}
+
+/* Tombol Info (btn-info) */
+.btn-info {
+    background-color: #9dffb4ff;  /* Hijau */
+    color: #1e4e16ff;             /* Warna teks putih */
+    border: none;
+    padding: 8px 8px;           /* Lebar dan tinggi tombol lebih besar */
+    font-size: 1rem;            /* Ukuran font yang lebih besar */
+    font-family: 'Arial', sans-serif;  /* Font default yang tidak aneh */
+    font-weight: bold;          /* Font bold */
+    border-radius: 6px;         /* Sudut lebih membulat */
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;      /* Menghilangkan underline pada link */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transisi hover */
+}
+
+.btn-info:hover {
+    background-color: #63de7dff;  /* Hijau lebih gelap pada hover */
+    transform: scale(1.05);      /* Efek pembesaran sedikit saat hover */
+}
+
+.btn-info i {
+    margin-right: 8px;           /* Memberikan sedikit jarak antara ikon dan teks */
+}
+
+/* ------------------------------
+   Tombol Hover Effects
+------------------------------ */
+
+.btn-info:active {
+    transform: scale(1.02); /* Efek kecil saat tombol ditekan */
+}
+
+/* ------------------------------
+   Tombol Edit (Warna Kuning)
+------------------------------ */
+
+/* Tombol Edit */
+.btn-outline-warning {
+    background-color: transparent;
+    color: #ffc107; /* Yellow */
+    border: 1px solid #ffc107;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-outline-warning i {
+    margin-right: 5px;
+}
+
+/* ------------------------------
+   Tombol Hapus (Warna Merah)
+------------------------------ */
+
+/* Tombol Hapus */
+.btn-outline-danger {
+    background-color: transparent;
+    color: #dc3545; /* Red */
+    border: 1px solid #dc3545;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-outline-danger i {
+    margin-right: 5px;
+}
+
+/* ------------------------------
+   Tombol Filter (Warna Hijau)
+------------------------------ */
+
+/* Tombol Filter */
+.btn-success {
+    background-color: #28a745;  /* Green */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Darker Green */
+}
+
+/* ------------------------------
+   Tombol Reset (Warna Abu-abu)
+------------------------------ */
+
+/* Tombol Reset */
+.btn-secondary {
+    background-color: #6c757d; /* Gray */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker Gray */
+}
+
+.btn-secondary i {
+    margin-right: 5px;
+}
+
+/* ------------------------------
+   Styling untuk Pagination
+------------------------------ */
+.pagination {
+    display: flex;
+    justify-content: center; /* Menempatkan pagination di tengah */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li {
+    margin: 0 5px; /* Memberikan jarak antar elemen pagination */
+}
+
+.pagination a, .pagination .page-link {
+    color: #28a745; /* Hijau pada link */
+    background-color: #fff; /* Background putih */
+    border: 1px solid #28a745; /* Border hijau */
+    padding: 6px 12px; /* Ukuran padding tombol pagination */
+    text-decoration: none;
+    border-radius: 5px; /* Membuat sudut tombol lebih membulat */
+    font-size: 0.875rem; /* Ukuran font yang sesuai */
+    transition: background-color 0.3s, color 0.3s; /* Efek transisi pada hover */
+}
+
+.pagination a:hover, .pagination .page-link:hover {
+    background-color: #28a745; /* Background hijau pada hover */
+    color: #fff; /* Teks putih saat hover */
+    border-color: #218838; /* Border hijau lebih gelap */
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; /* Warna teks untuk disabled */
+    background-color: #f8f9fa; /* Background untuk disabled */
+    border-color: #ddd; /* Border untuk disabled */
+}
+
+.pagination .active .page-link {
+    background-color: #28a745; /* Background hijau untuk active page */
+    color: white; /* Teks putih untuk active page */
+    border-color: #218838; /* Border hijau lebih gelap untuk active page */
+}
+
 
 </style>
 
