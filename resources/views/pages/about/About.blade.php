@@ -235,33 +235,65 @@ strong {
     </div>
 
     <div class="about-card">
-        <div class="row align-items-center">
-            <div class="col-md-6 order-md-2">
-                <img src="{{ asset('assets/img/about_flow1.jpg') }}" alt="Alur Sistem">
-            </div>
-            <div class="col-md-6 order-md-1 mt-4 mt-md-0">
-                <h4>Alur Sistem</h4>
-                <ol>
-                    <li>
-                        <strong>Pengguna login ke sistem sesuai hak akses</strong>. 
-                        Pengguna yang terdaftar dengan status <strong>admin</strong> dapat mengelola berbagai data dan informasi terkait fasilitas desa, sedangkan pengguna dengan status <strong>guest</strong> hanya dapat mengakses informasi dasar tentang desa.
-                    </li>
-                    <li>
-                        <strong>Admin mengelola data warga dan peminjaman fasilitas</strong>. 
-                        Admin memiliki hak untuk mengelola berbagai data, termasuk <strong>fasilitas umum</strong>, <strong>peminjaman fasilitas</strong>, <strong>pembayaran fasilitas</strong>, <strong>syarat fasilitas</strong>, dan <strong>petugas fasilitas</strong> yang ada di desa. Admin juga dapat melakukan pembaruan dan penghapusan data sesuai kebutuhan.
-                    </li>
-                    <li>
-                        <strong>Data tersimpan otomatis ke database</strong>. 
-                        Semua data yang dimasukkan atau diperbarui oleh pengguna, baik admin maupun guest, akan tersimpan otomatis ke dalam database untuk menjaga konsistensi dan keakuratan informasi.
-                    </li>
-                    <li>
-                        <strong>Pengguna dapat memantau status dan laporan kegiatan desa</strong>. 
-                        Pengguna dengan akses yang sesuai dapat memantau status terkini dan melihat laporan kegiatan desa, termasuk informasi tentang petugas, fasilitas umum, peminjaman fasilitas, pembayaran fasilitas, serta syarat fasilitas. Sedangkan guest hanya dapat mengakses informasi umum terkait petugas, fasilitas umum, peminjaman fasilitas, pembayaran fasilitas, dan syarat fasilitas.
-                    </li>
-                </ol>
-            </div>
+    <div class="row align-items-center">
+        <div class="col-md-6 order-md-2">
+            <img src="{{ asset('assets/img/about_flow1.jpg') }}" alt="Alur Sistem">
+        </div>
+        <div class="col-md-6 order-md-1 mt-4 mt-md-0">
+            <h4>Alur Sistem</h4>
+            <ol>
+                <li>
+                    <strong>Pengguna login ke sistem sesuai hak akses</strong>. 
+                    Pengguna yang terdaftar dengan status <strong>admin</strong> dapat mengelola berbagai data dan informasi terkait fasilitas desa, sedangkan pengguna dengan status <strong>guest</strong> hanya dapat mengakses informasi dasar tentang desa, seperti:
+                    <ul>
+                        <li>Melihat jenis fasilitas, alamat, dan foto SOP dari fasilitas yang tersedia.</li>
+                        <li>Melihat jenis syarat yang harus dipenuhi untuk peminjaman fasilitas.</li>
+                        <li>Melihat dokumen syarat yang berkaitan dengan peminjaman fasilitas.</li>
+                        <li>Melihat deskripsi lengkap tentang fasilitas dan syarat-syarat yang berlaku.</li>
+                        <li>Melihat daftar petugas yang bertanggung jawab pada masing-masing fasilitas.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Warga mengajukan peminjaman fasilitas</strong>. 
+                    Jika pengguna adalah <strong>guest</strong>, mereka dapat mengajukan peminjaman fasilitas dengan mengisi data peminjaman yang mencakup:
+                    <ul>
+                        <li>Fasilitas yang ingin dipinjam.</li>
+                        <li>Tanggal mulai dan selesai peminjaman.</li>
+                        <li>Tujuan peminjaman.</li>
+                    </ul>
+                    Setelah pengajuan berhasil, admin akan meninjau dan mengatur status peminjaman serta menentukan harga berdasarkan durasi peminjaman.
+                </li>
+                <li>
+                    <strong>Admin memproses permohonan peminjaman dan memberi harga</strong>. 
+                    Admin akan mengatur status peminjaman dan menentukan biaya peminjaman berdasarkan durasi yang dipilih oleh pengguna. Status peminjaman bisa berupa:
+                    <ul>
+                        <li><strong>Pending</strong>: Menunggu verifikasi dari admin.</li>
+                        <li><strong>Disetujui</strong>: Pengguna diperbolehkan untuk membayar biaya peminjaman.</li>
+                        <li><strong>Lunas</strong>: Pembayaran berhasil diterima.</li>
+                        <li><strong>Ditolak</strong>: Permohonan ditolak oleh admin.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Guest mengisi data pembayaran dan mengirim bukti pembayaran</strong>. 
+                    Setelah status peminjaman disetujui, <strong>guest</strong> yang mengajukan peminjaman dapat mengisi data pembayaran dan mengunggah bukti pembayaran di sistem.
+                </li>
+                <li>
+                    <strong>Admin mengecek bukti pembayaran</strong>. 
+                    Setelah bukti pembayaran diterima, admin akan memverifikasi dan mengganti status peminjaman menjadi <strong>Lunas</strong>.
+                </li>
+                <li>
+                    <strong>Admin mengirimkan resi peminjaman</strong>. 
+                    Setelah pembayaran dikonfirmasi dan status menjadi <strong>Lunas</strong>, admin akan mengirimkan resi peminjaman sesuai dengan tanggal pembayaran dan jenis fasilitas yang dipinjam. Resi ini dapat diunduh oleh pengguna.
+                </li>
+                <li>
+                    <strong>Pengguna dapat mencari dan mengunduh resi peminjaman</strong>. 
+                    Pengguna (terutama <strong>guest</strong>) dapat mencari dan mengunduh resi yang telah diterbitkan oleh admin setelah pembayaran berhasil dan peminjaman diselesaikan.
+                </li>
+            </ol>
         </div>
     </div>
+</div>
+
 
     <div class="about-card mt-4">
         <h4>Informasi Akses Tersedia</h4>
