@@ -38,26 +38,37 @@
                         @endphp
                         <img src="{{ $fileExists ? asset('storage/uploads/media/'.$m->file_name) : $placeholderImage }}" 
                              class="img-fluid" alt="Resi" style="max-width: 200px;">
-                        <!-- Tombol download untuk gambar -->
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
-                            <i class="bi bi-download"></i> Download Resi
-                        </a>
                     @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-danger btn-sm w-100 mt-2">
-                            <i class="bi bi-file-earmark-pdf"></i> Download PDF
-                        </a>
+                        <i class="bi bi-file-earmark-pdf text-danger fs-1 mb-3"></i>
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-info btn-sm w-100 mt-2">
-                            <i class="bi bi-file-earmark-word"></i> Download DOCX
-                        </a>
+                        <i class="bi bi-file-earmark-word text-primary fs-1 mb-3"></i>
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                        <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" target="_blank" class="btn btn-outline-success btn-sm w-100 mt-2">
-                            <i class="bi bi-file-earmark-excel"></i> Download XLSX
-                        </a>
+                        <i class="bi bi-file-earmark-excel text-success fs-1 mb-3"></i>
                     @else
-                        <!-- Jika tidak ada gambar atau file, tampilkan placeholder -->
                         <img src="{{ $placeholderImage }}" class="img-fluid" alt="Tidak Ada Gambar" style="max-width: 200px;">
                     @endif
+
+                    <!-- Tombol Hapus (Hanya untuk Admin) dan Download (disusun dengan Flexbox) -->
+                    <div class="d-flex justify-content-between mt-2">
+                        <!-- Tombol Hapus (Hanya untuk Admin) -->
+                        @if(auth()->check() && auth()->user()->role === 'admin')
+                            <form action="{{ route('pembayaran.deleteMedia', $m->media_id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm me-2 w-100">
+                                    <i class="bi bi-trash"></i> Hapus Foto
+                                </button>
+                            </form>
+                        @endif
+
+                        <!-- Tombol Download -->
+                        @if(Str::startsWith($m->mime_type, 'image') || Str::startsWith($m->mime_type, 'application/pdf') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                            <a href="{{ asset('storage/uploads/media/'.$m->file_name) }}" class="btn btn-outline-primary btn-sm ms-2 w-100" download>
+                                <i class="bi bi-download"></i> Download Resi
+                            </a>
+                        @endif
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -21,6 +21,9 @@ class FasilitasUmumController extends Controller
         ->paginate(9)
         ->withQueryString();
 
+    // Fetch all facilities for the filter dropdown
+    $fasilitas = FasilitasUmum::all();  // Fetch all available facilities for the dropdown
+
     // For each facility, get the related media
     foreach ($data as $item) {
         $item->media = DB::table('media')
@@ -32,8 +35,8 @@ class FasilitasUmumController extends Controller
     // Define the path for the placeholder image
     $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image
 
-    // Return the data to the view
-    return view('pages.fasilitas.index', compact('data', 'placeholderImage'));
+    // Return the data to the view, including the fasilitas data
+    return view('pages.fasilitas.index', compact('data', 'fasilitas', 'placeholderImage'));
 }
 
 

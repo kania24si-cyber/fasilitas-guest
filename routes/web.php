@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('peminjaman', [PeminjamanFasilitasController::class, 'store'])->name('peminjaman.store');
     Route::get('peminjaman', [PeminjamanFasilitasController::class, 'index'])->name('peminjaman.index');
     Route::get('peminjaman/{id}/edit', [PeminjamanFasilitasController::class, 'edit'])->name('peminjaman.edit');
+    Route::put('peminjaman/{id}', [PeminjamanFasilitasController::class, 'update'])->name('peminjaman.update');
 
     Route::post('syarat_fasilitas', [SyaratFasilitasController::class, 'store'])->name('syarat_fasilitas.store');
     Route::get('syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
@@ -104,7 +105,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/fasilitas/media/{id}', [FasilitasUmumController::class, 'deleteMedia'])->name('media.fasilitas.delete');
 
         // Peminjaman Fasilitas
-      Route::put('peminjaman/{id}', [PeminjamanFasilitasController::class, 'update'])->name('peminjaman.update');
       Route::delete('peminjaman/{id}', [PeminjamanFasilitasController::class, 'destroy'])->name('peminjaman.destroy');
       Route::get('peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
 
@@ -113,6 +113,8 @@ Route::middleware('auth')->group(function () {
       Route::get('syarat_fasilitas/{id}/edit', [SyaratFasilitasController::class, 'edit'])->name('syarat_fasilitas.edit');
       Route::put('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'update'])->name('syarat_fasilitas.update');
       Route::delete('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
+      Route::delete('/syarat-fasilitas/media/{media_id}', [SyaratFasilitasController::class, 'deleteMedia'])->name('syarat_fasilitas.deleteMedia');
+
 
     // Pembayaran Fasilitas
         Route::get('pembayaran_fasilitas/{id}/edit', [PembayaranFasilitasController::class, 'edit'])->name('pembayaran_fasilitas.edit');
@@ -120,6 +122,9 @@ Route::middleware('auth')->group(function () {
         // Route untuk Show
         // Route untuk Destroy (Hapus Data)
         Route::delete('pembayaran_fasilitas/{id}', [PembayaranFasilitasController::class, 'destroy'])->name('pembayaran_fasilitas.destroy');
+        Route::delete('/pembayaran_fasilitas/media/{media_id}', [PembayaranFasilitasController::class, 'deleteMedia'])->name('pembayaran.deleteMedia');
+
+
 
    // Petugas Fasilitas
         Route::get('petugas/create', [PetugasFasilitasController::class, 'create'])->name('petugas.create');

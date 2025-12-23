@@ -26,11 +26,15 @@
                     <input type="date" name="tanggal" value="{{ $pembayaran->tanggal }}" class="form-control" required>
                 </div>
 
-                <div class="mb-3">
-                    <label>Jumlah</label>
-                    <input type="text" name="jumlah" value="{{ old('jumlah', $pembayaran->jumlah) }}" class="form-control" placeholder="Masukkan Jumlah" required>
-                </div>
+               <div class="mb-3">
+                <label>Jumlah</label>
+                <input type="text" name="jumlah" 
+                    value="{{ old('jumlah', number_format($pembayaran->jumlah, 0, ',', '.')) }}" 
+                    class="form-control" 
+                    placeholder="Masukkan Jumlah" 
+                    required>
             </div>
+
 
             <!-- Kolom Kanan -->
             <div class="col-md-6">

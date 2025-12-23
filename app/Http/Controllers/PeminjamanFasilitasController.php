@@ -50,63 +50,64 @@ class PeminjamanFasilitasController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi data input
-        $validated = $request->validate([
-            'warga_id' => 'required|exists:warga,warga_id',
-            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'tujuan' => 'required|string',
-            'total_biaya' => 'nullable|numeric',
-            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',  // Validasi untuk file media
+{
+    // Validasi data input
+    $validated = $request->validate([
+        'warga_id' => 'required|exists:warga,warga_id',
+        'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'tujuan' => 'required|string',
+        'total_biaya' => 'nullable|numeric',
+        'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',  // Validasi untuk file media
+    ]);
+
+    // Simpan data peminjaman fasilitas
+    $peminjaman = PeminjamanFasilitas::create($validated);
+
+    // Simpan bukti pembayaran jika ada
+    if ($request->hasFile('bukti_bayaran')) {
+        // Menyimpan file bukti pembayaran dengan Storage
+        $path = $request->file('bukti_bayaran')->store('bukti_bayaran', 'public'); // [PERBAIKAN]
+
+        // Simpan bukti pembayaran ke tabel media
+        DB::table('media')->insert([
+            'ref_table' => 'peminjaman_fasilitas',
+            'ref_id' => $peminjaman->pinjam_id,
+            'file_name' => basename($path),
+            'mime_type' => $request->file('bukti_bayaran')->getMimeType(),
+            'caption' => 'Bukti Pembayaran',
+            'sort_order' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+    }
 
-        // Simpan data peminjaman fasilitas
-        $peminjaman = PeminjamanFasilitas::create($validated);
-
-        // Simpan bukti pembayaran jika ada
-        if ($request->hasFile('bukti_bayaran')) {
-            // Menyimpan file bukti pembayaran dengan Storage
-            $path = $request->file('bukti_bayaran')->store('bukti_bayaran', 'public'); // [PERBAIKAN]
-
-            // Simpan bukti pembayaran ke tabel media
+    // Simpan file media lainnya jika ada
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $file) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            
+            // Menggunakan Storage untuk menyimpan file
+            $filePath = $file->storeAs('uploads/media', $filename, 'public'); // Menggunakan Storage::disk('public')
+            
+            // Simpan file media ke tabel media
             DB::table('media')->insert([
                 'ref_table' => 'peminjaman_fasilitas',
                 'ref_id' => $peminjaman->pinjam_id,
-                'file_name' => basename($path),
-                'mime_type' => $request->file('bukti_bayaran')->getMimeType(),
-                'caption' => 'Bukti Pembayaran',
+                'file_name' => basename($filePath),
+                'mime_type' => $file->getMimeType(),
+                'caption' => null,  // Bisa ditambahkan caption jika diperlukan
                 'sort_order' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
-
-        // Simpan file media lainnya jika ada
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $filename = time() . '_' . $file->getClientOriginalName();
-                
-                // [PERBAIKAN] Gunakan Storage untuk menyimpan file
-                $filePath = $file->storeAs('uploads/media', $filename, 'public'); // Menggunakan Storage::disk('public')
-                
-                // Simpan file media ke tabel media
-                DB::table('media')->insert([
-                    'ref_table' => 'peminjaman_fasilitas',  // Menghubungkan dengan peminjaman fasilitas
-                    'ref_id' => $peminjaman->pinjam_id,    // ID peminjaman fasilitas yang baru disimpan
-                    'file_name' => basename($filePath),
-                    'mime_type' => $file->getMimeType(),
-                    'caption' => null,  // Bisa ditambahkan caption jika diperlukan
-                    'sort_order' => 0,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        }
-
-        return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil ditambahkan.');
     }
+
+    return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil ditambahkan.');
+}
+
 
     public function edit($id)
     {
@@ -127,71 +128,87 @@ class PeminjamanFasilitasController extends Controller
         return view('pages.peminjaman.edit', compact('item', 'warga', 'fasilitas', 'media'));
     }
 
-    public function update(Request $request, $id)
-    {
-        // Ambil data peminjaman berdasarkan ID
-        $item = PeminjamanFasilitas::findOrFail($id);
+   public function update(Request $request, $id)
+{
+    // Ambil data peminjaman berdasarkan ID
+    $item = PeminjamanFasilitas::findOrFail($id);
 
-        // Validasi data yang diterima dari form
-        $validated = $request->validate([
-            'warga_id' => 'required|exists:warga,warga_id',
-            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'tujuan' => 'required|string',
-            'total_biaya' => 'required|numeric',
-            'status' => 'nullable|in:pending,disetujui,ditolak',
-        ]);
+    // Validasi data yang diterima dari form
+    $validated = $request->validate([
+        'warga_id' => 'required|exists:warga,warga_id',
+        'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'tujuan' => 'required|string',
+        'total_biaya' => 'nullable', // total_biaya hanya nullable
+        'status' => 'nullable|in:pending,disetujui,lunas,ditolak',
+        'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
+    ]);
 
-        // Simpan file bukti pembayaran jika ada
-        if ($request->hasFile('bukti_pembayaran')) {
-            // Hapus file lama jika ada
-            if ($item->bukti_pembayaran) {
-                Storage::disk('public')->delete($item->bukti_pembayaran); // [PERBAIKAN] Hapus file lama
-            }
-            // Simpan file baru
-            $validated['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
-        }
-
-        // Update data peminjaman fasilitas
-        $item->update($validated);
-
-        // Simpan file media lainnya jika ada
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $mime = $file->getMimeType();
-
-                // [PERBAIKAN] Gunakan Storage untuk menyimpan file
-                $filePath = $file->storeAs('uploads/media', $filename, 'public'); // [PERBAIKAN] Gunakan Storage
-
-                // Simpan informasi file ke tabel media
-                DB::table('media')->insert([
-                    'ref_table' => 'peminjaman_fasilitas',
-                    'ref_id' => $item->pinjam_id,  // Menghubungkan dengan ID peminjaman
-                    'file_name' => basename($filePath),
-                    'mime_type' => $mime,
-                    'caption' => null,  // Bisa ditambahkan caption jika diperlukan
-                    'sort_order' => 0,  // Default urutan (opsional)
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        }
-
-        return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil diperbarui!');
+    // Cek jika total_biaya diisi dan hapus tanda titik (jika ada)
+    if ($request->filled('total_biaya')) {
+        // Hapus titik untuk pemisah ribuan, jika ada
+        $validated['total_biaya'] = str_replace('.', '', $request->total_biaya); // Menghapus tanda titik
+    } else {
+        // Jika kosong, biarkan nilai sebelumnya atau nilai default
+        $validated['total_biaya'] = $item->total_biaya; // Gunakan nilai sebelumnya jika tidak diubah
     }
 
-    public function destroy($id)
-    {
-        $item = PeminjamanFasilitas::findOrFail($id);
+    // Simpan file bukti pembayaran jika ada
+    if ($request->hasFile('bukti_pembayaran')) {
+        // Hapus file lama jika ada
         if ($item->bukti_pembayaran) {
-            Storage::disk('public')->delete($item->bukti_pembayaran); // [PERBAIKAN] Hapus file bukti pembayaran
+            Storage::disk('public')->delete($item->bukti_pembayaran);  // Menghapus file lama jika ada
         }
-        $item->delete();
 
-        return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil dihapus.');
+        // Simpan file baru
+        $validated['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
     }
+
+    // Update data peminjaman fasilitas
+    $item->update($validated);
+
+    // Simpan file media lainnya jika ada
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $file) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $mime = $file->getMimeType();
+
+            // Simpan file media ke Storage
+            $filePath = $file->storeAs('uploads/media', $filename, 'public');
+
+            // Simpan informasi file ke tabel media
+            DB::table('media')->insert([
+                'ref_table' => 'peminjaman_fasilitas',
+                'ref_id' => $item->pinjam_id,
+                'file_name' => basename($filePath),
+                'mime_type' => $mime,
+                'caption' => null,
+                'sort_order' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil diperbarui!');
+}
+
+
+
+
+
+   public function destroy($id)
+{
+    $item = PeminjamanFasilitas::findOrFail($id);
+    if ($item->bukti_pembayaran) {
+        Storage::disk('public')->delete($item->bukti_pembayaran); // Menghapus file bukti pembayaran
+    }
+    $item->delete();
+
+    return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman fasilitas berhasil dihapus.');
+}
+
 
     public function show($id)
     {

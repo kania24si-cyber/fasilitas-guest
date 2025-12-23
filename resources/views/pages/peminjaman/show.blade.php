@@ -18,45 +18,29 @@
         </div>
     </div>
 
-<div class="row mb-5">
-    <div class="col-md-6">
-        <p>
-            <strong>Status:</strong>
-
-            @if ($item->status === 'pending')
-                <span class="badge bg-warning text-dark">
-                    Pending
-                </span>
-
-            @elseif ($item->status === 'disetujui')
-                <span class="badge bg-primary">
-                    Disetujui, silahkan bayar
-                </span>
-
-            @elseif ($item->status === 'lunas')
-                <span class="badge bg-success">
-                    Lunas
-                </span>
-
-            @elseif ($item->status === 'ditolak')
-                <span class="badge bg-danger">
-                    Ditolak
-                </span>
-            @endif
-        </p>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <p><strong>Status:</strong>
+                @if ($item->status === 'pending')
+                    <span class="badge bg-warning text-dark">Pending</span>
+                @elseif ($item->status === 'disetujui')
+                    <span class="badge bg-primary">Disetujui, silahkan bayar</span>
+                @elseif ($item->status === 'lunas')
+                    <span class="badge bg-success">Lunas</span>
+                @elseif ($item->status === 'ditolak')
+                    <span class="badge bg-danger">Ditolak</span>
+                @endif
+            </p>
+        </div>
     </div>
-</div>
-
 
     <!-- Media peminjaman -->
     <h4 class="mt-4 mb-3">Media Pembayaran dan Dokumen</h4>
-
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @forelse($media as $m)
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center">
-
                     @php
                         $filePath = storage_path('app/public/uploads/media/' . $m->file_name);
                         $fileExists = file_exists($filePath);
@@ -65,55 +49,53 @@
 
                     {{-- IMAGE --}}
                     @if(Str::startsWith($m->mime_type, 'image'))
-                        <img src="{{ $fileExists ? $fileUrl : $placeholderImage }}"
-                             class="img-fluid rounded mb-2"
-                             style="max-width: 200px;"
-                             alt="Media">
-
-                        @if($fileExists)
-                        <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
-                            <i class="bi bi-download"></i> Download Gambar
-                        </a>
-                        @endif
+                        <img src="{{ $fileExists ? $fileUrl : $placeholderImage }}" class="img-fluid rounded mb-2" style="max-width: 200px;" alt="Media">
 
                     {{-- PDF --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
-                        <a href="{{ $fileUrl }}" class="btn btn-outline-danger btn-sm w-100 mt-3" download>
-                            <i class="bi bi-file-earmark-pdf"></i> Download PDF
-                        </a>
+                        <i class="bi bi-file-earmark-pdf text-danger fs-1 mb-3"></i>
 
                     {{-- DOCX --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'))
-                        <a href="{{ $fileUrl }}" class="btn btn-outline-info btn-sm w-100 mt-3" download>
-                            <i class="bi bi-file-earmark-word"></i> Download DOCX
-                        </a>
+                        <i class="bi bi-file-earmark-word text-primary fs-1 mb-3"></i>
 
                     {{-- XLSX --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
-                        <a href="{{ $fileUrl }}" class="btn btn-outline-success btn-sm w-100 mt-3" download>
-                            <i class="bi bi-file-earmark-excel"></i> Download XLSX
-                        </a>
+                        <i class="bi bi-file-earmark-excel text-success fs-1 mb-3"></i>
 
                     {{-- DEFAULT --}}
                     @else
-                        <img src="{{ $placeholderImage }}"
-                             class="img-fluid rounded"
-                             style="max-width: 200px;"
-                             alt="Tidak Ada Media">
+                        <img src="{{ $placeholderImage }}" class="img-fluid rounded" style="max-width: 200px;" alt="Tidak Ada Media">
                     @endif
 
+                    <!-- Tombol Hapus dan Download (disusun dengan Flexbox) -->
+                    <div class="d-flex justify-content-between mt-2">
+                        {{-- Tombol Hapus (Hanya untuk Admin) --}}
+                        @if(auth()->check() && auth()->user()->role === 'admin')
+                            <form action="{{ route('media.fasilitas.delete', $m->media_id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 me-2">
+                                    <i class="bi bi-trash"></i> Hapus Foto
+                                </button>
+                            </form>
+                        @endif
+
+                        {{-- Tombol Download --}}
+                        @if(Str::startsWith($m->mime_type, 'image') || Str::startsWith($m->mime_type, 'application/pdf') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                            <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm ms-2 w-100" download>
+                                <i class="bi bi-download"></i> Download
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
         @empty
-        <!-- Jika tidak ada media sama sekali -->
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center">
-                    <img src="{{ $placeholderImage }}"
-                         class="img-fluid"
-                         style="max-width: 200px;"
-                         alt="Tidak Ada Media">
+                    <img src="{{ $placeholderImage }}" class="img-fluid" style="max-width: 200px;" alt="Tidak Ada Media">
                 </div>
             </div>
         </div>

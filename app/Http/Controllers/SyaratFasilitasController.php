@@ -127,6 +127,28 @@ class SyaratFasilitasController extends Controller
         return redirect()->route('syarat_fasilitas.index')->with('success', 'Syarat fasilitas berhasil dihapus!');
     }
 
+
+   public function deleteMedia($media_id)
+    {
+        // Cari media berdasarkan ID
+        $media = DB::table('media')->where('media_id', $media_id)->first();
+
+        if ($media) {
+            // Hapus file fisik dari server
+            $filePath = public_path('uploads/media/' . $media->file_name);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            // Hapus record dari tabel media
+            DB::table('media')->where('media_id', $media_id)->delete();
+
+            return back()->with('success', 'Media berhasil dihapus!');
+        }
+
+        return back()->with('error', 'Media tidak ditemukan!');
+    }
+    
     public function show($id)
 {
     $syarat = SyaratFasilitas::findOrFail($id);

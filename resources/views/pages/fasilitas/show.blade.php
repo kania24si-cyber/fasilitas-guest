@@ -39,12 +39,6 @@
                              style="max-height: 200px; object-fit: cover;"
                              alt="Media Fasilitas">
 
-                        @if($fileExists)
-                        <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm w-100 mt-2" download>
-                            <i class="bi bi-download"></i> Download Gambar
-                        </a>
-                        @endif
-
                     {{-- PDF --}}
                     @elseif(Str::startsWith($m->mime_type, 'application/pdf'))
                         <i class="bi bi-file-earmark-pdf text-danger fs-1 mb-3"></i>
@@ -68,11 +62,31 @@
 
                     {{-- DEFAULT / placeholder --}}
                     @else
-                        <img src="{{ $placeholderImage }}"
+                        <img src="{{ $placeholderImage }} "
                              class="img-fluid rounded"
                              style="max-height: 200px;"
                              alt="Tidak Ada Media">
                     @endif
+
+                    <div class="d-flex justify-content-between mt-3">
+                        {{-- Tombol Hapus Foto (Admin) --}}
+                        @if(auth()->check() && auth()->user()->role === 'admin')
+                        <form action="{{ route('media.fasilitas.delete', $m->media_id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i> Hapus Foto
+                            </button>
+                        </form>
+                        @endif
+
+                        {{-- Tombol Download (Hanya untuk file yang bisa diunduh) --}}
+                        @if(Str::startsWith($m->mime_type, 'image') || Str::startsWith($m->mime_type, 'application/pdf') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') || Str::startsWith($m->mime_type, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
+                        <a href="{{ $fileUrl }}" class="btn btn-outline-primary btn-sm" download>
+                            <i class="bi bi-download"></i> Download
+                        </a>
+                        @endif
+                    </div>
 
                 </div>
             </div>
@@ -82,7 +96,7 @@
         <div class="col">
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center">
-                    <img src="{{ $placeholderImage }}"
+                    <img src="{{ $placeholderImage }} "
                          class="img-fluid rounded"
                          style="max-height: 200px;"
                          alt="Tidak Ada Media">

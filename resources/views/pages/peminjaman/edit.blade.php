@@ -5,7 +5,7 @@
     <h2>Edit Peminjaman Fasilitas</h2>
 
     <!-- Form untuk mengedit data peminjaman fasilitas -->
-    <form action="{{ route('peminjaman.update', $item->pinjam_id) }}" method="POST" enctype="multipart/form-data">
+   <form action="{{ route('peminjaman.update', $item->pinjam_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT') <!-- Method PUT untuk update data -->
 
@@ -17,7 +17,7 @@
                     <select name="warga_id" class="form-control" required>
                         <option value="">-- Pilih Warga --</option>
                         @foreach($warga as $w)
-                            <option value="{{ $w->warga_id }}" {{ $item->warga_id == $w->warga_id ? 'selected' : '' }}>{{ $w->nama }}</option>
+                            <option value="{{ $w->warga_id }}" {{ old('warga_id', $item->warga_id) == $w->warga_id ? 'selected' : '' }}>{{ $w->nama }}</option>
                         @endforeach
                     </select>
                     @error('warga_id') <small class="text-danger">{{ $message }}</small> @enderror
@@ -26,11 +26,13 @@
                 <div class="mb-3">
                     <label>Tanggal Mulai</label>
                     <input type="date" name="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai', $item->tanggal_mulai) }}" required>
+                    @error('tanggal_mulai') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label>Tujuan</label>
                     <input type="text" name="tujuan" class="form-control" value="{{ old('tujuan', $item->tujuan) }}" required>
+                    @error('tujuan') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
                 @if(auth()->check() && auth()->user()->role === 'admin')
@@ -54,7 +56,7 @@
                     <select name="fasilitas_id" class="form-control" required>
                         <option value="">-- Pilih Fasilitas --</option>
                         @foreach($fasilitas as $f)
-                            <option value="{{ $f->fasilitas_id }}" {{ $item->fasilitas_id == $f->fasilitas_id ? 'selected' : '' }}>{{ $f->nama }} ({{ $f->jenis }})</option>
+                            <option value="{{ $f->fasilitas_id }}" {{ old('fasilitas_id', $item->fasilitas_id) == $f->fasilitas_id ? 'selected' : '' }}>{{ $f->nama }} ({{ $f->jenis }})</option>
                         @endforeach
                     </select>
                     @error('fasilitas_id') <small class="text-danger">{{ $message }}</small> @enderror
@@ -63,24 +65,32 @@
                 <div class="mb-3">
                     <label>Tanggal Selesai</label>
                     <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai', $item->tanggal_selesai) }}" required>
+                    @error('tanggal_selesai') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
 
-                
-                <div class="mt-3">
-            @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'disetujui')
-                <div class="mb-3">
-                    <label>Upload Bukti Pembayaran (boleh banyak)</label>
-                    <input type="file" name="files[]" class="form-control" multiple>
-                </div>
-            @endif
+                <!-- Upload Bukti Pembayaran hanya jika statusnya disetujui -->
+                @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'disetujui')
+                    <div class="mb-3">
+                        <label>Upload Bukti Pembayaran (boleh banyak)</label>
+                        <input type="file" name="files[]" class="form-control" multiple>
+                        @error('files') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                @endif
 
+                {{-- Total Biaya --}}
             @if(auth()->check() && auth()->user()->role === 'admin')
                 <div class="mb-3">
                     <label>Total Biaya</label>
-                    <input type="text" name="total_biaya" class="form-control" value="{{ old('total_biaya', $item->total_biaya) }}" placeholder="Masukkan Total Biaya" required>
+                    <input type="text" name="total_biaya" 
+                        class="form-control" 
+                        value="{{ old('total_biaya', number_format($item->total_biaya, 0, ',', '.')) }}" 
+                        placeholder="Masukkan Total Biaya" 
+                        required>
+                    @error('total_biaya') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
             @endif
-        </div>
+            </div>
+
 
         <div class="d-flex justify-content-between mt-3">
             <button class="btn btn-primary">Update</button>
