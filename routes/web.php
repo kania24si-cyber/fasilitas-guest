@@ -81,7 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::get('peminjaman/{id}/edit', [PeminjamanFasilitasController::class, 'edit'])->name('peminjaman.edit');
 
 
-   Route::resource('syarat_fasilitas', SyaratFasilitasController::class)->except(['show']);
+    Route::get('syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
+    Route::get('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
     // Menampilkan halaman profil pengguna
   
     Route::middleware([CheckRole::class.':admin'])->group(function () {
@@ -100,8 +101,11 @@ Route::middleware('auth')->group(function () {
       Route::get('peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
 
         // Syarat Fasilitas
-        Route::get('/syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
-        Route::delete('/syarat_fasilitas/{delete}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
+Route::get('syarat_fasilitas/create', [SyaratFasilitasController::class, 'create'])->name('syarat_fasilitas.create');
+Route::post('syarat_fasilitas', [SyaratFasilitasController::class, 'store'])->name('syarat_fasilitas.store');
+Route::get('syarat_fasilitas/{id}/edit', [SyaratFasilitasController::class, 'edit'])->name('syarat_fasilitas.edit');
+Route::put('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'update'])->name('syarat_fasilitas.update');
+Route::delete('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
 
     // Pembayaran Fasilitas
         Route::get('pembayaran_fasilitas/{id}/edit', [PembayaranFasilitasController::class, 'edit'])->name('pembayaran_fasilitas.edit');
