@@ -66,7 +66,7 @@ Route::get('/whatsapp', [WhatsAppController::class, 'generateLink'])->name('what
 Route::middleware('auth')->group(function () {
     // Hanya bisa diakses oleh pengguna yang sudah login
     Route::get('petugas', [PetugasFasilitasController::class, 'index'])->name('petugas.index');
-
+    Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('petugas.show');
 
     Route::resource('fasilitas', FasilitasUmumController::class)->except(['show']);
 
