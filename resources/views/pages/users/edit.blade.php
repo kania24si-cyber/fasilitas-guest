@@ -66,8 +66,9 @@
         </div>
 
         @if ($user->profile_picture)
-            <img src="{{ Storage::url($user->profile_picture) }}" width="80" class="mt-2 rounded">
-        @endif
+        <img src="{{ Storage::url($user->profile_picture) }}" width="80" class="mt-2 rounded">
+    @endif
+
 
         <button type="submit" class="btn btn-primary mt-3">Perbarui</button>
         <a href="{{ route('users.index') }}" class="btn btn-secondary mt-3">Kembali</a>

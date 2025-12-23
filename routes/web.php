@@ -80,16 +80,24 @@ Route::middleware('auth')->group(function () {
     Route::get('peminjaman', [PeminjamanFasilitasController::class, 'index'])->name('peminjaman.index');
     Route::get('peminjaman/{id}/edit', [PeminjamanFasilitasController::class, 'edit'])->name('peminjaman.edit');
 
-
+    Route::post('syarat_fasilitas', [SyaratFasilitasController::class, 'store'])->name('syarat_fasilitas.store');
     Route::get('syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
     Route::get('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
     // Menampilkan halaman profil pengguna
   
     Route::middleware([CheckRole::class.':admin'])->group(function () {
-  // User
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::resource('/users', UserController::class); 
+      Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        //users
+      Route::get('/users', [UserController::class, 'index'])->name('users.index'); // List all users
+      Route::get('/users/create', [UserController::class, 'create'])->name('users.create'); // Show the form to create a new user
+      Route::post('/users', [UserController::class, 'store'])->name('users.store'); // Store the new user in the database
+      Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show'); // Show a specific user
+      Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit'); // Show the form to edit an existing user
+      Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update'); // Update an existing user in the database
+      Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy'); // Delete a user
+
 
         // Fasilitas Umum
         Route::get('/fasilitas/{id}', [FasilitasUmumController::class, 'show'])->name('fasilitas.show');
@@ -101,11 +109,10 @@ Route::middleware('auth')->group(function () {
       Route::get('peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
 
         // Syarat Fasilitas
-Route::get('syarat_fasilitas/create', [SyaratFasilitasController::class, 'create'])->name('syarat_fasilitas.create');
-Route::post('syarat_fasilitas', [SyaratFasilitasController::class, 'store'])->name('syarat_fasilitas.store');
-Route::get('syarat_fasilitas/{id}/edit', [SyaratFasilitasController::class, 'edit'])->name('syarat_fasilitas.edit');
-Route::put('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'update'])->name('syarat_fasilitas.update');
-Route::delete('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
+      Route::get('syarat_fasilitas/create', [SyaratFasilitasController::class, 'create'])->name('syarat_fasilitas.create');
+      Route::get('syarat_fasilitas/{id}/edit', [SyaratFasilitasController::class, 'edit'])->name('syarat_fasilitas.edit');
+      Route::put('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'update'])->name('syarat_fasilitas.update');
+      Route::delete('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
 
     // Pembayaran Fasilitas
         Route::get('pembayaran_fasilitas/{id}/edit', [PembayaranFasilitasController::class, 'edit'])->name('pembayaran_fasilitas.edit');

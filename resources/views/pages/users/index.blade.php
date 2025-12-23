@@ -54,8 +54,6 @@
 
 
 
-
-
 <div class="row">
     @forelse ($users as $user)
         <div class="col-md-6 col-lg-4 mb-4">

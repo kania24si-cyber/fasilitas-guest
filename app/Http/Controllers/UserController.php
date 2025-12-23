@@ -28,34 +28,35 @@ class UserController extends Controller
         return view('pages.users.create');
     }
 
+
+    
     public function store(Request $request)
 {
-    $request->validate([
-        'name' => 'required|string|max:100',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:8|confirmed',
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email',
         'role' => 'required|in:admin,guest',
-        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'password' => 'required|string|min:6|confirmed',
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
     ]);
 
-    $profilePicturePath = null;
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->role = $request->role;
+    $user->password = bcrypt($request->password);
 
     if ($request->hasFile('profile_picture')) {
-        $profilePicturePath = $request->file('profile_picture')
-            ->store('profile_pictures', 'public');
+        // Jika ada gambar, simpan ke storage dan ambil path-nya
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->profile_picture = $path;
     }
 
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role' => $request->role,
-        'profile_picture' => $profilePicturePath,
-    ]);
+    $user->save();
 
-    return redirect()->route('users.index')
-        ->with('success', 'User berhasil ditambahkan.');
+    return redirect()->route('users.index')->with('success', 'User created successfully!');
 }
+
 
 
     public function edit($id)
@@ -66,43 +67,37 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
 {
-    $user = User::findOrFail($id);
-
-    // Validasi input
-    $request->validate([
-        'name' => 'required|string|max:100',
-        'email' => 'required|email|unique:users,email,' . $user->id,  // Mengabaikan email lama
-        'password' => 'nullable|min:8|confirmed',  // Password boleh kosong jika tidak diubah
-        'role' => 'required|in:admin,guest',  // Validasi role harus 'admin' atau 'guest'
-        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi file gambar
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $id,
+        'role' => 'required|in:admin,guest',
+        'password' => 'nullable|string|min:6|confirmed',
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
     ]);
 
-    $data = [
-        'name' => $request->name,
-        'email' => $request->email,
-    ];
+    $user = User::findOrFail($id);
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->role = $request->role;
 
-    // Update password jika disertakan
     if ($request->filled('password')) {
-        $data['password'] = Hash::make($request->password);
+        $user->password = bcrypt($request->password);
     }
 
-    // Handle update foto profil
     if ($request->hasFile('profile_picture')) {
-        // Hapus foto lama jika ada
+        // Jika ada gambar baru, hapus gambar lama dan simpan yang baru
         if ($user->profile_picture) {
             Storage::disk('public')->delete($user->profile_picture);
         }
-
-        // Unggah foto profil baru
-        $data['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->profile_picture = $path;
     }
 
-    // Perbarui data pengguna
-    $user->update($data);
+    $user->save();
 
-    return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+    return redirect()->route('users.index')->with('success', 'User updated successfully!');
 }
+
 
     public function destroy($id)
     {

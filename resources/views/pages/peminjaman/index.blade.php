@@ -126,12 +126,12 @@
 
                             <a href="{{ route('peminjaman.show', $item->pinjam_id) }}"
                                class="btn btn-info btn-sm">
-                                <i class="bi bi-eye"></i> Detail
+                         Detail
                             </a>
 
                             <a href="{{ route('peminjaman.edit', $item->pinjam_id) }}"
                                class="btn btn-outline-warning btn-sm">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                Edit
                             </a>
 
                             <form action="{{ route('peminjaman.destroy', $item->pinjam_id) }}"
@@ -142,7 +142,7 @@
                                 <button type="submit"
                                         class="btn btn-outline-danger btn-sm"
                                         onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                    <i class="bi bi-trash"></i> Hapus
+                                    Hapus
                                 </button>
                             </form>
 
