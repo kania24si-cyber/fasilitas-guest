@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FasilitasUmum;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;  // Correctly included for file handling
+use Illuminate\Support\Facades\Storage;  
 
 class FasilitasUmumController extends Controller
 {
@@ -14,17 +14,14 @@ class FasilitasUmumController extends Controller
     $filterable = ['jenis'];
     $searchable = ['nama', 'alamat'];
 
-    // Fetch data with filter and search
     $data = FasilitasUmum::filter($request, $filterable)
         ->search($request, $searchable)
         ->orderBy('fasilitas_id', 'DESC')
         ->paginate(9)
         ->withQueryString();
 
-    // Fetch all facilities for the filter dropdown
-    $fasilitas = FasilitasUmum::all();  // Fetch all available facilities for the dropdown
+    $fasilitas = FasilitasUmum::all();  
 
-    // For each facility, get the related media
     foreach ($data as $item) {
         $item->media = DB::table('media')
             ->where('ref_table', 'fasilitas_umum')
@@ -32,10 +29,8 @@ class FasilitasUmumController extends Controller
             ->get();
     }
 
-    // Define the path for the placeholder image
-    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image
+    $placeholderImage = asset('assets/img/placeholder.jpg');  
 
-    // Return the data to the view, including the fasilitas data
     return view('pages.fasilitas.index', compact('data', 'fasilitas', 'placeholderImage'));
 }
 
@@ -51,7 +46,7 @@ class FasilitasUmumController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data fasilitas
+       
         $request->validate([
             'nama' => 'required',
             'jenis' => 'required',
@@ -60,10 +55,9 @@ class FasilitasUmumController extends Controller
             'rw' => 'required',
             'kapasitas' => 'required|integer',
             'deskripsi' => 'required|string',
-            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048', // Validasi file jika ada
+            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048', 
         ]);
 
-        // Simpan data fasilitas ke dalam tabel fasilitas_umum
         $fasilitas = FasilitasUmum::create([
             'nama' => $request->nama,
             'jenis' => $request->jenis,
@@ -74,24 +68,20 @@ class FasilitasUmumController extends Controller
             'deskripsi' => $request->deskripsi,
         ]);
 
-        // **PERBAIKI: Simpan file ke tabel media jika ada file yang di-upload**
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 if ($file->isValid()) {
-                    // Generate nama file unik
+                  
                     $filename = time() . '_' . $file->getClientOriginalName();
+                    $filePath = $file->storeAs('uploads/media', $filename, 'public'); 
 
-                    // **PERBAIKAN: Menyimpan file dengan Storage disk public**
-                    $filePath = $file->storeAs('uploads/media', $filename, 'public'); // [PERBAIKAN]
-
-                    // Simpan file ke tabel media
                     DB::table('media')->insert([
                         'ref_table' => 'fasilitas_umum',
-                        'ref_id' => $fasilitas->fasilitas_id,  // Menghubungkan dengan ID fasilitas
+                        'ref_id' => $fasilitas->fasilitas_id,  
                         'file_name' => basename($filePath),
                         'mime_type' => $file->getMimeType(),
-                        'caption' => null,  // Opsional, bisa ditambahkan jika diperlukan
-                        'sort_order' => 0,  // Default urutan
+                        'caption' => null,  
+                        'sort_order' => 0,  
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
@@ -104,19 +94,16 @@ class FasilitasUmumController extends Controller
 
     public function edit($id)
     {
-        // Ambil data fasilitas berdasarkan ID
+  
         $fasilitas = FasilitasUmum::findOrFail($id);
 
-        // Kirim data fasilitas ke view 'edit'
         return view('pages.fasilitas.edit', compact('fasilitas'));
     }
 
     public function update(Request $request, $id)
     {
-        // Ambil data fasilitas berdasarkan ID
         $item = FasilitasUmum::findOrFail($id);
 
-        // Validasi data yang diterima dari form
         $validated = $request->validate([
             'nama' => 'required',
             'jenis' => 'required',
@@ -127,35 +114,29 @@ class FasilitasUmumController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-        // Update data fasilitas
         $item->update($validated);
 
-        // **PERBAIKI: Simpan file media jika ada**
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 if ($file->isValid()) {
                     $filename = time() . '_' . $file->getClientOriginalName();
                     $mime = $file->getMimeType();
 
-                    // **PERBAIKAN: Menyimpan file dengan Storage disk public**
-                    $filePath = $file->storeAs('uploads/media', $filename, 'public'); // [PERBAIKAN]
 
-                    // Simpan informasi file ke tabel media
+                    $filePath = $file->storeAs('uploads/media', $filename, 'public'); 
                     DB::table('media')->insert([
                         'ref_table' => 'fasilitas_umum',
-                        'ref_id' => $item->fasilitas_id,  // Menghubungkan dengan ID fasilitas
+                        'ref_id' => $item->fasilitas_id,  
                         'file_name' => basename($filePath),
                         'mime_type' => $mime,
-                        'caption' => null,  // Bisa ditambahkan jika diperlukan
-                        'sort_order' => 0,  // Default urutan (opsional)
+                        'caption' => null,  
+                        'sort_order' => 0,  
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
             }
         }
-
-        // Redirect ke halaman index setelah update berhasil
         return redirect()->route('fasilitas.index')->with('success', 'Data fasilitas berhasil diperbarui!');
     }
 
@@ -169,36 +150,32 @@ class FasilitasUmumController extends Controller
 
     public function show($id)
 {
-    // Ambil data fasilitas berdasarkan ID
+
     $item = FasilitasUmum::findOrFail($id);
 
-    // Ambil semua media terkait fasilitas ini
     $media = DB::table('media')
         ->where('ref_table', 'fasilitas_umum')
         ->where('ref_id', $id)
         ->get();
 
-    // Set placeholder image jika tidak ada gambar
-    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path ke placeholder di public/assets/img/
+    $placeholderImage = asset('assets/img/placeholder.jpg');  
 
-    // Mengembalikan view dengan data fasilitas, media, dan placeholder
     return view('pages.fasilitas.show', compact('item', 'media', 'placeholderImage'));
 }
 
 
     public function deleteMedia($media_id)
     {
-        // Cari media berdasarkan ID
+     
         $media = DB::table('media')->where('media_id', $media_id)->first();
 
         if ($media) {
-            // Hapus file fisik dari server
+    
             $filePath = public_path('uploads/media/' . $media->file_name);
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
 
-            // Hapus record dari tabel media
             DB::table('media')->where('media_id', $media_id)->delete();
 
             return back()->with('success', 'Media berhasil dihapus!');

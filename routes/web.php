@@ -65,8 +65,9 @@ Route::get('/whatsapp', [WhatsAppController::class, 'generateLink'])->name('what
 */
 Route::middleware('auth')->group(function () {
     // Hanya bisa diakses oleh pengguna yang sudah login
-    Route::get('petugas', [PetugasFasilitasController::class, 'index'])->name('petugas.index');
-    Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('petugas.show');
+   Route::resource('petugas', PetugasFasilitasController::class)->except(['show']);
+// Menambahkan route untuk show secara terpisah
+Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('petugas.show');
 
     Route::resource('fasilitas', FasilitasUmumController::class)->except(['show']);
 
@@ -127,11 +128,9 @@ Route::middleware('auth')->group(function () {
 
 
    // Petugas Fasilitas
-        Route::get('petugas/create', [PetugasFasilitasController::class, 'create'])->name('petugas.create');
-        Route::post('petugas', [PetugasFasilitasController::class, 'store'])->name('petugas.store');
-        Route::get('petugas/{id}/edit', [PetugasFasilitasController::class, 'edit'])->name('petugas.edit');
-        Route::put('petugas/{id}', [PetugasFasilitasController::class, 'update'])->name('petugas.update');
-        Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('petugas.show');
+        // Menggunakan resource route untuk petugas, kecuali show
+
+
         Route::delete('petugas/{id}', [PetugasFasilitasController::class, 'destroy'])->name('petugas.destroy');
 
          // Warga

@@ -29,12 +29,13 @@ class PetugasFasilitasController extends Controller
         return view('pages.PetugasFasilitas.index', compact('petugas', 'warga', 'fasilitas'));
     }
 
-    public function create()
-    {
-        $fasilitas = FasilitasUmum::all();
-        $warga = Warga::all();
-        return view('pages.PetugasFasilitas.create', compact('fasilitas', 'warga'));
-    }
+   public function create()
+{
+    $fasilitas = FasilitasUmum::all();
+    $warga = Warga::all();
+    return view('pages.PetugasFasilitas.create', compact('fasilitas', 'warga'));
+}
+
 
     public function store(Request $request)
     {
