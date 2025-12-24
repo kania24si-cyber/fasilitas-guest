@@ -82,9 +82,8 @@ Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('p
     Route::get('peminjaman/{id}/edit', [PeminjamanFasilitasController::class, 'edit'])->name('peminjaman.edit');
     Route::put('peminjaman/{id}', [PeminjamanFasilitasController::class, 'update'])->name('peminjaman.update');
 
-    Route::post('syarat_fasilitas', [SyaratFasilitasController::class, 'store'])->name('syarat_fasilitas.store');
-    Route::get('syarat_fasilitas', [SyaratFasilitasController::class, 'index'])->name('syarat_fasilitas.index');
-    Route::get('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
+    Route::resource('syarat_fasilitas', SyaratFasilitasController::class)->except(['show']);
+      Route::get('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'show'])->name('syarat_fasilitas.show');
     // Menampilkan halaman profil pengguna
   
     Route::middleware([CheckRole::class.':admin'])->group(function () {
@@ -110,10 +109,7 @@ Route::get('petugas/{id}', [PetugasFasilitasController::class, 'show'])->name('p
       Route::get('peminjaman/{id}', [PeminjamanFasilitasController::class, 'show'])->name('peminjaman.show');
 
         // Syarat Fasilitas
-      Route::get('syarat_fasilitas/create', [SyaratFasilitasController::class, 'create'])->name('syarat_fasilitas.create');
-      Route::get('syarat_fasilitas/{id}/edit', [SyaratFasilitasController::class, 'edit'])->name('syarat_fasilitas.edit');
-      Route::put('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'update'])->name('syarat_fasilitas.update');
-      Route::delete('syarat_fasilitas/{id}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
+      Route::delete('syarat_fasilitas/{delete}', [SyaratFasilitasController::class, 'destroy'])->name('syarat_fasilitas.destroy');
       Route::delete('/syarat-fasilitas/media/{media_id}', [SyaratFasilitasController::class, 'deleteMedia'])->name('syarat_fasilitas.deleteMedia');
 
 

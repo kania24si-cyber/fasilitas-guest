@@ -8,21 +8,18 @@ use Illuminate\Http\Request;
 
 class PetugasFasilitasController extends Controller
 {
-    public function index(Request $request) // Tambahkan parameter Request $request
+    public function index(Request $request) 
     {
-        // Mendefinisikan kolom yang bisa difilter
-        $filterable = ['fasilitas_id', 'petugas_warga_id'];  // Kolom yang bisa difilter
-        $searchable = ['peran'];  // Kolom yang bisa dicari
+        $filterable = ['fasilitas_id', 'petugas_warga_id'];  
+        $searchable = ['peran'];  
 
-        // Mengambil data petugas fasilitas berdasarkan filter dan pencarian
-        $petugas = PetugasFasilitas::with(['fasilitas', 'petugas_warga']) // Eager load relasi fasilitas dan petugas_warga
-            ->filter($request, $filterable)  // Apply filter berdasarkan request
-            ->search($request, $searchable)  // Apply search berdasarkan request
-            ->orderBy('petugas_id', 'DESC') // Urutkan berdasarkan ID petugas
-            ->paginate(10)  // Pagination 10 data per halaman
-            ->withQueryString(); // Menyertakan query string agar bisa reset filter
+        $petugas = PetugasFasilitas::with(['fasilitas', 'petugas_warga'])
+            ->filter($request, $filterable) 
+            ->search($request, $searchable) 
+            ->orderBy('petugas_id', 'DESC') 
+            ->paginate(10)  
+            ->withQueryString();
 
-        // Ambil data warga dan fasilitas untuk dropdown di form
         $warga = Warga::all();
         $fasilitas = FasilitasUmum::all();
 
