@@ -22,15 +22,14 @@ class ProfileController extends Controller
 
     $user = Auth::user();
 
-    // Upload file jika ada
+   
     if ($request->hasFile('profile_picture')) {
 
-        // Hapus file lama jika ada
         if ($user->profile_picture) {
             Storage::disk('public')->delete($user->profile_picture);
         }
 
-        // Simpan file baru
+      
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
         $user->profile_picture = $path;
     }

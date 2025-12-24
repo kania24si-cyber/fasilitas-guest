@@ -80,8 +80,8 @@
             Peminjaman
         </a>
         <div class="dropdown-menu" id="peminjaman-dropdown" aria-labelledby="navbarDropdown">
-            <a href="{{ route('peminjaman.create') }}" class="dropdown-item"><i class="bi bi-plus-circle"></i> Ajukan Peminjaman</a>
-            <a href="{{ route('peminjaman.index') }}" class="dropdown-item"><i class="bi bi-list-ul"></i> Lihat List Peminjaman</a>
+            <a href="{{ route('peminjaman.create') }}" class="dropdown-item"><i class="bi bi-plus-circle"></i>Ajukan Peminjaman</a>
+            <a href="{{ route('peminjaman.index') }}" class="dropdown-item"><i class="bi bi-list-ul"></i>Lihat List Peminjaman</a>
         </div>
     </li>
     <li class="nav-item dropdown navbar-right">
@@ -89,8 +89,8 @@
             Pembayaran
         </a>
         <div class="dropdown-menu" id="pembayaran-dropdown" aria-labelledby="navbarDropdown">
-            <a href="{{ route('pembayaran_fasilitas.create') }}" class="dropdown-item"><i class="bi bi-cash-stack"></i> Isi data pembayaran Sekarang</a>
-            <a href="{{ route('pembayaran_fasilitas.index') }}" class="dropdown-item"><i class="bi bi-list-ul"></i> Lihat Data Pembayaran</a>
+            <a href="{{ route('pembayaran_fasilitas.create') }}" class="dropdown-item"><i class="bi bi-cash-stack"></i>Isi data pembayaran Sekarang</a>
+            <a href="{{ route('pembayaran_fasilitas.index') }}" class="dropdown-item"><i class="bi bi-list-ul"></i>Lihat Data Pembayaran</a>
         </div>
     </li>
 @endif
