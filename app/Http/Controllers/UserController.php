@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $filterableColumns = ['role']; // bisa ditambah misal ['role'] jika ada role
+        $filterableColumns = ['role']; 
         $searchableColumns = ['name', 'email'];
 
         $users = User::filter($request, $filterableColumns)

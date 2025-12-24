@@ -72,7 +72,7 @@
                         <!-- Menampilkan foto penuh -->
                         <img src="{{ $imagePath }}"
                              class="img-fluid rounded mb-3"
-                             style="width: 100%; height: 200px; object-fit: cover;"
+                             style="width: 100%; height: 180px; object-fit: cover;"
                              alt="Foto Fasilitas">
                     </div>
                 </div>
