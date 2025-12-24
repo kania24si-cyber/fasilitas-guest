@@ -85,7 +85,7 @@
 
                             {{-- Conditionally Display View Resi Button --}}
                             @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'lunas')
-                                <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-success btn-sm">
+                                <a href="{{ route('pembayaran_fasilitas.show') }}" class="btn btn-success btn-sm">
                                     <i class="bi bi-file-earmark-pdf"></i> Lihat Resi
                                 </a>
                             @endif

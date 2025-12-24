@@ -14,11 +14,9 @@ class PeminjamanFasilitasController extends Controller
 {
     public function index(Request $request)
     {
-        // Mendefinisikan filterable dan searchable
         $filterable = ['status', 'fasilitas_id', 'warga_id'];
         $searchable = ['tujuan'];
 
-        // Mengambil data peminjaman fasilitas berdasarkan filter dan pencarian
         $data = PeminjamanFasilitas::with(['warga', 'fasilitas'])
             ->filter($request, $filterable)
             ->search($request, $searchable)
@@ -26,7 +24,6 @@ class PeminjamanFasilitasController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        // Ambil media untuk setiap peminjaman
         foreach ($data as $item) {
             $item->media = DB::table('media')
                 ->where('ref_table', 'peminjaman_fasilitas')
@@ -34,7 +31,6 @@ class PeminjamanFasilitasController extends Controller
                 ->get();
         }
 
-        // Ambil data warga dan fasilitas untuk dropdown
         $warga = Warga::all();
         $fasilitas = FasilitasUmum::all();
 
@@ -43,7 +39,6 @@ class PeminjamanFasilitasController extends Controller
 
     public function create()
     {
-        // Mengambil data warga dan fasilitas untuk form peminjaman
         $warga = Warga::all();
         $fasilitas = FasilitasUmum::all();
         return view('pages.peminjaman.create', compact('warga', 'fasilitas'));
@@ -51,7 +46,6 @@ class PeminjamanFasilitasController extends Controller
 
     public function store(Request $request)
 {
-    // Validasi data input
     $validated = $request->validate([
         'warga_id' => 'required|exists:warga,warga_id',
         'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
@@ -59,18 +53,13 @@ class PeminjamanFasilitasController extends Controller
         'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         'tujuan' => 'required|string',
         'total_biaya' => 'nullable|numeric',
-        'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',  // Validasi untuk file media
+        'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048', 
     ]);
 
-    // Simpan data peminjaman fasilitas
     $peminjaman = PeminjamanFasilitas::create($validated);
-
-    // Simpan bukti pembayaran jika ada
     if ($request->hasFile('bukti_bayaran')) {
-        // Menyimpan file bukti pembayaran dengan Storage
-        $path = $request->file('bukti_bayaran')->store('bukti_bayaran', 'public'); // [PERBAIKAN]
 
-        // Simpan bukti pembayaran ke tabel media
+        $path = $request->file('bukti_bayaran')->store('bukti_bayaran', 'public'); 
         DB::table('media')->insert([
             'ref_table' => 'peminjaman_fasilitas',
             'ref_id' => $peminjaman->pinjam_id,
@@ -82,22 +71,18 @@ class PeminjamanFasilitasController extends Controller
             'updated_at' => now(),
         ]);
     }
-
-    // Simpan file media lainnya jika ada
     if ($request->hasFile('files')) {
         foreach ($request->file('files') as $file) {
             $filename = time() . '_' . $file->getClientOriginalName();
             
-            // Menggunakan Storage untuk menyimpan file
-            $filePath = $file->storeAs('uploads/media', $filename, 'public'); // Menggunakan Storage::disk('public')
-            
-            // Simpan file media ke tabel media
+            $filePath = $file->storeAs('uploads/media', $filename, 'public'); 
+
             DB::table('media')->insert([
                 'ref_table' => 'peminjaman_fasilitas',
                 'ref_id' => $peminjaman->pinjam_id,
                 'file_name' => basename($filePath),
                 'mime_type' => $file->getMimeType(),
-                'caption' => null,  // Bisa ditambahkan caption jika diperlukan
+                'caption' => null,  
                 'sort_order' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -111,73 +96,57 @@ class PeminjamanFasilitasController extends Controller
 
     public function edit($id)
     {
-        // Ambil data peminjaman berdasarkan ID
         $item = PeminjamanFasilitas::findOrFail($id);
 
-        // Ambil data warga dan fasilitas untuk dropdown
         $warga = Warga::all();
         $fasilitas = FasilitasUmum::all();
 
-        // Ambil media yang terkait dengan peminjaman ini
         $media = DB::table('media')
             ->where('ref_table', 'peminjaman_fasilitas')
             ->where('ref_id', $id)
             ->get();
 
-        // Kirim data ke view 'edit' untuk peminjaman fasilitas
         return view('pages.peminjaman.edit', compact('item', 'warga', 'fasilitas', 'media'));
     }
 
    public function update(Request $request, $id)
 {
-    // Ambil data peminjaman berdasarkan ID
     $item = PeminjamanFasilitas::findOrFail($id);
 
-    // Validasi data yang diterima dari form
     $validated = $request->validate([
         'warga_id' => 'required|exists:warga,warga_id',
         'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
         'tanggal_mulai' => 'required|date',
         'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         'tujuan' => 'required|string',
-        'total_biaya' => 'nullable', // total_biaya hanya nullable
+        'total_biaya' => 'nullable', 
         'status' => 'nullable|in:pending,disetujui,lunas,ditolak',
         'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
     ]);
 
-    // Cek jika total_biaya diisi dan hapus tanda titik (jika ada)
     if ($request->filled('total_biaya')) {
-        // Hapus titik untuk pemisah ribuan, jika ada
-        $validated['total_biaya'] = str_replace('.', '', $request->total_biaya); // Menghapus tanda titik
+        $validated['total_biaya'] = str_replace('.', '', $request->total_biaya); 
     } else {
-        // Jika kosong, biarkan nilai sebelumnya atau nilai default
-        $validated['total_biaya'] = $item->total_biaya; // Gunakan nilai sebelumnya jika tidak diubah
+        $validated['total_biaya'] = $item->total_biaya; 
     }
 
-    // Simpan file bukti pembayaran jika ada
     if ($request->hasFile('bukti_pembayaran')) {
-        // Hapus file lama jika ada
         if ($item->bukti_pembayaran) {
             Storage::disk('public')->delete($item->bukti_pembayaran);  // Menghapus file lama jika ada
         }
 
-        // Simpan file baru
         $validated['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
     }
 
-    // Update data peminjaman fasilitas
     $item->update($validated);
 
-    // Simpan file media lainnya jika ada
     if ($request->hasFile('files')) {
         foreach ($request->file('files') as $file) {
             $filename = time() . '_' . $file->getClientOriginalName();
             $mime = $file->getMimeType();
 
-            // Simpan file media ke Storage
             $filePath = $file->storeAs('uploads/media', $filename, 'public');
 
-            // Simpan informasi file ke tabel media
             DB::table('media')->insert([
                 'ref_table' => 'peminjaman_fasilitas',
                 'ref_id' => $item->pinjam_id,
@@ -202,7 +171,7 @@ class PeminjamanFasilitasController extends Controller
 {
     $item = PeminjamanFasilitas::findOrFail($id);
     if ($item->bukti_pembayaran) {
-        Storage::disk('public')->delete($item->bukti_pembayaran); // Menghapus file bukti pembayaran
+        Storage::disk('public')->delete($item->bukti_pembayaran); 
     }
     $item->delete();
 
@@ -212,19 +181,15 @@ class PeminjamanFasilitasController extends Controller
 
     public function show($id)
     {
-        // Ambil data peminjaman berdasarkan ID beserta relasi warga dan fasilitas
         $item = PeminjamanFasilitas::with(['warga', 'fasilitas'])->findOrFail($id);
 
-        // Ambil semua media yang terkait dengan peminjaman ini
         $media = DB::table('media')
             ->where('ref_table', 'peminjaman_fasilitas')
             ->where('ref_id', $id)
             ->get();
 
-        // Menyediakan gambar placeholder
-        $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image in public/assets/img/
+        $placeholderImage = asset('assets/img/placeholder.jpg'); 
 
-        // Mengembalikan view dengan data peminjaman dan media terkait
         return view('pages.peminjaman.show', compact('item', 'media', 'placeholderImage'));
     }
 }

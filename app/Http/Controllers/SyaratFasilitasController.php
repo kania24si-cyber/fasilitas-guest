@@ -11,11 +11,9 @@ class SyaratFasilitasController extends Controller
 {
   public function index(Request $request)
 {
-    // Define filterable and searchable columns
     $filterable = ['fasilitas_id'];
     $searchable = ['nama_syarat', 'deskripsi'];
 
-    // Fetch data with eager loading for media and fasilitas
     $syaratFasilitas = SyaratFasilitas::with(['fasilitas', 'media'])
         ->filter($request, $filterable)
         ->search($request, $searchable)
@@ -34,7 +32,7 @@ class SyaratFasilitasController extends Controller
 
     public function create()
     {
-        $fasilitas = FasilitasUmum::all(); // Ambil semua fasilitas
+        $fasilitas = FasilitasUmum::all(); 
         return view('pages.SyaratFasilitas.create', compact('fasilitas'));
     }
 
@@ -44,17 +42,15 @@ class SyaratFasilitasController extends Controller
             'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
             'nama_syarat' => 'required|string',
             'deskripsi' => 'required|string',
-            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048', // Validasi file
+            'files.*' => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
         ]);
 
-        // Simpan data syarat fasilitas
         $syarat = SyaratFasilitas::create([
             'fasilitas_id' => $request->fasilitas_id,
             'nama_syarat' => $request->nama_syarat,
             'deskripsi' => $request->deskripsi,
         ]);
 
-        // Simpan file ke tabel media jika ada
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 if ($file->isValid()) {
@@ -158,9 +154,8 @@ class SyaratFasilitasController extends Controller
         ->where('ref_id', $id)
         ->get();
 
-    // ✅ placeholder jika tidak ada media
-    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image in public/assets/img/
 
+    $placeholderImage = asset('assets/img/placeholder.jpg');  
 
     return view('pages.SyaratFasilitas.show', compact(
         'syarat',

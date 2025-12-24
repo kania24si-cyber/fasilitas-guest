@@ -12,22 +12,17 @@ class PembayaranFasilitasController extends Controller
 {
      public function index(Request $request)
 {
-    // Mendefinisikan filterable dan searchable
-    $filterable = ['metode']; // Filter berdasarkan metode pembayaran (misalnya, transfer, tunai, e-wallet, dll)
-    $searchable = ['tanggal', 'keterangan']; // Mencari berdasarkan tanggal atau keterangan
+    $filterable = ['metode']; 
+    $searchable = ['tanggal', 'keterangan']; 
+    $metodes = ['Transfer Bank', 'Tunai', 'E-wallet', 'Debit']; 
 
-    // Mengambil data metode pembayaran yang ada untuk filter
-    $metodes = ['Transfer Bank', 'Tunai', 'E-wallet', 'Debit']; // Daftar metode pembayaran
+    $data = PembayaranFasilitas::with('peminjaman') 
+        ->filter($request, $filterable) 
+        ->search($request, $searchable) 
+        ->orderBy('bayar_id', 'DESC') 
+        ->paginate(10) 
+        ->withQueryString(); 
 
-    // Mengambil data pembayaran fasilitas dengan filter dan pencarian
-    $data = PembayaranFasilitas::with('peminjaman') // Menyertakan relasi peminjaman
-        ->filter($request, $filterable) // Menambahkan filter
-        ->search($request, $searchable) // Menambahkan pencarian
-        ->orderBy('bayar_id', 'DESC') // Mengurutkan berdasarkan ID pembayaran
-        ->paginate(10) // Paginate data dengan 10 item per halaman
-        ->withQueryString(); // Menjaga query string saat paginasi
-
-    // Mengambil media terkait setiap pembayaran fasilitas
     foreach ($data as $item) {
         $item->media = DB::table('media')
             ->where('ref_table', 'pembayaran_fasilitas')
@@ -35,10 +30,9 @@ class PembayaranFasilitasController extends Controller
             ->get();
     }
 
-    // Ambil data peminjaman untuk dropdown filter (misalnya untuk memilih jenis fasilitas)
     $peminjaman = PeminjamanFasilitas::all();
 
-    // Mengembalikan view dengan data yang telah diproses
+   
     return view('pages.PembayaranFasilitas.index', compact('data', 'peminjaman', 'metodes'));
 }
 
@@ -51,7 +45,7 @@ class PembayaranFasilitasController extends Controller
 
     public function store(Request $request)
 {
-    // Validasi data input
+   
     $validated = $request->validate([
         'pinjam_id' => 'required|exists:peminjaman_fasilitas,pinjam_id',
         'tanggal'   => 'required|date',
@@ -61,10 +55,8 @@ class PembayaranFasilitasController extends Controller
         'files.*'   => 'nullable|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
     ]);
 
-    // Simpan data pembayaran fasilitas
     $pembayaran = PembayaranFasilitas::create($validated);
 
-    // Menyimpan resi ke tabel media jika ada file yang di-upload
     if ($request->hasFile('files')) {
         foreach ($request->file('files') as $file) {
             if ($file->isValid()) {
@@ -85,7 +77,6 @@ class PembayaranFasilitasController extends Controller
         }
     }
 
-    // Redirect ke halaman index dengan pesan sukses
     return redirect()
         ->route('pembayaran_fasilitas.index')
         ->with('success', 'Pembayaran berhasil disimpan!');
@@ -151,8 +142,7 @@ class PembayaranFasilitasController extends Controller
         ->where('ref_id', $id)
         ->get();
 
-    // Set placeholder image if no image is available
-    $placeholderImage = asset('assets/img/placeholder.jpg');  // Path to placeholder image in public/assets/img/
+    $placeholderImage = asset('assets/img/placeholder.jpg');  
 
     return view('pages.PembayaranFasilitas.show', compact('pembayaran', 'media', 'placeholderImage'));
 }
