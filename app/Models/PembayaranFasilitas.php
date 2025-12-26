@@ -21,14 +21,22 @@ class PembayaranFasilitas extends Model
 
       
     // FILTERING
-public function scopeFilter($query, Request $request, array $columns)
+public function scopeFilter($query, Request $request)
 {
-    foreach ($columns as $col) {
+    if ($request->filled('metode')) {
+        $query->where('metode', $request->metode);
+    }
 
-        // gunakan filled() bukan has()
-        if ($request->filled($col)) {
-            $query->where($col, $request->$col);
-        }
+    if ($request->filled('status')) {
+        $query->whereHas('peminjaman', function ($q) use ($request) {
+            $q->where('status', $request->status);
+        });
+    }
+
+    if ($request->filled('fasilitas_id')) {
+        $query->whereHas('peminjaman', function ($q) use ($request) {
+            $q->where('fasilitas_id', $request->fasilitas_id);
+        });
     }
 
     return $query;
@@ -36,16 +44,20 @@ public function scopeFilter($query, Request $request, array $columns)
 
 
     // SEARCHING
- public function scopeSearch($query, Request $request, array $columns)
+ // SEARCH tujuan & nama warga
+public function scopeSearch($query, Request $request)
 {
     if ($request->filled('search')) {
         $keyword = $request->search;
-        $query->where(function ($q) use ($columns, $keyword) {
-            foreach ($columns as $col) {
-                $q->orWhere($col, 'LIKE', '%' . $keyword . '%');
-            }
+
+        $query->whereHas('peminjaman', function ($qp) use ($keyword) {
+            $qp->where('tujuan', 'LIKE', "%$keyword%")
+               ->orWhereHas('warga', function ($qw) use ($keyword) {
+                   $qw->where('nama', 'LIKE', "%$keyword%");
+               });
         });
     }
+
     return $query;
 }
 }

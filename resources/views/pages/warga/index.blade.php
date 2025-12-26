@@ -44,9 +44,12 @@
 
 
         {{-- BUTTON FILTER --}}
-        <div>
-            <button type="submit" class="btn btn-success btn-sm">Filter</button>
-        </div>
+<div>
+    <button type="submit" class="btn btn-success btn-sm">
+        <i class="bi bi-funnel"></i> Filter
+    </button>
+</div>
+
 
         {{-- BUTTON RESET --}}
         @if(request()->has('search') || request()->has('jenis_kelamin') || request()->has('agama'))

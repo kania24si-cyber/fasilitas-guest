@@ -62,7 +62,10 @@
         </div>
 
         {{-- BUTTON FILTER --}}
-        <button type="submit" class="btn btn-success btn-sm">Filter</button>
+<button type="submit" class="btn btn-success btn-sm">
+    <i class="bi bi-funnel"></i> Filter
+</button>
+
 
         {{-- BUTTON RESET --}}
         @if(request()->has('search') || request()->has('status') || request()->has('warga_id') || request()->has('fasilitas_id'))

@@ -70,8 +70,8 @@
     @endif
 
 
-        <button type="submit" class="btn btn-primary mt-3">Perbarui</button>
-        <a href="{{ route('users.index') }}" class="btn btn-secondary mt-3">Kembali</a>
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <a href="{{ route('users.index') }}" class="btn btn-secondary mt-3">Batal</a>
     </form>
 </div>
 @endsection

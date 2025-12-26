@@ -2,14 +2,9 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Detail Warga: {{ $warga->nama }}</h4>
-        <a href="{{ route('warga.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Kembali ke Daftar Warga
-        </a>
-    </div>
+    <h4>Detail Warga: {{ $warga->nama }}</h4>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm mt-3">
         <div class="card-body">
             <div class="row">
                 <!-- Foto Profil Warga -->
@@ -30,23 +25,14 @@
                     <p><strong>Email:</strong> {{ $warga->email }}</p>
                 </div>
             </div>
-
-            <div class="d-flex justify-content-between mt-3">
-                <!-- Tombol Edit -->
-                <a href="{{ route('warga.edit', $warga->warga_id) }}" class="btn btn-outline-warning btn-sm">
-                    <i class="bi bi-pencil-square"></i> Edit
-                </a>
-
-                <!-- Tombol Hapus -->
-                <form action="{{ route('warga.destroy', $warga->warga_id) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">
-                        <i class="bi bi-trash"></i> Hapus
-                    </button>
-                </form>
-            </div>
         </div>
+    </div>
+
+    {{-- Tombol Kembali ke Index (DI LUAR CARD) --}}
+    <div class="mt-3">
+        <a href="{{ route('warga.index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Kembali ke Daftar Warga
+        </a>
     </div>
 </div>
 @endsection

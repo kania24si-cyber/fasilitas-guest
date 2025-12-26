@@ -14,40 +14,53 @@
 
 {{-- FILTER & SEARCH --}}
 <form method="GET" class="mb-4">
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-3 flex-wrap">
 
-        <!-- Search -->
-        <div class="input-group" style="max-width: 250px;"> <!-- Mengatur lebar input pencarian -->
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari tujuan peminjaman..." value="{{ request('search') }}">
-            <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button> <!-- Menambahkan btn-sm untuk ukuran kecil -->
+        {{-- SEARCH: tujuan peminjaman / nama warga --}}
+        <div class="input-group input-group-sm" style="max-width: 260px;">
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Cari tujuan / nama warga..."
+                value="{{ request('search') }}"
+            >
+            <button class="btn btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
         </div>
 
-       <!-- Filter Metode with Icon inside -->
-        <div style="max-width: 280px; position: relative;"> <!-- Lebarkan dropdown filter menjadi 280px -->
+        {{-- FILTER METODE --}}
+        <div style="max-width: 220px; position: relative;">
             <select name="metode" class="form-control form-control-sm">
                 <option value="">Metode</option>
                 @foreach($metodes as $metode)
-                    <option value="{{ $metode }}" {{ request('metode') == $metode ? 'selected' : '' }}>{{ $metode }}</option>
+                    <option
+                        value="{{ $metode }}"
+                        {{ request('metode') === $metode ? 'selected' : '' }}
+                    >
+                        {{ $metode }}
+                    </option>
                 @endforeach
             </select>
-            <!-- Icon for select dropdown -->
-            <i class="bi bi-chevron-down position-absolute" style="right: 5px; top: 50%; transform: translateY(-50%);"></i> <!-- Menambahkan ikon dropdown di dalam container -->
+            <i class="bi bi-chevron-down position-absolute end-0 top-50 translate-middle-y me-2"></i>
         </div>
 
+        {{-- TOMBOL FILTER --}}
+        <button type="submit" class="btn btn-success btn-sm">
+            <i class="bi bi-funnel"></i> Filter
+        </button>
 
-        <!-- Tombol Filter -->
-        <button type="submit" class="btn btn-success btn-sm">Filter</button> <!-- Menambahkan btn-sm untuk tombol filter -->
-
-        <!-- Tombol Reset -->
-        @if(request()->has('search') || request()->has('metode'))
-            <div>
-                <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-arrow-clockwise"></i> Reset <!-- Menambahkan ikon reset -->
-                </a>
-            </div>
+        {{-- TOMBOL RESET --}}
+        @if(request()->hasAny(['search','metode']))
+            <a href="{{ route('pembayaran_fasilitas.index') }}" class="btn btn-secondary btn-sm">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </a>
         @endif
+
     </div>
 </form>
+
 
 
 
@@ -59,12 +72,11 @@
                     <div class="card-body">
                         <h5 class="text-primary">{{ $item->peminjaman->tujuan }}</h5>
 
-                        <p><b>Tanggal Pembayaran:</b> {{ $item->tanggal }}</p>
-                        <p class="mb-2">
-                        <strong>Jumlah:</strong>
-                        Rp {{ number_format($item->jumlah, 0, ',', '.') }}
-                    </p>
-                        <p><b>Metode:</b> {{ $item->metode }}</p>
+                        <p><strong>Nama Warga:</strong> {{ $item->peminjaman->warga->nama ?? '-' }}</p>
+                        <p><strong>Tanggal:</strong> {{ $item->tanggal }}</p>
+                        <p><strong>Jumlah:</strong> Rp {{ number_format($item->jumlah,0,',','.') }}</p>
+                        <p><strong>Metode:</strong> {{ $item->metode }}</p>
+
 
                         
                         <div class="d-flex justify-content-between">
@@ -84,11 +96,20 @@
                             @endif
 
                             {{-- Conditionally Display View Resi Button --}}
-                            @if(auth()->check() && auth()->user()->role !== 'admin' && $item->status === 'lunas')
-                                <a href="{{ route('pembayaran_fasilitas.show') }}" class="btn btn-success btn-sm">
-                                    <i class="bi bi-file-earmark-pdf"></i> Lihat Resi
-                                </a>
-                            @endif
+                           @if(
+                            auth()->check() &&
+                            auth()->user()->role !== 'admin' &&
+                            optional($item->peminjaman)->status &&
+                            strtolower($item->peminjaman->status) === 'lunas'
+                        )
+
+                            <a href="{{ route('pembayaran_fasilitas.show', $item->bayar_id) }}"
+                            class="btn btn-success btn-sm">
+                                <i class="bi bi-file-earmark-pdf"></i> Lihat Resi
+                            </a>
+                        @endif
+
+
                         </div>
                     </div>
                 </div>

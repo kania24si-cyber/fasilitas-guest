@@ -3,14 +3,6 @@
 @section('content')
 <div class="container mt-4">
 
-    {{-- Tombol Kembali ke Index (ATAS) --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Detail User</h4>
-        <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Kembali ke Daftar User
-        </a>
-    </div>
-
     {{-- Notifikasi Sukses --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -66,20 +58,8 @@
                 </div>
             </div>
 
-            {{-- Tombol Aksi --}}
-            <div class="d-flex justify-content-between mt-3">
-                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-outline-warning btn-sm">
-                    <i class="bi bi-pencil-square"></i> Edit
-                </a>
-
-                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button onclick="return confirm('Yakin ingin menghapus pengguna ini?')" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-trash"></i> Hapus
-                    </button>
-                </form>
-            </div>
+            {{-- Hapus Tombol Aksi Edit & Hapus --}}
+            {{-- Tidak ada tombol aksi di sini --}}
 
         </div>
     </div>
@@ -92,6 +72,4 @@
     </div>
 
 </div>
-
-
 @endsection

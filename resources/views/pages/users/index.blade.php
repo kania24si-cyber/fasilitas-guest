@@ -39,7 +39,10 @@
         </div>
 
         <!-- Tombol Filter -->
-        <button type="submit" class="btn btn-success btn-sm">Filter</button>
+<button type="submit" class="btn btn-success btn-sm">
+    <i class="bi bi-funnel"></i> Filter
+</button>
+
 
         <!-- Tombol Reset -->
         @if(request()->has('search') || request()->has('role'))

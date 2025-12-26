@@ -10,6 +10,7 @@
             <h3 class="text-dark font-weight-bold">{{ $pembayaran->peminjaman->tujuan }} - {{ $pembayaran->peminjaman->fasilitas->nama }}</h3>
         </div>
         <div class="col-md-6 text-md-end">
+            <p><strong>Nama Warga:</strong> {{ $pembayaran->peminjaman->warga->nama }}</p>
             <p class="mb-2"><strong>Tanggal Pembayaran:</strong> {{ \Carbon\Carbon::parse($pembayaran->tanggal)->format('d-m-Y') }}</p>
             <p class="mb-2"><strong>Jumlah:</strong> Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</p>
         </div>

@@ -1,4 +1,4 @@
-// resources/views/pages/petugas/edit.blade.php
+{{-- resources/views/pages/petugas/edit.blade.php --}}
 @extends('layouts.guest.app')
 
 @section('content')
@@ -12,9 +12,11 @@
         <div class="mb-3">
             <label>Fasilitas</label>
             <select name="fasilitas_id" class="form-control" required>
-                <option value="{{ $petugas->fasilitas_id }}">{{ $petugas->fasilitas->nama }}</option>
+                <option value="{{ $petugas->fasilitas_id }}">
+                    {{ $petugas->fasilitas->nama }}
+                </option>
                 @foreach($fasilitas as $f)
-                <option value="{{ $f->fasilitas_id }}">{{ $f->nama }}</option>
+                    <option value="{{ $f->fasilitas_id }}">{{ $f->nama }}</option>
                 @endforeach
             </select>
         </div>
@@ -22,19 +24,36 @@
         <div class="mb-3">
             <label>Petugas (Warga)</label>
             <select name="petugas_warga_id" class="form-control" required>
-                <option value="{{ $petugas->petugas_warga_id }}">{{ $petugas->petugas_warga->nama }}</option>
+                <option value="{{ $petugas->petugas_warga_id }}">
+                    {{ $petugas->petugas_warga->nama }}
+                </option>
                 @foreach($warga as $w)
-                <option value="{{ $w->warga_id }}">{{ $w->nama }}</option>
+                    <option value="{{ $w->warga_id }}">{{ $w->nama }}</option>
                 @endforeach
             </select>
         </div>
 
         <div class="mb-3">
             <label>Peran</label>
-            <input type="text" name="peran" value="{{ $petugas->peran }}" class="form-control" required>
+            <input type="text"
+                   name="peran"
+                   value="{{ $petugas->peran }}"
+                   class="form-control"
+                   required>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <!-- ================== BUTTON ================== -->
+        <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                Update
+            </button>
+
+            <a href="{{ route('petugas.index') }}"
+               class="btn btn-secondary">
+                Batal
+            </a>
+        </div>
+
     </form>
 </div>
 @endsection

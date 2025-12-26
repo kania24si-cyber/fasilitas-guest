@@ -12,16 +12,17 @@ class PembayaranFasilitasController extends Controller
 {
      public function index(Request $request)
 {
-    $filterable = ['metode']; 
-    $searchable = ['tanggal', 'keterangan']; 
-    $metodes = ['Transfer Bank', 'Tunai', 'E-wallet', 'Debit']; 
+    $metodes = ['Transfer Bank', 'Tunai', 'E-wallet', 'Debit'];
 
-    $data = PembayaranFasilitas::with('peminjaman') 
-        ->filter($request, $filterable) 
-        ->search($request, $searchable) 
-        ->orderBy('bayar_id', 'DESC') 
-        ->paginate(10) 
-        ->withQueryString(); 
+    $data = PembayaranFasilitas::with([
+            'peminjaman.warga',
+            'peminjaman.fasilitas'
+        ])
+        ->search($request)
+        ->filter($request)
+        ->orderBy('bayar_id', 'DESC')
+        ->paginate(10)
+        ->withQueryString();
 
     foreach ($data as $item) {
         $item->media = DB::table('media')
@@ -32,16 +33,19 @@ class PembayaranFasilitasController extends Controller
 
     $peminjaman = PeminjamanFasilitas::all();
 
-   
-    return view('pages.PembayaranFasilitas.index', compact('data', 'peminjaman', 'metodes'));
+    return view(
+        'pages.PembayaranFasilitas.index',
+        compact('data', 'peminjaman', 'metodes')
+    );
 }
 
-    public function create()
-    {
-        // Ambil data peminjaman untuk dipilih
-        $peminjaman = PeminjamanFasilitas::all();
-        return view('pages.PembayaranFasilitas.create', compact('peminjaman'));
-    }
+
+   public function create()
+{
+    $peminjaman = PeminjamanFasilitas::with(['fasilitas','warga'])->get();
+    return view('pages.PembayaranFasilitas.create', compact('peminjaman'));
+}
+
 
     public function store(Request $request)
 {
@@ -136,7 +140,10 @@ class PembayaranFasilitasController extends Controller
 
     public function show($id)
 {
-    $pembayaran = PembayaranFasilitas::findOrFail($id);
+   $pembayaran = PembayaranFasilitas::with([
+    'peminjaman.warga',
+    'peminjaman.fasilitas'
+    ])->findOrFail($id);
     $media = DB::table('media')
         ->where('ref_table', 'pembayaran_fasilitas')
         ->where('ref_id', $id)
@@ -164,4 +171,7 @@ class PembayaranFasilitasController extends Controller
 
         return back()->with('error', 'Media tidak ditemukan!');
     }
+
+    
+
 }
